@@ -7,7 +7,7 @@ L’utente accede al sistema tramite le proprie credenziali.
 User Goal
 
 ### Actors
-Admin, Cliente
+User
 
 ### Pre-Conditions
 L’utente deve essere nella pagina dedicata al proprio accesso (Mockup #2).
