@@ -1,4 +1,4 @@
-package com.example.flightreservationsystem;
+package UI;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

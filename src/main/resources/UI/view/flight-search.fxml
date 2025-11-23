@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="UI.controller.FlightSearchController"
+            prefWidth="1000" prefHeight="700"
+            stylesheets="@style.css"
+            styleClass="main-pane">
+
+    <top>
+        <VBox spacing="100">
+            <!-- Barra con nome e funzionalità -->
+            <HBox spacing="1400" alignment="CENTER" styleClass="top-bar">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="FlightReservationSystem" styleClass="title-label"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Label text="User" styleClass="user-labels"/> <!-- Diventerà un'immagine -->
+                    <Label text="Accedi" styleClass="user-labels"/>
+                </HBox>
+            </HBox>
+            <!-- Barra di ricerca -->
+            <HBox alignment="CENTER"> <!-- Wrapper -->
+                <VBox alignment="CENTER" styleClass="search-pane">
+                    <VBox styleClass="search-pane-vbox">
+                        <Label text="Cerca Voli" styleClass="flight-search-label"/>
+                        <HBox styleClass="search-bar">
+                            <HBox spacing="50">
+                                <DatePicker fx:id="datePickerOutward" promptText="Andata - Scegli data" styleClass="search-field"/>
+                                <DatePicker fx:id="datePickerReturn" promptText="Ritorno - Scegli data" styleClass="search-field"/>
+                            </HBox>
+                            <Region HBox.hgrow="ALWAYS"/> <!-- spacer -->
+                            <HBox spacing="50">
+                                <TextField fx:id="departureField" promptText="Aeroporto di Partenza" styleClass="search-field"/>
+                                <TextField fx:id="arrivalField" promptText="Aeroporto di Arrivo" styleClass="search-field"/>
+                            </HBox>
+                        </HBox>
+                        <HBox>
+                            <VBox>
+                                <ComboBox fx:id="journeyType"> </ComboBox>
+                                <CheckBox fx:id="checkDirect" text="Solo voli diretti" styleClass="direct-flight"> </CheckBox>
+                            </VBox>
+                            <Button text="Cerca" fx:id="searchButton" styleClass="primary-button"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </HBox>
+        </VBox>
+
+    </top>
+
+    <!-- CENTER: Risultati ricerca -->
+    <center>
+            <!--<TableView fx:id="flightsTable" styleClass="results-table">
+                Colonne verranno aggiunte dal Controller
+            </TableView> -->
+
+    </center>
+
+    <!-- OPTIONAL BOTTOM BAR -->
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <children>
+                <Button text="Avanti" fx:id="nextButton" styleClass="primary-button"/>
+            </children>
+        </HBox>
+    </bottom>
+
+</BorderPane>
+
+

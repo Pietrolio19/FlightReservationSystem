@@ -1,4 +1,4 @@
-package com.example.flightreservationsystem;
+package UI;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,10 +10,15 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                HelloApplication.class.getResource("view/flight-search.fxml")
+        );
+
+        Scene scene = new Scene(fxmlLoader.load(), 340, 230);
         stage.setScene(scene);
+        stage.setTitle("Flight Search");
+        stage.setMaximized(true);
         stage.show();
     }
 

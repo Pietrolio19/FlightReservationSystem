@@ -1,9 +1,11 @@
-module com.example.flightreservationsystem {
+module flightreservationsystem {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
 
 
-    opens com.example.flightreservationsystem to javafx.fxml;
-    exports com.example.flightreservationsystem;
+    opens UI to javafx.fxml;
+    opens UI.controller to javafx.fxml;
+    exports UI;
+    exports UI.controller;
 }
