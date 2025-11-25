@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 public class Flight {
     //attributi
-    private int flightId;
+    private String flightId;
     private Airport departure;
     private Airport arrival;
     private LocalDate departureDate;
@@ -17,7 +17,7 @@ public class Flight {
     private Aircraft aircraft;
 
     //costruttore
-    public Flight(int flightId, Airport departure, Airport arrival,
+    public Flight(String flightId, Airport departure, Airport arrival,
                   LocalDate departureDate, LocalDate arrivalDate, Time departureTime,
                   Time arrivalTime, int duration, Airline airline, Aircraft aircraft) {
         this.flightId = flightId;
@@ -33,11 +33,11 @@ public class Flight {
     }
 
     //metodi
-    public int getFlightId() {
+    public String getFlightId() {
         return flightId;
     }
 
-    public void setFlightId(int flightId) {
+    public void setFlightId(String flightId) {
         this.flightId = flightId;
     }
 

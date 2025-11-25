@@ -1086,7 +1086,7 @@
 											"top": 501,
 											"width": 199,
 											"height": 13,
-											"text": "+passenger: Passenger",
+											"text": "+passenger",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2254,7 +2254,7 @@
 											"top": 94,
 											"width": 159.59619140625,
 											"height": 13,
-											"text": "+flightId: int",
+											"text": "+flightId: String",
 											"horizontalAlignment": 0
 										},
 										{
@@ -7284,7 +7284,7 @@
 											"top": 240,
 											"width": 291.1259765625,
 											"height": 13,
-											"text": "+companions: Passenger[*]",
+											"text": "+companions[*]",
 											"horizontalAlignment": 0
 										}
 									],
@@ -7320,7 +7320,7 @@
 											"top": 263,
 											"width": 291.1259765625,
 											"height": 13,
-											"text": "+addCompanion(companion: Passenger): void",
+											"text": "+addCompanion(companion): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -7998,9 +7998,6 @@
 										"$ref": "AAAAAAGaobmhn4lrIRg="
 									},
 									"name": "companions",
-									"type": {
-										"$ref": "AAAAAAGaoX+2Lhg53pw="
-									},
 									"multiplicity": "*"
 								}
 							],
@@ -8019,10 +8016,7 @@
 											"_parent": {
 												"$ref": "AAAAAAGap0mNzY0n/LM="
 											},
-											"name": "companion",
-											"type": {
-												"$ref": "AAAAAAGaoX+2Lhg53pw="
-											}
+											"name": "companion"
 										},
 										{
 											"_type": "UMLParameter",
@@ -8387,10 +8381,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGaoY/971IJVAo="
 									},
-									"name": "passenger",
-									"type": {
-										"$ref": "AAAAAAGaoX+2Lhg53pw="
-									}
+									"name": "passenger"
 								},
 								{
 									"_type": "UMLAttribute",
@@ -8724,7 +8715,7 @@
 										"$ref": "AAAAAAGaoZg5eQZjg6g="
 									},
 									"name": "flightId",
-									"type": "int"
+									"type": "String"
 								},
 								{
 									"_type": "UMLAttribute",
