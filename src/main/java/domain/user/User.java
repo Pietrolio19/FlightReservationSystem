@@ -70,8 +70,8 @@ public class User extends Person {
         this.fidelityPoints = fidelityPoints;
     }
 
-    public FidelityStatus getFidelityStatus() {
-        return fidelityStatus;
+    public String getFidelityStatus() {
+        return fidelityStatus.toString();
     }
 
     public void setFidelityStatus(FidelityStatus fidelityStatus) {

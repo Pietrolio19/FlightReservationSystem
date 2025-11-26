@@ -55,8 +55,8 @@ public class Reservation {
         return expiresAt;
     }
 
-    public ReservationState getState() {
-        return state;
+    public String getState() {
+        return state.toString();
     }
 
     public void setExpired() {
