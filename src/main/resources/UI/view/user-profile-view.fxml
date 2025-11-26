@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="UI.controller.UserProfileController" stylesheets="@style.css">
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+            <GridPane alignment="TOP_CENTER" styleClass="user-profile-wrapper" hgap="20" maxHeight="-Infinity">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="25"/> <!-- Colonna Anagrafica User -->
+                    <ColumnConstraints percentWidth="50"/> <!-- Colonna Prenotazioni  -->
+                    <ColumnConstraints percentWidth="25"/> <!-- Colonna Companions  -->
+                </columnConstraints>
+
+                <VBox GridPane.columnIndex="0" maxWidth="Infinity">
+                    <Label text="Anagrafica" styleClass="user-profile-vbox-label"/>
+                    <VBox fx:id="userInfo" styleClass="user-profile-info-vbox"/>
+                </VBox>
+                <VBox GridPane.columnIndex="1" maxWidth="Infinity">
+                    <Label text="Prenotazioni" styleClass="user-profile-vbox-label"/>
+                    <VBox fx:id="reservations" styleClass="reservation-info-vbox"/>
+                </VBox>
+                <VBox GridPane.columnIndex="2" maxWidth="Infinity">
+                    <Label text="Companions" styleClass="user-profile-vbox-label"/>
+                    <VBox fx:id="companions" styleClass="user-profile-info-vbox"/>
+                </VBox>
+            </GridPane>
+
+        </ScrollPane>
+    </center>
+</BorderPane>

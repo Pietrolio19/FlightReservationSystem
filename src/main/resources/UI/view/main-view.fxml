@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="UI.controller.MainController" prefHeight="70.0" prefWidth="600.0"
+            stylesheets="@style.css">
+    <top>
+        <!-- Barra con nome e funzionalità -->
+        <HBox alignment="CENTER" styleClass="top-bar">
+            <HBox alignment="CENTER_LEFT">
+                <Button fx:id="backToMain" text="FlightReservationSystem" styleClass="title-button"/>
+            </HBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button fx:id="userProfileButton" text="Accedi" styleClass="user-profile-button"/>
+            </HBox>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane fx:id="contentArea">
+        </StackPane>
+    </center>
+</BorderPane>

@@ -1,3 +1,4 @@
+/* CSS per main-view */
 .main-pane {
     -fx-background-color: #f4f4f4;
 }
@@ -8,27 +9,40 @@
     -fx-border-color: #1E88E5;
 }
 
-.title-label {
+.title-button {
+    -fx-background-color: #f4f4f4;
     -fx-font-size: 32px;
     -fx-font-weight: bold;
 }
 
-.user-labels {
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
+.title-button:hover {
+    -fx-cursor: hand;
 }
 
+.user-profile-button {
+    -fx-background-color: #f4f4f4;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E88E5;
+}
+
+.user-profile-button:hover {
+    -fx-cursor: hand;
+    -fx-border-color: #1E88E5;
+    -fx-border-width: 0 0 3 0;
+}
+
+/* CSS per flight-view */
 .img-pane {
     -fx-background-size: cover;
     -fx-background-position: center center;
     -fx-background-blend-mode: soft-light;
 
-    -fx-pref-height: 600px; /* <-- IMPORTANTE */
+    -fx-pref-height: 600px;
 
     -fx-background-image: url("../images/planeWingPhoto.png");
     -fx-background-repeat: no-repeat;
 
-    /* overlay azzurro semitrasparente */
     -fx-background-color: #CC1E88E5;
     -fx-background-insets: 0, 1;
 }
@@ -144,3 +158,41 @@
     -fx-border-width: 0;
 }
 
+/* CSS per user-profile-view */
+.user-profile-wrapper {
+    -fx-padding: 20;
+}
+
+.user-profile-vbox-label {
+    -fx-font-size: 20;
+    -fx-text-fill: #1E88E5;
+    -fx-font-weight: bold;
+}
+
+.user-profile-info-vbox {
+    -fx-padding: 10;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+    -fx-border-color: #1E88E5;
+    -fx-font-size: 12;
+}
+
+.user-profile-info-vbox .label {
+    -fx-padding: 4;
+    -fx-font-size: 14;
+    -fx-border-width: 1 0 1 0;
+}
+
+.reservation-info-vbox {
+    -fx-padding: 10;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+    -fx-border-color: #1E88E5;
+    -fx-font-size: 16;
+}
+
+.companion-label {
+    -fx-padding: 10;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}

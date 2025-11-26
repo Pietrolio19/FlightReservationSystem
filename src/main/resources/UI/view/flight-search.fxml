@@ -10,26 +10,12 @@
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="UI.controller.FlightSearchController"
-            prefWidth="1000" prefHeight="700"
-            stylesheets="@style.css"
-            styleClass="main-pane">
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="UI.controller.FlightSearchController" prefWidth="1000"
+            prefHeight="700" stylesheets="@style.css" styleClass="main-pane">
 
     <top>
         <VBox>
-            <!-- Barra con nome e funzionalità -->
-            <HBox alignment="CENTER" styleClass="top-bar">
-                <HBox alignment="CENTER_LEFT">
-                    <Label text="FlightReservationSystem" styleClass="title-label"/>
-                </HBox>
-                <Region HBox.hgrow="ALWAYS"/>
-                <HBox spacing="10" alignment="CENTER_RIGHT">
-                    <Label text="User" styleClass="user-labels"/> <!-- Diventerà un'immagine -->
-                    <Label text="Accedi" styleClass="user-labels"/>
-                </HBox>
-            </HBox>
             <!-- Barra di ricerca -->
             <StackPane styleClass="img-pane">
                 <HBox alignment="CENTER"> <!-- Wrapper -->

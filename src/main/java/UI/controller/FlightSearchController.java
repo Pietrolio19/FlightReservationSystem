@@ -74,7 +74,7 @@ public class FlightSearchController {
         Airline airline = new Airline(1, "WizzAir", "34FF", "34FCF", "Lussemburgo");
         Aircraft aircraft = new Aircraft(1, "A350", "Airbus", 550);
 
-        flightsTable.getItems().add(new Flight("AZ123", airport, airport2, LocalDate.now(), LocalDate.now(), Time.valueOf("21:20:00"), Time.valueOf("23:30:00"), 130, airline, aircraft));
+        flightsTable.getItems().add(new Flight(1,"AZ123", airport, airport2, LocalDate.now(), LocalDate.now(), Time.valueOf("21:20:00"), Time.valueOf("23:30:00"), 130, airline, aircraft));
 
         actionsColumn.setCellFactory(col -> new TableCell<>() {
 

@@ -12,10 +12,10 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader(
-                HelloApplication.class.getResource("view/flight-search.fxml")
+                HelloApplication.class.getResource("view/main-view.fxml")
         );
 
-        Scene scene = new Scene(fxmlLoader.load(), 340, 230);
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.setTitle("Flight Search");
         stage.setMaximized(true);
