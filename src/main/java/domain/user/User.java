@@ -14,6 +14,7 @@ public class User extends Person {
     private int fidelityPoints = 0;
     private FidelityStatus fidelityStatus =  FidelityStatus.BRONZE;
     private ArrayList<Passenger> companions =  new ArrayList<>();
+    private Passenger selfPassenger; //lo user crea un passeggero clone per prenotare i posti
 
     //costruttore
     public User(String name, String surname, LocalDate dateOfBirth, String address, String city, String province,

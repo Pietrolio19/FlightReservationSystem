@@ -1,0 +1,129 @@
+CREATE TABLE Utente(
+	id BIGINT PRIMARY KEY,
+username VARCHAR(50) NOT NULL,
+	email VARCHAR(100) UNIQUE NOT NULL,
+	hashed_password VARCHAR(255) NOT NULL,
+	name VARCHAR(50) NOT NULL,
+	surname VARCHAR(50) NOT NULL,
+	date_of_birth DATE,
+	address VARCHAR(255),
+	city VARCHAR(50),
+	province VARCHAR(50),
+	country VARCHAR(50),
+	cod_fisc VARCHAR(50) UNIQUE,
+	cod_ID VARCHAR(50) UNIQUE,
+	phone_number VARCHAR(50),
+	fidelity_points INT DEFAULT 0,
+	fidelity_status VARCHAR(50),
+	self_passenger_id BIGINT UNIQUE
+);
+
+CREATE TABLE Airport(
+	id BIGINT PRIMARY KEY,
+	iata VARCHAR(3) UNIQUE NOT NULL,
+	city VARCHAR(50),
+	country VARCHAR(50),
+	name VARCHAR(100)
+);
+
+CREATE TABLE Airline(
+	id BIGINT PRIMARY KEY,
+	iata VARCHAR(2) UNIQUE NOT NULL,
+	icao VARCHAR(3) UNIQUE NOT NULL,
+	name VARCHAR(50),
+	country VARCHAR(50)
+);
+
+CREATE TABLE Aircraft(
+	id BIGINT PRIMARY KEY,
+	model VARCHAR(50),
+	producer VARCHAR(50),
+	capacity INT CHECK (capacity > 0)
+);
+
+CREATE TABLE Passenger(
+	id BIGINT PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	surname VARCHAR(50) NOT NULL,
+	date_of_birth DATE,
+	address VARCHAR(255),
+	city VARCHAR(50),
+	province VARCHAR(50),
+	country VARCHAR(50),
+	cod_fisc VARCHAR(50) UNIQUE,
+	cod_ID VARCHAR(50) UNIQUE,
+	phone_number VARCHAR(50),
+	companion_owner BIGINT NOT NULL REFERENCES Utente(id) 
+		ON DELETE CASCADE 
+		ON UPDATE CASCADE
+);
+
+ALTER TABLE Utente
+	ADD CONSTRAINT fk_user_self_passenger
+	FOREIGN KEY (self_passenger_id)
+	REFERENCES Passenger(id)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE;
+
+CREATE TABLE Flight(
+	id BIGINT PRIMARY KEY,
+	flight_code VARCHAR(50) UNIQUE NOT NULL,
+	departure BIGINT NOT NULL REFERENCES Airport(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+	arrival BIGINT NOT NULL REFERENCES Airport(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+	departure_date DATE,
+	arrival_date DATE,
+	departure_time TIME,
+	arrival_time TIME,
+	duration INT CHECK (duration > 0),
+	airline_id BIGINT NOT NULL REFERENCES Airline(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+	aircraft_id BIGINT NOT NULL REFERENCES Aircraft(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+);
+
+CREATE TABLE Seat(
+	id BIGINT PRIMARY KEY,
+	flight_id BIGINT NOT NULL REFERENCES Flight(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+	seat_row int NOT NULL CHECK (seat_row > 0),
+	letter VARCHAR(1) NOT NULL,
+	type VARCHAR(50),
+	class VARCHAR(50),
+	price int CHECK (price > 0),
+	UNIQUE (flight_id,seat_row,letter)
+);
+
+CREATE TABLE Reservation(
+	id BIGINT PRIMARY KEY,
+	user_id BIGINT NOT NULL REFERENCES Utente(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+	flight_id BIGINT NOT NULL REFERENCES Flight(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+	date DATE NOT NULL,
+	state VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE SeatReservation(
+	id BIGINT PRIMARY KEY,
+	passenger_id BIGINT NOT NULL REFERENCES Passenger(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+	reservation_id BIGINT NOT NULL REFERENCES Reservation(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+	seat_id BIGINT UNIQUE NOT NULL REFERENCES Seat(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+	date DATE NOT NULL,
+	state VARCHAR(50) NOT NULL,
+	UNIQUE (passenger_id,reservation_id)
+);
