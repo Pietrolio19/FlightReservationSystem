@@ -1,15 +1,15 @@
 -- Airport
-INSERT INTO Airport (id, iata, city, country, name) VALUES
-(1, 'FCO', 'Roma', 'Italia', 'Leonardo da Vinci'),
-(2, 'MXP', 'Milano', 'Italia', 'Malpensa'),
-(3, 'CDG', 'Parigi', 'Francia', 'Charles de Gaulle');
+INSERT INTO Airport (iata, city, country, name) VALUES
+('FCO', 'Roma', 'Italia', 'Leonardo da Vinci'),
+('MXP', 'Milano', 'Italia', 'Malpensa'),
+('CDG', 'Parigi', 'Francia', 'Charles de Gaulle');
 
 -- Airline
-INSERT INTO Airline (id, iata, icao, name, country) VALUES
-(1, 'AZ', 'ITY', 'ITA Airways', 'Italia'),
-(2, 'AF', 'AFR', 'Air France', 'Francia');
+INSERT INTO Airline (iata, icao, name, country) VALUES
+('AZ', 'ITY', 'ITA Airways', 'Italia'),
+('AF', 'AFR', 'Air France', 'Francia');
 
 -- Aircraft
-INSERT INTO Aircraft (id, model, producer, capacity) VALUES
-(1, 'A320', 'Airbus', 180),
-(2, 'B737', 'Boeing', 189);
+INSERT INTO Aircraft (model, producer, capacity) VALUES
+('A320', 'Airbus', 180),
+('B737', 'Boeing', 189);
