@@ -2,6 +2,8 @@ module flightreservationsystem {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires java.desktop;
+    requires flightreservationsystem;
 
 
     opens UI to javafx.fxml;

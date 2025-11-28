@@ -115,4 +115,12 @@ public class User extends Person {
             this.fidelityStatus = FidelityStatus.BRONZE;
         }
     }
+
+    public Passenger getSelfPassenger() {
+        return selfPassenger;
+    }
+
+    public void setSelfPassenger(Passenger selfPassenger) {
+        this.selfPassenger = selfPassenger;
+    }
 }
