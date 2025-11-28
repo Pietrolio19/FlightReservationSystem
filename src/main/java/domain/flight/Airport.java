@@ -2,13 +2,17 @@ package domain.flight;
 
 public class Airport {
     //attributi
-    private int iata;
+    private int airportId;
+    private String iata;
     private String city;
     private String country;
     private String name;
 
-    //costruttore
-    public Airport(int iata, String city, String country, String name) {
+    //costruttori
+    public Airport(){}
+
+    public Airport(int id, String iata, String city, String country, String name) {
+        this.airportId = id;
         this.iata = iata;
         this.city = city;
         this.country = country;
@@ -16,8 +20,16 @@ public class Airport {
     }
 
     //metodi
-    public int getIata() {
+    public int getAirportId() {
+        return airportId;
+    }
+
+    public String getIata() {
         return iata;
+    }
+
+    public void setIata(String iata) {
+        this.iata = iata;
     }
 
     public String getCity() {

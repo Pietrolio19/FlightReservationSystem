@@ -14,7 +14,9 @@ public class SeatReservation {
     private LocalDate date = LocalDate.now();
     private ReservationState state = ReservationState.PENDING;
 
-    //costruttore
+    //costruttori
+    public SeatReservation(){}
+
     public SeatReservation(int seatReservationId, Passenger passenger,
                            Reservation reservation, Seat seat) {
         this.seatReservationId = seatReservationId;
@@ -64,8 +66,20 @@ public class SeatReservation {
         this.date = date;
     }
 
-    public ReservationState getState() {
-        return state;
+    public String getState() {
+        return state.toString();
+    }
+
+    public void setState(ReservationState state) {
+        this.state = state;
+    }
+
+    public void setState(String state) {
+        if (state == null) {
+            this.state = null;
+        } else {
+            this.state = ReservationState.valueOf(state);
+        }
     }
 
     public void setExpired() {

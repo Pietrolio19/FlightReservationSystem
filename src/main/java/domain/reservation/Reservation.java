@@ -15,7 +15,9 @@ public class Reservation {
     private LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(20);
     private ReservationState state = ReservationState.PENDING;
 
-    //costruttore
+    //costruttori
+    public Reservation(){}
+
     public Reservation(int reservationId, User user, Flight flight) {
         this.reservationId = reservationId;
         this.user = user;
@@ -57,6 +59,18 @@ public class Reservation {
 
     public String getState() {
         return state.toString();
+    }
+
+    public void setState(ReservationState state) {
+        this.state = state;
+    }
+
+    public void setState(String state) {
+        if (state == null) {
+            this.state = null;
+        } else {
+            this.state = ReservationState.valueOf(state);
+        }
     }
 
     public void setExpired() {

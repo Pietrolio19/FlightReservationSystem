@@ -6,7 +6,9 @@ public class Aircraft {
     private String producer;
     private int capacity;
 
-    //costruttore
+    //costruttori
+    public Aircraft(){}
+
     public Aircraft(int aircraftId, String model, String producer, int capacity) {
         this.aircraftId = aircraftId;
         this.model = model;

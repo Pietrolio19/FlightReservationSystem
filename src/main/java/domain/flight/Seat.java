@@ -13,7 +13,9 @@ public class Seat {
     private SeatClass seatClass;
     private int price;
 
-    //costruttore
+    //costruttori
+    public Seat(){}
+
     public Seat(int seatId, Flight flight, int row, String letter, SeatType type, SeatClass seatClass, int price) {
         this.seatId = seatId;
         this.flight = flight;
@@ -53,20 +55,36 @@ public class Seat {
         this.letter = letter;
     }
 
-    public SeatType getType() {
-        return type;
+    public String getType() {
+        return type.toString();
     }
 
     public void setType(SeatType type) {
         this.type = type;
     }
 
-    public SeatClass getSeatClass() {
-        return seatClass;
+    public void setType(String type) {
+        if (type == null) {
+            this.type = null;
+        } else {
+            this.type = SeatType.valueOf(type);
+        }
+    }
+
+    public String getSeatClass() {
+        return seatClass.toString();
     }
 
     public void setSeatClass(SeatClass seatClass) {
         this.seatClass = seatClass;
+    }
+
+    public void setSeatClass(String seatClass) {
+        if (seatClass == null) {
+            this.seatClass = null;
+        } else {
+            this.seatClass = SeatClass.valueOf(seatClass);
+        }
     }
 
     public int getPrice() {

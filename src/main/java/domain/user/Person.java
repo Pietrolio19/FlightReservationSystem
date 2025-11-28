@@ -15,8 +15,9 @@ public class Person {
     private String codId;
     private String phoneNumber;
 
-    //costruttore
+    //costruttori
     public Person() {}
+
     public Person(String name, String surname, LocalDate dateOfBirth, String address,
                   String city, String province, String country, String codFisc,
                   String codId, String phoneNumber) {

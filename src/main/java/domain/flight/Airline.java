@@ -8,7 +8,9 @@ public class Airline {
     private String icao;
     private String country;
 
-    //costruttore
+    //costruttori
+    public Airline(){}
+
     public Airline(int airlineId, String name, String iata, String icao, String country) {
         this.airlineId = airlineId;
         this.name = name;

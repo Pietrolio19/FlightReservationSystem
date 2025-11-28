@@ -16,7 +16,9 @@ public class User extends Person {
     private ArrayList<Passenger> companions =  new ArrayList<>();
     private Passenger selfPassenger; //lo user crea un passeggero clone per prenotare i posti
 
-    //costruttore
+    //costruttori
+    public User(){}
+
     public User(String name, String surname, LocalDate dateOfBirth, String address, String city, String province,
                 String country, String codFisc, String codId, String phoneNumber,int userId, String username,
                 String email, String hashPassword) {
@@ -77,6 +79,15 @@ public class User extends Person {
 
     public void setFidelityStatus(FidelityStatus fidelityStatus) {
         this.fidelityStatus = fidelityStatus;
+    }
+
+    //setter per chi non vede l'enum
+    public void setFidelityStatus(String status) {
+        if (status != null) {
+            this.fidelityStatus = FidelityStatus.valueOf(status);
+        } else {
+            this.fidelityStatus = null;
+        }
     }
 
     public ArrayList<Passenger> getCompanions() {

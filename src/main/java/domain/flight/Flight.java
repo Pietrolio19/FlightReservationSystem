@@ -17,7 +17,9 @@ public class Flight {
     private Airline airline;
     private Aircraft aircraft;
 
-    //costruttore
+    //costruttori
+    public Flight(){}
+
     public Flight(int flightId, String flightCode, Airport departure, Airport arrival,
                   LocalDate departureDate, LocalDate arrivalDate, Time departureTime,
                   Time arrivalTime, int duration, Airline airline, Aircraft aircraft) {

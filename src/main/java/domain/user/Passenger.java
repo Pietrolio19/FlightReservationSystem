@@ -7,7 +7,9 @@ public class Passenger extends Person {
     private int passengerId;
     private User companionOwner;
 
-    //costruttore
+    //costruttori
+    public Passenger(){}
+
     public Passenger(String name, String surname, LocalDate dateOfBirth, String address, String city, String province,
                      String country, String codFisc, String codId, String phoneNumber, int passengerId, User companionOwner) {
 
