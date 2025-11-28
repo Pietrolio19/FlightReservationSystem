@@ -7,7 +7,7 @@ enum FidelityStatus {BRONZE, SILVER, GOLD, PLATINUM}
 
 public class User extends Person {
     //attributi
-    private long userId;
+    private Long userId;
     private String username;
     private String email;
     private String hashPassword;
@@ -20,7 +20,7 @@ public class User extends Person {
     public User(){}
 
     public User(String name, String surname, LocalDate dateOfBirth, String address, String city, String province,
-                String country, String codFisc, String codId, String phoneNumber,long userId, String username,
+                String country, String codFisc, String codId, String phoneNumber, Long userId, String username,
                 String email, String hashPassword) {
 
         super(name, surname, dateOfBirth,  address,
@@ -33,11 +33,11 @@ public class User extends Person {
     }
 
     //metodi
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

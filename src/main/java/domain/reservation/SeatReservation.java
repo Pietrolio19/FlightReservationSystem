@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class SeatReservation {
     //attributi
-    private long seatReservationId;
+    private Long seatReservationId;
     private Passenger passenger;
     private Reservation reservation;
     private Seat seat;
@@ -17,7 +17,7 @@ public class SeatReservation {
     //costruttori
     public SeatReservation(){}
 
-    public SeatReservation(long seatReservationId, Passenger passenger,
+    public SeatReservation(Long seatReservationId, Passenger passenger,
                            Reservation reservation, Seat seat) {
         this.seatReservationId = seatReservationId;
         this.passenger = passenger;
@@ -26,11 +26,11 @@ public class SeatReservation {
     }
 
     //metodi
-    public long getSeatReservationId() {
+    public Long getSeatReservationId() {
         return seatReservationId;
     }
 
-    public void setSeatReservationId(long seatReservationId) {
+    public void setSeatReservationId(Long seatReservationId) {
         this.seatReservationId = seatReservationId;
     }
 

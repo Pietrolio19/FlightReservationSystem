@@ -69,12 +69,12 @@ public class FlightSearchController {
         animalSelector.setValue("Nessuno");
 
         //Codice per testare e stylare correttamente la tabella dei risultati TODO rimuovere post DB
-        Airport airport = new Airport(2, "Roma", "Italia", "Roma Fiumicino");
-        Airport airport2 = new Airport(3, "Londra", "Inghilterra", "Heathrow");
-        Airline airline = new Airline(1, "WizzAir", "34FF", "34FCF", "Lussemburgo");
-        Aircraft aircraft = new Aircraft(1, "A350", "Airbus", 550);
+        Airport airport = new Airport(2L, "FCO", "Roma", "Italia", "Roma Fiumicino");
+        Airport airport2 = new Airport(3L, "HTW", "Londra", "Inghilterra", "Heathrow");
+        Airline airline = new Airline(1L, "WizzAir", "34FF", "34FCF", "Lussemburgo");
+        Aircraft aircraft = new Aircraft(1L, "A350", "Airbus", 550);
 
-        flightsTable.getItems().add(new Flight(1,"AZ123", airport, airport2, LocalDate.now(), LocalDate.now(), Time.valueOf("21:20:00"), Time.valueOf("23:30:00"), 130, airline, aircraft));
+        flightsTable.getItems().add(new Flight(1L,"AZ123", airport, airport2, LocalDate.now(), LocalDate.now(), Time.valueOf("21:20:00"), Time.valueOf("23:30:00"), 130, airline, aircraft));
 
         actionsColumn.setCellFactory(col -> new TableCell<>() {
 

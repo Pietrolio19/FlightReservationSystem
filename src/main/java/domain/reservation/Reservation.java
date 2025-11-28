@@ -8,7 +8,7 @@ enum ReservationState {PENDING, CONFIRMED, CANCELED, EXPIRED}
 
 public class Reservation {
     //attributi
-    private long reservationId;
+    private Long reservationId;
     private User user;
     private Flight flight;
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -18,18 +18,18 @@ public class Reservation {
     //costruttori
     public Reservation(){}
 
-    public Reservation(long reservationId, User user, Flight flight) {
+    public Reservation(Long reservationId, User user, Flight flight) {
         this.reservationId = reservationId;
         this.user = user;
         this.flight = flight;
     }
 
     //metodi
-    public long getReservationId() {
+    public Long getReservationId() {
         return reservationId;
     }
 
-    public void setReservationId(long reservationId) {
+    public void setReservationId(Long reservationId) {
         this.reservationId = reservationId;
     }
 

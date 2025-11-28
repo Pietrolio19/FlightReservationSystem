@@ -1,7 +1,7 @@
 package domain.flight;
 
 public class Aircraft {
-    private long aircraftId;
+    private Long aircraftId;
     private String model;
     private String producer;
     private int capacity;
@@ -9,7 +9,7 @@ public class Aircraft {
     //costruttori
     public Aircraft(){}
 
-    public Aircraft(long aircraftId, String model, String producer, int capacity) {
+    public Aircraft(Long aircraftId, String model, String producer, int capacity) {
         this.aircraftId = aircraftId;
         this.model = model;
         this.producer = producer;
@@ -17,11 +17,11 @@ public class Aircraft {
     }
 
     //metodi
-    public long getAircraftId() {
+    public Long getAircraftId() {
         return aircraftId;
     }
 
-    public void setAircraftId(long aircraftId) {
+    public void setAircraftId(Long aircraftId) {
         this.aircraftId = aircraftId;
     }
 
