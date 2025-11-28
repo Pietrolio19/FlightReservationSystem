@@ -5,7 +5,7 @@ enum SeatClass {ECONOMY, PREMIUM_ECONOMY, BUSINESS, FIRST_CLASS}
 
 public class Seat {
     //attributi
-    private int seatId;
+    private long seatId;
     private Flight flight;
     private int row;
     private String letter;
@@ -16,7 +16,7 @@ public class Seat {
     //costruttori
     public Seat(){}
 
-    public Seat(int seatId, Flight flight, int row, String letter, SeatType type, SeatClass seatClass, int price) {
+    public Seat(long seatId, Flight flight, int row, String letter, SeatType type, SeatClass seatClass, int price) {
         this.seatId = seatId;
         this.flight = flight;
         this.row = row;
@@ -27,11 +27,11 @@ public class Seat {
     }
 
     //metodi
-    public int getSeatId() {
+    public long getSeatId() {
         return seatId;
     }
 
-    public void setSeatId(int seatId) {
+    public void setSeatId(long seatId) {
         this.seatId = seatId;
     }
 

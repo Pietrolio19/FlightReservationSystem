@@ -4,14 +4,14 @@ import java.time.LocalDate;
 
 public class Passenger extends Person {
     //attributi
-    private int passengerId;
+    private long passengerId;
     private User companionOwner;
 
     //costruttori
     public Passenger(){}
 
     public Passenger(String name, String surname, LocalDate dateOfBirth, String address, String city, String province,
-                     String country, String codFisc, String codId, String phoneNumber, int passengerId, User companionOwner) {
+                     String country, String codFisc, String codId, String phoneNumber, long passengerId, User companionOwner) {
 
         super(name, surname, dateOfBirth,  address,
                 city, province, country, codFisc, codId,
@@ -21,11 +21,11 @@ public class Passenger extends Person {
     }
 
     //metodi
-    public int getPassengerId() {
+    public long getPassengerId() {
         return passengerId;
     }
 
-    public void setPassengerId(int passengerId) {
+    public void setPassengerId(long passengerId) {
         this.passengerId = passengerId;
     }
 

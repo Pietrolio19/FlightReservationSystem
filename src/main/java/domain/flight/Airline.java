@@ -2,7 +2,7 @@ package domain.flight;
 
 public class Airline {
     //attributi
-    private int airlineId;
+    private long airlineId;
     private String name;
     private String iata;
     private String icao;
@@ -11,7 +11,7 @@ public class Airline {
     //costruttori
     public Airline(){}
 
-    public Airline(int airlineId, String name, String iata, String icao, String country) {
+    public Airline(long airlineId, String name, String iata, String icao, String country) {
         this.airlineId = airlineId;
         this.name = name;
         this.iata = iata;
@@ -20,11 +20,11 @@ public class Airline {
     }
 
     //metodi
-    public int getAirlineId() {
+    public long getAirlineId() {
         return airlineId;
     }
 
-    public void setAirlineId(int airlineId) {
+    public void setAirlineId(long airlineId) {
         this.airlineId = airlineId;
     }
 

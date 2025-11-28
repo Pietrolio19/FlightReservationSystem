@@ -2,7 +2,7 @@ package domain.flight;
 
 public class Airport {
     //attributi
-    private int airportId;
+    private long airportId;
     private String iata;
     private String city;
     private String country;
@@ -11,7 +11,7 @@ public class Airport {
     //costruttori
     public Airport(){}
 
-    public Airport(int id, String iata, String city, String country, String name) {
+    public Airport(long id, String iata, String city, String country, String name) {
         this.airportId = id;
         this.iata = iata;
         this.city = city;
@@ -20,11 +20,11 @@ public class Airport {
     }
 
     //metodi
-    public int getAirportId() {
+    public long getAirportId() {
         return airportId;
     }
 
-    public void  setAirportId(int airportId) {
+    public void setAirportId(long airportId) {
         this.airportId = airportId;
     }
 
