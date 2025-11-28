@@ -17,9 +17,12 @@ public class Aircraft {
     }
 
     //metodi
-
     public int getAircraftId() {
         return aircraftId;
+    }
+
+    public void setAircraftId(int aircraftId) {
+        this.aircraftId = aircraftId;
     }
 
     public String getModel() {

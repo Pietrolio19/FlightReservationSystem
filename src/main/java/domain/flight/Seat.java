@@ -31,6 +31,10 @@ public class Seat {
         return seatId;
     }
 
+    public void setSeatId(int seatId) {
+        this.seatId = seatId;
+    }
+
     public Flight getFlight() {
         return flight;
     }

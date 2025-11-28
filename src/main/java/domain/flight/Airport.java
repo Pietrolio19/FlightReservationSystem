@@ -24,6 +24,10 @@ public class Airport {
         return airportId;
     }
 
+    public void  setAirportId(int airportId) {
+        this.airportId = airportId;
+    }
+
     public String getIata() {
         return iata;
     }

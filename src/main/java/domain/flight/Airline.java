@@ -19,8 +19,13 @@ public class Airline {
         this.country = country;
     }
 
+    //metodi
     public int getAirlineId() {
         return airlineId;
+    }
+
+    public void setAirlineId(int airlineId) {
+        this.airlineId = airlineId;
     }
 
     public String getName() {

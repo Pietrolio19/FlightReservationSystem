@@ -41,6 +41,10 @@ public class Flight {
         return flightId;
     }
 
+    public void setFlightId(int flightId) {
+        this.flightId = flightId;
+    }
+
     public String getFlightCode() {
         return flightCode;
     }
