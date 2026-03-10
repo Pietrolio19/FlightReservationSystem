@@ -1,21 +1,23 @@
 package UI.controller;
 
 import domain.flight.Flight;
-import domain.flight.Airport;
-import domain.flight.Aircraft;
-import domain.flight.Airline;
+import domain.service.FlightService;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.sql.Connection;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class FlightSearchController {
     //attributi FXML
@@ -51,9 +53,17 @@ public class FlightSearchController {
     private final IntegerProperty Adults = new SimpleIntegerProperty(1);
     private final IntegerProperty Children = new SimpleIntegerProperty(0);
     private final IntegerProperty Newborns = new SimpleIntegerProperty(0);
+    private FlightService flightService = new FlightService();
 
     @FXML
     private void initialize() {
+        createSearchForm();
+        createFlightsTable();
+        updateFlights();
+    }
+
+    //metodi per la creazione del layout della finestra
+    private void createSearchForm(){
         journeyType.getItems().addAll("Andata e Ritorno", "Solo Andata");
         journeyType.setValue("Andata e Ritorno");
         journeyType.valueProperty().addListener((ov, oldV, newV) -> checkFlightType(newV));
@@ -65,27 +75,21 @@ public class FlightSearchController {
         Children.addListener((obs, oldV, newV) -> updatePassengerSummary());
         Newborns.addListener((obs, oldV, newV) -> updatePassengerSummary());
 
-        animalSelector.getItems().addAll("Nessuno","1 Cane", "1 Gatto");
+        animalSelector.getItems().addAll("Nessuno", "1 Cane", "1 Gatto");
         animalSelector.setValue("Nessuno");
+    }
 
-        //Codice per testare e stylare correttamente la tabella dei risultati TODO rimuovere post DB
-        Airport airport = new Airport(2L, "FCO", "Roma", "Italia", "Roma Fiumicino");
-        Airport airport2 = new Airport(3L, "HTW", "Londra", "Inghilterra", "Heathrow");
-        Airline airline = new Airline(1L, "WizzAir", "34FF", "34FCF", "Lussemburgo");
-        Aircraft aircraft = new Aircraft(1L, "A350", "Airbus", 550);
-
-        flightsTable.getItems().add(new Flight(1L,"AZ123", airport, airport2, LocalDate.now(), LocalDate.now(), Time.valueOf("21:20:00"), Time.valueOf("23:30:00"), 130, airline, aircraft));
-
+    private void createFlightsTable() {
         actionsColumn.setCellFactory(col -> new TableCell<>() {
 
-            private final Label airline = new Label("WizzAir");
-            private final Label flightCode = new Label("WZ1324");
-            private final Label departure = new Label("Roma");
-            private final Label arrival = new Label("Londra");
-            private final Label departureDate = new Label("25/11/2025");
-            private final Label minPrice = new Label("A partire da 30 euro");
-            private final Button flightReservation = new Button("Prenota");
-            private final HBox box = new HBox(150, airline, flightCode, departure, arrival, departureDate, minPrice, flightReservation);
+            private final Label airline = new Label();
+            private final Label flightCode = new Label();
+            private final Label departure = new Label();
+            private final Label arrival = new Label();
+            private final Label departureDate = new Label();
+            private final Label minPrice = new Label();
+            private final Button flightReserve = new Button();
+            private final HBox box = new HBox(150, airline, flightCode, departure, arrival, departureDate, minPrice, flightReserve);
             {
                 //Associazione CSS
                 box.getStyleClass().add("flight-row");
@@ -95,7 +99,7 @@ public class FlightSearchController {
                 arrival.getStyleClass().add("arrival-label");
                 departureDate.getStyleClass().add("date-label");
                 minPrice.getStyleClass().add("price-label");
-                flightReservation.getStyleClass().add("primary-button");
+                flightReserve.getStyleClass().add("primary-button");
 
                 box.setAlignment(Pos.CENTER);
             }
@@ -104,25 +108,30 @@ public class FlightSearchController {
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
 
-                if (empty) {
+                if (empty || getIndex() >= getTableView().getItems().size()) {
                     setGraphic(null);
                 }
-
                 else {
+                    Flight flight = getTableView().getItems().get(getIndex());
+
+                    airline.setText(flight.getAirline().getName());
+                    flightCode.setText(flight.getFlightCode());
+                    departure.setText(flight.getDeparture().getCity());
+                    arrival.setText(flight.getArrival().getCity());
+                    departureDate.setText(flight.getDepartureDate().toString());
+                    minPrice.setText("A partire da 30 euro");
+                    flightReserve.setText("Prenota");
+
                     setGraphic(box);
                 }
-                //else {
-                //    Flight flight = getTableView().getItems().get(getIndex());
-
-                //    airline.setText(flight.getAirline().getName());
-                //    flightCode.setText(flight.getFlightId());
-                //    departure.setText(flight.getDeparture().getCity());
-                //    arrival.setText(flight.getArrival().getCity());
-                //    departureDate.setText(flight.getDepartureDate().toString());
-                //    }
             }
         });
         actionsColumn.prefWidthProperty().bind(flightsTable.widthProperty().multiply(0.9785));
+    }
+
+    private void updateFlights() {
+        ObservableList<Flight> obsFlights = FXCollections.observableArrayList(flightService.getFlightList());
+        flightsTable.setItems(obsFlights);
     }
 
     //funzione di ripristino e rimozione dei campi "Andata" e "Ritorno"

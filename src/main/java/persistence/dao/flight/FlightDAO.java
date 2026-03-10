@@ -157,18 +157,28 @@ public class FlightDAO implements CrudDAO<Flight, Long> {
     }
 
     private Flight mapRow(ResultSet rs) throws SQLException {
-        Flight flight = new Flight(); //TODO aggiungere service per airline e aircraft
+        Flight flight = new Flight();
 
-        flight.setFlightId(rs.getLong("flight_id"));
+        flight.setFlightId(rs.getLong("id"));
         flight.setFlightCode(rs.getString("flight_code"));
-        flight.setDeparture(flight.getDeparture());
-        flight.setArrival(flight.getArrival());
+
+        Airport departureAirport = new Airport();
+        departureAirport.setAirportId(rs.getLong("departure"));
+        flight.setDeparture(departureAirport);
+
+        Airport arrivalAirport = new Airport();
+        arrivalAirport.setAirportId(rs.getLong("arrival"));
+        flight.setArrival(arrivalAirport);
+
         Date departureDate = rs.getDate("departure_date");
         Date arrivalDate = rs.getDate("arrival_date");
-        Time departureTime = flight.getDepartureTime();
-        Time arrivalTime = flight.getArrivalTime();
+
+        Time departureTime = rs.getTime("departure_time");
+        Time arrivalTime = rs.getTime("arrival_time");
+
         flight.setDepartureDate(departureDate.toLocalDate());
         flight.setArrivalDate(arrivalDate.toLocalDate());
+
         flight.setDepartureTime(departureTime);
         flight.setArrivalTime(arrivalTime);
         flight.setDuration(rs.getInt("duration"));
