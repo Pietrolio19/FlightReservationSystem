@@ -1,7 +1,7 @@
-package domain.reservation;
+package domain.model.reservation;
 
-import domain.user.Passenger;
-import domain.flight.Seat;
+import domain.model.user.Passenger;
+import domain.model.flight.Seat;
 import java.time.LocalDate;
 
 

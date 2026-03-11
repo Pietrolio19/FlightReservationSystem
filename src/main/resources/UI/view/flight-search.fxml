@@ -26,7 +26,7 @@
                                 <HBox spacing="50">
                                     <VBox>
                                         <Label text="Andata" styleClass="search-field-label"/>
-                                        <DatePicker fx:id="datePickerOutward" promptText="Scegli data" styleClass="search-field"/>
+                                        <DatePicker fx:id="datePickerDeparture" promptText="Scegli data" styleClass="search-field"/>
                                     </VBox>
                                     <VBox fx:id="returnFieldsWrapper">
                                         <Label text="Ritorno" styleClass="search-field-label"/>
@@ -65,7 +65,7 @@
                                 </HBox>
                                 <Region HBox.hgrow="ALWAYS"/> <!-- spacer -->
                                 <HBox alignment="BOTTOM_CENTER">
-                                    <Button fx:id="searchButton" text="Cerca" styleClass="primary-button"/>
+                                    <Button fx:id="searchButton" text="Cerca" styleClass="primary-button" onAction="#onSearchClicked"/>
                                 </HBox>
                             </HBox>
                         </VBox>

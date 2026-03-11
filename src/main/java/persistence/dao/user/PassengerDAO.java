@@ -1,8 +1,7 @@
 package persistence.dao.user;
 
-import domain.flight.Seat;
-import domain.user.Passenger;
-import domain.user.User;
+import domain.model.user.Passenger;
+import domain.model.user.User;
 import persistence.DBManager;
 import persistence.dao.CrudDAO;
 

@@ -1,7 +1,8 @@
 package UI.controller;
 
-import domain.flight.Flight;
-import domain.service.FlightService;
+import domain.model.flight.Flight;
+import dto.FlightSearchRequest;
+import service.FlightService;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -13,10 +14,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.sql.Connection;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class FlightSearchController {
@@ -28,7 +25,7 @@ public class FlightSearchController {
 
     @FXML private VBox returnFieldsWrapper;
 
-    @FXML private DatePicker datePickerOutward;
+    @FXML private DatePicker datePickerDeparture;
 
     @FXML private DatePicker datePickerReturn;
 
@@ -53,7 +50,7 @@ public class FlightSearchController {
     private final IntegerProperty Adults = new SimpleIntegerProperty(1);
     private final IntegerProperty Children = new SimpleIntegerProperty(0);
     private final IntegerProperty Newborns = new SimpleIntegerProperty(0);
-    private FlightService flightService = new FlightService();
+    private final FlightService flightService = new FlightService();
 
     @FXML
     private void initialize() {
@@ -130,9 +127,14 @@ public class FlightSearchController {
     }
 
     private void updateFlights() {
-        ObservableList<Flight> obsFlights = FXCollections.observableArrayList(flightService.getFlightList());
+        updateFlightsTable(flightService.getFlightList());
+    }
+
+    private void updateFlightsTable(List<Flight> flights) {
+        ObservableList<Flight> obsFlights = FXCollections.observableArrayList(flights);
         flightsTable.setItems(obsFlights);
     }
+
 
     //funzione di ripristino e rimozione dei campi "Andata" e "Ritorno"
     private void checkFlightType(String flightType) {
@@ -223,6 +225,21 @@ public class FlightSearchController {
         menu.show(passengerSelector,
                 passengerSelector.localToScreen(0, passengerSelector.getHeight()).getX(),
                 passengerSelector.localToScreen(0, passengerSelector.getHeight()).getY());
+    }
+
+    //funzione che crea la ricerca
+    @FXML
+    private void onSearchClicked() {
+        FlightSearchRequest request = new FlightSearchRequest();
+
+        request.setDepartureAirport(departureField.getText());
+        request.setArrivalAirport(arrivalField.getText());
+        request.setDepartureDate(datePickerDeparture.getValue());
+        request.setReturnDate(datePickerReturn.getValue());
+        request.setJourneyType(journeyType.getValue());
+
+        ObservableList<Flight> searchedFlights = FXCollections.observableArrayList(flightService.searchFlights(request));
+        flightsTable.setItems(searchedFlights);
     }
 }
 

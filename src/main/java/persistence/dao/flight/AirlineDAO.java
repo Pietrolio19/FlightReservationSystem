@@ -1,10 +1,9 @@
 package persistence.dao.flight;
 
-import domain.flight.Airline;
+import domain.model.flight.Airline;
 import persistence.DBManager;
 import persistence.dao.CrudDAO;
 
-import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

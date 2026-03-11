@@ -1,12 +1,12 @@
 package UI.controller;
 
-import domain.flight.Aircraft;
-import domain.flight.Airline;
-import domain.flight.Airport;
-import domain.flight.Flight;
-import domain.reservation.Reservation;
-import domain.user.Passenger;
-import domain.user.User;
+import domain.model.flight.Aircraft;
+import domain.model.flight.Airline;
+import domain.model.flight.Airport;
+import domain.model.flight.Flight;
+import domain.model.reservation.Reservation;
+import domain.model.user.Passenger;
+import domain.model.user.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;

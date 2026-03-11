@@ -1,9 +1,9 @@
 package persistence.dao.flight;
 
-import domain.flight.Aircraft;
-import domain.flight.Airline;
-import domain.flight.Airport;
-import domain.flight.Flight;
+import domain.model.flight.Aircraft;
+import domain.model.flight.Airline;
+import domain.model.flight.Airport;
+import domain.model.flight.Flight;
 import persistence.DBManager;
 import persistence.dao.CrudDAO;
 
@@ -154,6 +154,68 @@ public class FlightDAO implements CrudDAO<Flight, Long> {
         } catch(SQLException e){
             e.printStackTrace();
         }
+    }
+
+    //query per ricerca di voli solo andata
+    public List<Flight> oneWayFlightSearch(Long departureId, Long arrivalId, LocalDate departureDate) {
+        String sql = """
+                    SELECT *
+                    FROM Flight
+                    WHERE departure = ? AND arrival = ? AND departure_date = ?
+                """;
+        List<Flight> result = new ArrayList<>();
+
+        try(Connection conn = DBManager.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, departureId);
+            ps.setLong(2, arrivalId);
+            ps.setDate(3, java.sql.Date.valueOf(departureDate));
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+                    result.add(mapRow(rs));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    //query per ricerca di voli andata e ritorno
+    public List<Flight> twoWayFlightSearch(Long departureId, Long arrivalId, LocalDate departureDate, LocalDate returnDate) {
+        String sql = """
+                        SELECT *
+                        FROM Flight
+                        WHERE (departure = ? AND arrival = ? AND departure_date = ?) OR (departure = ? AND arrival = ? AND departure_date = ?)
+                    """;
+        List<Flight> result = new ArrayList<>();
+
+        try(Connection conn = DBManager.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, departureId);
+            ps.setLong(2, arrivalId);
+            ps.setDate(3, java.sql.Date.valueOf(departureDate));
+
+            ps.setLong(4, arrivalId);
+            ps.setLong(5, departureId);
+            ps.setDate(6, java.sql.Date.valueOf(returnDate));
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+                    result.add(mapRow(rs));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
     private Flight mapRow(ResultSet rs) throws SQLException {

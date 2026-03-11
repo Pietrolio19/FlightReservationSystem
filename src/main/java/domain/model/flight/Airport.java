@@ -1,4 +1,4 @@
-package domain.flight;
+package domain.model.flight;
 
 public class Airport {
     //attributi
