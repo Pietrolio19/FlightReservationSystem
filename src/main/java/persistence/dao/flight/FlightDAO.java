@@ -1,9 +1,9 @@
 package persistence.dao.flight;
 
-import domain.model.flight.Aircraft;
-import domain.model.flight.Airline;
-import domain.model.flight.Airport;
-import domain.model.flight.Flight;
+import domain.flight.Aircraft;
+import domain.flight.Airline;
+import domain.flight.Airport;
+import domain.flight.Flight;
 import persistence.DBManager;
 import persistence.dao.CrudDAO;
 

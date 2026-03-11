@@ -1,7 +1,7 @@
-package domain.model.reservation;
+package domain.reservation;
 
-import domain.model.user.User;
-import domain.model.flight.Flight;
+import domain.user.User;
+import domain.flight.Flight;
 import java.time.LocalDateTime;
 
 enum ReservationState {PENDING, CONFIRMED, CANCELED, EXPIRED}

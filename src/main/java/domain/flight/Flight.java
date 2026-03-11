@@ -1,4 +1,4 @@
-package domain.model.flight;
+package domain.flight;
 
 import java.sql.Time;
 import java.time.LocalDate;

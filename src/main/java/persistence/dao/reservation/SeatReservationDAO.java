@@ -1,9 +1,9 @@
 package persistence.dao.reservation;
 
-import domain.model.flight.Seat;
-import domain.model.reservation.Reservation;
-import domain.model.reservation.SeatReservation;
-import domain.model.user.Passenger;
+import domain.flight.Seat;
+import domain.reservation.Reservation;
+import domain.reservation.SeatReservation;
+import domain.user.Passenger;
 import persistence.DBManager;
 import persistence.dao.CrudDAO;
 

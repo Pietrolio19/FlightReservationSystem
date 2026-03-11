@@ -1,7 +1,8 @@
 package UI.controller;
 
-import domain.model.flight.Flight;
+import domain.flight.Flight;
 import dto.FlightSearchRequest;
+import dto.FlightSearchResult;
 import service.FlightService;
 
 import javafx.beans.property.IntegerProperty;
@@ -135,7 +136,6 @@ public class FlightSearchController {
         flightsTable.setItems(obsFlights);
     }
 
-
     //funzione di ripristino e rimozione dei campi "Andata" e "Ritorno"
     private void checkFlightType(String flightType) {
         if(flightType.equals("Solo Andata")) {
@@ -232,14 +232,17 @@ public class FlightSearchController {
     private void onSearchClicked() {
         FlightSearchRequest request = new FlightSearchRequest();
 
-        request.setDepartureAirport(departureField.getText());
-        request.setArrivalAirport(arrivalField.getText());
+        request.setDepartureAirport(departureField.getText().trim().toLowerCase());
+        request.setArrivalAirport(arrivalField.getText().trim().toLowerCase());
         request.setDepartureDate(datePickerDeparture.getValue());
         request.setReturnDate(datePickerReturn.getValue());
         request.setJourneyType(journeyType.getValue());
 
-        ObservableList<Flight> searchedFlights = FXCollections.observableArrayList(flightService.searchFlights(request));
-        flightsTable.setItems(searchedFlights);
+        FlightSearchResult result = flightService.searchFlights(request);
+        if(!result.getReturnFlights().isEmpty())
+            updateFlightsTable(result.getReturnFlights());
+        else
+            updateFlightsTable(result.getOutwardFlights());
     }
 }
 

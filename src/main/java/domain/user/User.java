@@ -1,4 +1,4 @@
-package domain.model.user;
+package domain.user;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package domain.model.flight;
+package domain.flight;
 
 public class Airline {
     //attributi

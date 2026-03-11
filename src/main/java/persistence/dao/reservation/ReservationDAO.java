@@ -1,8 +1,8 @@
 package persistence.dao.reservation;
 
-import domain.model.flight.Flight;
-import domain.model.reservation.Reservation;
-import domain.model.user.User;
+import domain.flight.Flight;
+import domain.reservation.Reservation;
+import domain.user.User;
 import persistence.DBManager;
 import persistence.dao.CrudDAO;
 

@@ -1,16 +1,17 @@
 package service;
 
-import domain.model.flight.Airport;
-import domain.model.flight.Aircraft;
-import domain.model.flight.Airline;
-import domain.model.flight.Flight;
+import domain.flight.Airport;
+import domain.flight.Aircraft;
+import domain.flight.Airline;
+import domain.flight.Flight;
 import dto.FlightSearchRequest;
+import dto.FlightSearchResult;
 import persistence.dao.flight.FlightDAO;
 import persistence.dao.flight.AircraftDAO;
 import persistence.dao.flight.AirlineDAO;
 import persistence.dao.flight.AirportDAO;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,20 +36,7 @@ import java.util.Map;
                 createAirlinesMap();
             if(airportsMap.isEmpty())
                 createAirportsMap();
-
-            for(Flight f: flights) {
-                Aircraft aircraft = aircraftMap.get(f.getAircraft().getAircraftId());
-                f.setAircraft(aircraft);
-
-                Airline airline = airlineMap.get(f.getAirline().getAirlineId());
-                f.setAirline(airline);
-
-                Airport departure = airportsMap.get(f.getDeparture().getAirportId());
-                Airport arrival = airportsMap.get(f.getArrival().getAirportId());
-
-                f.setDeparture(departure);
-                f.setArrival(arrival);
-            }
+            objectMapper(flights);
             return flights;
         }
 
@@ -74,17 +62,37 @@ import java.util.Map;
             }
         }
 
-        public List<Flight> searchFlights(FlightSearchRequest request) {
+        public FlightSearchResult searchFlights(FlightSearchRequest request) {
             Long departureId = airportsByName.get(request.getDepartureAirport());
             Long arrivalId = airportsByName.get(request.getArrivalAirport());
+            FlightSearchResult result = new FlightSearchResult();
+            List<Flight> outward = new ArrayList<>();
+            List<Flight> arrival = new ArrayList<>();
 
             if(request.getJourneyType().equals("Solo Andata")){
-                return flightDAO.oneWayFlightSearch(departureId, arrivalId, request.getDepartureDate());
+                List<Flight> flights = objectMapper(flightDAO.oneWayFlightSearch(departureId, arrivalId, request.getDepartureDate()));
+                result.setOutwardFlights(flights);
+                return result;
             }
 
-            List<Flight> twoWay = flightDAO.twoWayFlightSearch(departureId, arrivalId, request.getDepartureDate(), request.getReturnDate());
+            List<Flight> twoWay = objectMapper(flightDAO.twoWayFlightSearch(departureId, arrivalId, request.getDepartureDate(), request.getReturnDate()));
+            for(Flight f: twoWay){
+                if(f.getDeparture().getAirportId().equals(departureId) && f.getArrival().getAirportId().equals(arrivalId)
+                        && f.getDepartureDate().equals(request.getDepartureDate()))
+                    outward.add(f);
 
-            for(Flight f: twoWay) {
+                if(f.getDeparture().getAirportId().equals(arrivalId) && f.getArrival().getAirportId().equals(departureId)
+                        && f.getDepartureDate().equals(request.getReturnDate()))
+                    arrival.add(f);
+            }
+
+            result.setOutwardFlights(outward);
+            result.setReturnFlights(arrival);
+            return result;
+        }
+
+        private List<Flight> objectMapper(List<Flight> flights) {
+            for(Flight f: flights) {
                 Aircraft aircraft = aircraftMap.get(f.getAircraft().getAircraftId());
                 f.setAircraft(aircraft);
 
@@ -97,5 +105,6 @@ import java.util.Map;
                 f.setDeparture(departure);
                 f.setArrival(arrival);
             }
+            return flights;
         }
 }

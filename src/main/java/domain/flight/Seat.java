@@ -1,4 +1,4 @@
-package domain.model.flight;
+package domain.flight;
 
 enum SeatType {AISLE, MIDDLE, WINDOW}
 enum SeatClass {ECONOMY, PREMIUM_ECONOMY, BUSINESS, FIRST_CLASS}

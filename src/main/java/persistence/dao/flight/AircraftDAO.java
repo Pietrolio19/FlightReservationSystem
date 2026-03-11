@@ -1,6 +1,6 @@
 package persistence.dao.flight;
 
-import domain.model.flight.Aircraft;
+import domain.flight.Aircraft;
 import persistence.DBManager;
 import persistence.dao.CrudDAO;
 
