@@ -47,8 +47,8 @@ public class UserProfileController {
         Airline airline = new Airline(1L, "WizzAir", "34FF", "34FCF", "Lussemburgo");
         Aircraft aircraft = new Aircraft(1L, "A350", "Airbus", 550);
 
-        Flight flight = new Flight(1L,"AZ123", airport, airport2, LocalDate.now(), LocalDate.now(), Time.valueOf("21:20:00"), Time.valueOf("23:30:00"), 130, airline, aircraft);
-        Flight flight1 = new Flight(2L, "AZ4312", airport1, airport3, LocalDate.now(), LocalDate.now(), Time.valueOf("11:45:00"), Time.valueOf("16:20:00"), 275, airline, aircraft);
+        Flight flight = new Flight(1L,"AZ123", airport, airport2, LocalDate.now(), LocalDate.now(), Time.valueOf("21:20:00"), Time.valueOf("23:30:00"), 130, 12, airline, aircraft);
+        Flight flight1 = new Flight(2L, "AZ4312", airport1, airport3, LocalDate.now(), LocalDate.now(), Time.valueOf("11:45:00"), Time.valueOf("16:20:00"), 275, 15, airline, aircraft);
         Reservation reservation = new Reservation(1L, user, flight);
         Reservation reservation1 = new Reservation(2L, user, flight1);
         loadUserInfo(user);

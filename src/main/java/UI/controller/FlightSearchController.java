@@ -4,20 +4,29 @@ import domain.flight.Airport;
 import domain.flight.Flight;
 import dto.FlightSearchRequest;
 import dto.FlightSearchResult;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import service.FlightService;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FlightSearchController {
@@ -98,10 +107,21 @@ public class FlightSearchController {
         comboBox.getEditor().textProperty().addListener((obs, oldText, newText) -> {
             if (updating.get()) return;
 
+            String text = newText == null ? "" : newText.trim();
+
+            if (text.isEmpty()) {
+                updating.set(true);
+                comboBox.setValue(null);
+                comboBox.getSelectionModel().clearSelection();
+                comboBox.hide();
+                updating.set(false);
+                return;
+            }
+
             String selected = comboBox.getValue();
             if (selected != null && selected.equals(newText)) return;
 
-            List<String> filtered = createAirportsNames(newText);
+            List<String> filtered = createAirportsNames(text);
             comboBox.setItems(FXCollections.observableArrayList(filtered));
 
             if (!filtered.isEmpty() && comboBox.isFocused()) {
@@ -126,24 +146,78 @@ public class FlightSearchController {
 
             private final Label airline = new Label();
             private final Label flightCode = new Label();
-            private final Label departure = new Label();
-            private final Label arrival = new Label();
+
+            //TODO migliorare immagini
+            private final Label departureCity = new Label();
+            private final Label departureIata = new Label();
+            private final Label departureTime = new Label();
+            private final ImageView takeoff = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/UI/images/planeTakeoff.png")).toExternalForm()));
+
+            private final Label arrivalCity = new Label();
+            private final Label arrivalIata = new Label();
+            private final Label arrivalTime = new Label();
+            private final ImageView land = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/UI/images/planeLand.png")).toExternalForm()));
+
             private final Label departureDate = new Label();
+
+            private final Label duration = new Label();
+            private final Region leftDashedLine = new Region();
+            private final Region rightDashedLine = new Region();
+
             private final Label minPrice = new Label();
-            private final Button flightReserve = new Button();
-            private final HBox box = new HBox(150, airline, flightCode, departure, arrival, departureDate, minPrice, flightReserve);
+            private final Button flightReserve = new Button("Prenota");
+
+            private final VBox airlineInfoBox = new VBox(10, airline, flightCode);
+            private final HBox departureInfoBox = new HBox(5, departureCity, departureIata, departureTime, takeoff);
+            private final HBox routeLineBox = new HBox(8, leftDashedLine, duration, rightDashedLine);
+            private final VBox middleInfoBox = new VBox(5, routeLineBox);
+            private final HBox arrivalInfoBox = new HBox(5, land, arrivalCity, arrivalIata, arrivalTime);
+
+            private final HBox box = new HBox(100, airlineInfoBox, departureInfoBox, middleInfoBox, arrivalInfoBox);
+            private final HBox box2 = new HBox(departureDate);
+            private final HBox box3 = new HBox(10, minPrice, flightReserve);
+            private final Region spacer = new Region();
+
+            private final HBox bottomHBox = new HBox(box2, spacer, box3);
+            private final VBox vbox = new VBox(10, box, bottomHBox);
+
             {
                 //Associazione CSS
-                box.getStyleClass().add("flight-row");
-                airline.getStyleClass().add("airline-label");
-                flightCode.getStyleClass().add("flight-code-label");
-                departure.getStyleClass().add("departure-label");
-                arrival.getStyleClass().add("arrival-label");
+                vbox.getStyleClass().add("flight-row");
+                airlineInfoBox.getStyleClass().add("airline-box");
+                departureInfoBox.getStyleClass().add("departure-box");
+                arrivalInfoBox.getStyleClass().add("arrival-box");
+                leftDashedLine.getStyleClass().add("dashed-line");
+                rightDashedLine.getStyleClass().add("dashed-line");
                 departureDate.getStyleClass().add("date-label");
                 minPrice.getStyleClass().add("price-label");
                 flightReserve.getStyleClass().add("primary-button");
 
+                //Posizionamento
                 box.setAlignment(Pos.CENTER);
+                box2.setAlignment(Pos.CENTER_LEFT);
+                box3.setAlignment(Pos.CENTER_RIGHT);
+                bottomHBox.setAlignment(Pos.CENTER_LEFT);
+                airlineInfoBox.setAlignment(Pos.CENTER);
+                departureInfoBox.setAlignment(Pos.CENTER_LEFT);
+                middleInfoBox.setAlignment(Pos.CENTER);
+                arrivalInfoBox.setAlignment(Pos.CENTER_RIGHT);
+                routeLineBox.setAlignment(Pos.CENTER);
+
+                HBox.setHgrow(spacer, Priority.ALWAYS);
+
+                leftDashedLine.setPrefWidth(300);
+                rightDashedLine.setPrefWidth(300);
+
+                leftDashedLine.setMaxWidth(500);
+                rightDashedLine.setMaxWidth(500);
+
+                flightReserve.setOnAction(e -> {
+                    if (getIndex() >= 0 && getIndex() < getTableView().getItems().size()) {
+                        Flight flight = getTableView().getItems().get(getIndex());
+                        System.out.println("Prenotazione volo: " + flight.getFlightCode());
+                    }
+                });
             }
 
             @Override
@@ -152,22 +226,27 @@ public class FlightSearchController {
 
                 if (empty || getIndex() >= getTableView().getItems().size()) {
                     setGraphic(null);
+                    return;
                 }
-                else {
-                    Flight flight = getTableView().getItems().get(getIndex());
 
-                    airline.setText(flight.getAirline().getName());
-                    flightCode.setText(flight.getFlightCode());
-                    departure.setText(flight.getDeparture().getCity());
-                    arrival.setText(flight.getArrival().getCity());
-                    departureDate.setText(flight.getDepartureDate().toString());
-                    minPrice.setText("A partire da 30 euro");
-                    flightReserve.setText("Prenota");
+                Flight flight = getTableView().getItems().get(getIndex());
 
-                    setGraphic(box);
-                }
+                airline.setText(flight.getAirline().getName());
+                flightCode.setText(flight.getFlightCode());
+                departureCity.setText(flight.getDeparture().getCity());
+                departureIata.setText(flight.getDeparture().getIata());
+                departureTime.setText(flight.getDepartureTime().toString());
+                arrivalCity.setText(flight.getArrival().getCity());
+                arrivalIata.setText(flight.getArrival().getIata());
+                arrivalTime.setText(flight.getArrivalTime().toString());
+                departureDate.setText(flight.getDepartureDate().toString());
+                duration.setText(flight.formattedDuration());
+                minPrice.setText(flight.formattedPrice());
+
+                setGraphic(vbox);
             }
         });
+
         actionsColumn.prefWidthProperty().bind(flightsTable.widthProperty().multiply(0.9785));
     }
 

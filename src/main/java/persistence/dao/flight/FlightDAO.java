@@ -244,6 +244,7 @@ public class FlightDAO implements CrudDAO<Flight, Long> {
         flight.setDepartureTime(departureTime);
         flight.setArrivalTime(arrivalTime);
         flight.setDuration(rs.getInt("duration"));
+        flight.setPrice(rs.getFloat("price"));
 
         Airline airline = new Airline();
         airline.setAirlineId(rs.getLong("airline_id"));

@@ -1,6 +1,6 @@
 /* CSS per main-view */
 .main-pane {
-    -fx-background-color: #f4f4f4;
+    -fx-background-color: white;
 }
 
 .top-bar {
@@ -124,6 +124,7 @@
 .primary-button {
     -fx-padding: 10;
     -fx-background-color: #1330c6;
+    -fx-border-color: #1330c6;
     -fx-background-radius: 6;
     -fx-border-radius: 6;
     -fx-border-width: 3;
@@ -134,11 +135,11 @@
 .primary-button:hover {
     -fx-background-color: white;
     -fx-text-fill: #1330c6;
-    -fx-border-color: #1330c6;
 }
 
 .results-table {
     -fx-padding: 20;
+    -fx-border-color: white;
 }
 
 /*tabella dei risultati */
@@ -152,6 +153,13 @@
 .flight-row:hover {
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 15, 0, 0, 4);
     -fx-background-color: white; /* opzionale per far risaltare la shadow */
+}
+
+.dashed-line {
+    -fx-pref-height: 1;
+    -fx-border-color: #9aa0a6 transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+    -fx-border-style: solid;
 }
 
 .table-cell {
