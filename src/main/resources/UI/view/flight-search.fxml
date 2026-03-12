@@ -37,11 +37,11 @@
                                 <HBox spacing="50">
                                     <VBox>
                                         <Label text="Da" styleClass="search-field-label"/>
-                                        <TextField fx:id="departureField" promptText="Aeroporto di Partenza" styleClass="search-field"/> <!-- TODO aggiungere autocompletamento post DB -->
+                                        <ComboBox fx:id="departureField" promptText="Aeroporto di Partenza" styleClass="search-field"/>
                                     </VBox>
                                     <VBox>
                                         <Label text="A" styleClass="search-field-label"/>
-                                        <TextField fx:id="arrivalField" promptText="Aeroporto di Arrivo" styleClass="search-field"/> <!-- TODO aggiungere autocompletamento post DB -->
+                                        <ComboBox fx:id="arrivalField" promptText="Aeroporto di Arrivo" styleClass="search-field"/>
                                     </VBox>
                                 </HBox>
                             </HBox>

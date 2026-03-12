@@ -1,5 +1,6 @@
 package UI.controller;
 
+import domain.flight.Airport;
 import domain.flight.Flight;
 import dto.FlightSearchRequest;
 import dto.FlightSearchResult;
@@ -15,14 +16,16 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FlightSearchController {
     //attributi FXML
     //campi per la ricerca
-    @FXML private TextField departureField;
+    @FXML private ComboBox<String> departureField;
 
-    @FXML private TextField arrivalField;
+    @FXML private ComboBox<String> arrivalField;
 
     @FXML private VBox returnFieldsWrapper;
 
@@ -68,6 +71,8 @@ public class FlightSearchController {
 
         checkDirect.setSelected(false);
 
+        initializeComboBox();
+
         passengerSelector.setOnMouseClicked(e -> openPassengerMenu());
         Adults.addListener((obs, oldV, newV) -> updatePassengerSummary());
         Children.addListener((obs, oldV, newV) -> updatePassengerSummary());
@@ -75,6 +80,45 @@ public class FlightSearchController {
 
         animalSelector.getItems().addAll("Nessuno", "1 Cane", "1 Gatto");
         animalSelector.setValue("Nessuno");
+    }
+
+    private void initializeComboBox() {
+        setupAirportComboBox(departureField);
+        setupAirportComboBox(arrivalField);
+    }
+
+    private void setupAirportComboBox(ComboBox<String> comboBox) {
+        comboBox.setEditable(true);
+        comboBox.setPrefWidth(260);
+        comboBox.setMinWidth(260);
+        comboBox.setMaxWidth(260);
+
+        final AtomicBoolean updating = new AtomicBoolean(false); //semaforo che impedisce a tendina e contenuto della combo di aggiornarsi contemporaneamente
+
+        comboBox.getEditor().textProperty().addListener((obs, oldText, newText) -> {
+            if (updating.get()) return;
+
+            String selected = comboBox.getValue();
+            if (selected != null && selected.equals(newText)) return;
+
+            List<String> filtered = createAirportsNames(newText);
+            comboBox.setItems(FXCollections.observableArrayList(filtered));
+
+            if (!filtered.isEmpty() && comboBox.isFocused()) {
+                comboBox.show();
+            } else {
+                comboBox.hide();
+            }
+        });
+
+        comboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null) {
+                updating.set(true);
+                comboBox.getEditor().setText(newValue);
+                comboBox.hide();
+                updating.set(false);
+            }
+        });
     }
 
     private void createFlightsTable() {
@@ -227,22 +271,31 @@ public class FlightSearchController {
                 passengerSelector.localToScreen(0, passengerSelector.getHeight()).getY());
     }
 
+    private List<String> createAirportsNames(String newText) {
+        List<Airport> filteredAirports = flightService.airportsFilter(newText);
+        List<String> filtered = new ArrayList<>();
+        for(Airport a: filteredAirports)
+            filtered.add(a.getName() + " - " + a.getCity() + " (" + a.getIata() + ")");
+
+        return filtered;
+    }
+
     //funzione che crea la ricerca
     @FXML
     private void onSearchClicked() {
         FlightSearchRequest request = new FlightSearchRequest();
 
-        request.setDepartureAirport(departureField.getText().trim().toLowerCase());
-        request.setArrivalAirport(arrivalField.getText().trim().toLowerCase());
+        request.setDepartureAirport(departureField.getEditor().getText().trim().toLowerCase());
+        request.setArrivalAirport(arrivalField.getEditor().getText().trim().toLowerCase());
         request.setDepartureDate(datePickerDeparture.getValue());
         request.setReturnDate(datePickerReturn.getValue());
         request.setJourneyType(journeyType.getValue());
 
         FlightSearchResult result = flightService.searchFlights(request);
         if(!result.getReturnFlights().isEmpty())
-            updateFlightsTable(result.getReturnFlights());
+            updateFlightsTable(result.getReturnFlights()); //TODO chiamata per la query andata e ritorno, aggiungere logica
         else
-            updateFlightsTable(result.getOutwardFlights());
+            updateFlightsTable(result.getOutwardFlights()); //query per l'andata
     }
 }
 

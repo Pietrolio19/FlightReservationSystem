@@ -11,21 +11,18 @@ import persistence.dao.flight.AircraftDAO;
 import persistence.dao.flight.AirlineDAO;
 import persistence.dao.flight.AirportDAO;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-    public class FlightService {
+public class FlightService {
         //attributi
-        private Map<Long, Airport> airportsMap = new HashMap<>();
-        private Map<Long, Aircraft> aircraftMap = new HashMap<>();
-        private Map<Long, Airline> airlineMap = new HashMap<>();
-        private Map<String, Long> airportsByName = new HashMap<>();
-        private FlightDAO flightDAO = new FlightDAO();
-        private AircraftDAO aircraftDAO = new AircraftDAO();
-        private AirlineDAO airlineDAO = new AirlineDAO();
-        private AirportDAO airportDAO = new AirportDAO();
+        private final Map<Long, Airport> airportsMap = new HashMap<>();
+        private final Map<Long, Aircraft> aircraftMap = new HashMap<>();
+        private final Map<Long, Airline> airlineMap = new HashMap<>();
+        private final Map<String, Long> airportsByName = new HashMap<>(); //utilizzata per mappatura e filtraggio
+        private final FlightDAO flightDAO = new FlightDAO();
+        private final AircraftDAO aircraftDAO = new AircraftDAO();
+        private final AirlineDAO airlineDAO = new AirlineDAO();
+        private final AirportDAO airportDAO = new AirportDAO();
 
         //metodi
         public List<Flight> getFlightList() {
@@ -44,7 +41,10 @@ import java.util.Map;
             List<Airport> airports = airportDAO.findAll();
             for(Airport a: airports) {
                 airportsMap.put(a.getAirportId(), a);
-                airportsByName.put(a.getName().trim().toLowerCase(), a.getAirportId());
+                airportsByName.put(normalize(a.getName()), a.getAirportId());
+                airportsByName.put(normalize(a.getCity() + " (" + a.getIata() + ")"), a.getAirportId());
+                airportsByName.put(normalize(a.getIata()), a.getAirportId());
+                airportsByName.put(normalize(a.getName() + " - " + a.getCity() + " (" + a.getIata() + ")"), a.getAirportId());
             }
         }
 
@@ -91,6 +91,20 @@ import java.util.Map;
             return result;
         }
 
+        public List<Airport> airportsFilter(String input) {
+            List<Airport> filtered = new ArrayList<>();
+            Set<Long> addedIds = new HashSet<>(); //set per evitare i duplicati
+
+            String search = normalize(input);
+
+            for(Map.Entry<String, Long> entry : airportsByName.entrySet()){
+                if(matchesKey(entry.getKey(), search) && addedIds.add(entry.getValue())){
+                    filtered.add(airportsMap.get(entry.getValue()));
+                }
+            }
+            return filtered;
+        }
+
         private List<Flight> objectMapper(List<Flight> flights) {
             for(Flight f: flights) {
                 Aircraft aircraft = aircraftMap.get(f.getAircraft().getAircraftId());
@@ -107,4 +121,18 @@ import java.util.Map;
             }
             return flights;
         }
+
+        private String normalize(String str) {
+            return str  == null ? "" : str.trim().toLowerCase();
+        }
+
+        private boolean matchesKey(String key, String input) {
+            String[] parts = key.split("\\s+");
+            for (String part : parts) {
+                if (part.startsWith(input)) {
+                    return true;
+                }
+            }
+            return false;
+        } //funzione che controlla il match per parole
 }
