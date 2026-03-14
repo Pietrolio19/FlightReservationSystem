@@ -1,5 +1,7 @@
 package UI.controller;
 
+import UI.navigator.Navigator;
+import UI.navigator.NavigatorAware;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +10,7 @@ import javafx.scene.layout.StackPane;
 import java.io.IOException;
 import java.util.Objects;
 
-public class MainController {
+public class MainController implements Navigator {
     //attributi FXML
     @FXML private Button backToMain;
 
@@ -24,15 +26,20 @@ public class MainController {
             loadView("flight-search.fxml");
         });
         userProfileButton.setOnAction(event -> {
-            loadView("user-profile-view.fxml");
+            loadView("login-view.fxml");
         });
     }
 
     //funzione che consente di caricare un'altra view
-    public void loadView(String fxmlName) {
+    @Override
+    public void loadView(String fxmlPath) {
         try {
-            Parent view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/UI/view/" + fxmlName))
-            );
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UI/view/" + fxmlPath));
+            Parent view = loader.load();
+
+            Object controller = loader.getController();
+            if(controller instanceof NavigatorAware aware)
+                aware.setNavigator(this);
             contentArea.getChildren().setAll(view);
         } catch (IOException e) {
             e.printStackTrace();
