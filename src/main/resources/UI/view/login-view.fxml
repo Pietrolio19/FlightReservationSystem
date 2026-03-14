@@ -6,6 +6,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="UI.controller.AuthController"
@@ -13,15 +15,27 @@
             stylesheets="style.css">
 
     <VBox layoutX="600" layoutY="200" spacing="15" styleClass="login-wrapper">
-        <Label text="Log In" styleClass="login-title"/>
+        <HBox>
+            <Label text="Log In" styleClass="login-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <ImageView fitWidth="80"
+                       fitHeight="80"
+                       preserveRatio="true">
+                <image>
+                    <Image url="@../images/loginSignupPlane.png"/>
+                </image>
+            </ImageView>
+        </HBox>
 
         <Label fx:id="errorLabel" textFill="red" visible="false"/>
         <HBox spacing="15">
             <Label text="E-mail" styleClass="login-text"/>
-            <TextField fx:id="emailField" promptText="Inserisci la tua mail" styleClass="login-text-field"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="emailField" promptText="Inserisci la tua email" styleClass="login-text-field"/>
         </HBox>
         <HBox spacing="15">
             <Label text="Password" styleClass="login-text"/>
+            <Region HBox.hgrow="ALWAYS"/>
             <PasswordField fx:id="passwordField" promptText="Inserisci una password" styleClass="login-text-field"/>
         </HBox>
         <HBox>

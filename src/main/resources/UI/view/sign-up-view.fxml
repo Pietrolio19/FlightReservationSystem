@@ -6,37 +6,54 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="UI.controller.AuthController"
             prefHeight="400.0" prefWidth="600.0">
 
-    <VBox layoutX="600" layoutY="200" spacing="15" styleClass="login-wrapper">
-        <Label text="Registrati" styleClass="login-title"/>
+    <VBox layoutX="650" layoutY="150" spacing="15" styleClass="login-wrapper">
+        <HBox>
+            <Label text="Registrati" styleClass="login-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <ImageView fitWidth="80"
+                       fitHeight="80"
+                       preserveRatio="true">
+                <image>
+                    <Image url="@../images/loginSignupPlane.png"/>
+                </image>
+            </ImageView>
+        </HBox>
 
         <Label fx:id="errorLabel" textFill="red" visible="false"/>
         <HBox spacing="15">
             <Label text="Username" styleClass="signup-text"/>
+            <Region HBox.hgrow="ALWAYS"/>
             <TextField fx:id="usernameField" promptText="Inserisci uno username" styleClass="signup-text-field"/>
         </HBox>
 
         <HBox spacing="15">
             <Label text="E-mail" styleClass="signup-text"/>
-            <TextField fx:id="emailField" promptText="Inserisci la tua mail" styleClass="signup-text-field"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="emailField" promptText="Inserisci la tua email" styleClass="signup-text-field"/>
         </HBox>
 
         <HBox spacing="15">
             <Label text="Password" styleClass="signup-text"/>
+            <Region HBox.hgrow="ALWAYS"/>
             <PasswordField fx:id="passwordField" promptText="Inserisci una password" styleClass="signup-text-field"/>
         </HBox>
 
         <HBox spacing="15">
             <Label text="Nome" styleClass="signup-text"/>
+            <Region HBox.hgrow="ALWAYS"/>
             <TextField fx:id="nameField" styleClass="signup-text-field"/>
         </HBox>
 
         <HBox spacing="15">
             <Label text="Cognome" styleClass="signup-text"/>
+            <Region HBox.hgrow="ALWAYS"/>
             <TextField fx:id="surnameField" styleClass="signup-text-field"/>
         </HBox>
         <HBox>
