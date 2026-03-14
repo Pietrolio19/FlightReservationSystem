@@ -40,6 +40,51 @@ public class UserDAO implements CrudDAO<User, Long> {
         return Optional.empty();
     }
 
+    public Optional<User> findByEmail(String email){
+        String sql ="""
+                    SELECT *
+                    FROM Utente
+                    WHERE email=?
+                    """;
+        try(Connection conn = DBManager.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapRow(rs));
+                }
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    public Optional<User> findByUsername(String username) {
+        String sql = """
+                    SELECT *
+                    FROM Utente
+                    WHERE username=?
+                    """;
+        try {
+            Connection conn = DBManager.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            {
+                ps.setString(1, username);
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapRow(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
     @Override
     public List<User> findAll() {
         String sql = """
@@ -232,13 +277,13 @@ public class UserDAO implements CrudDAO<User, Long> {
         user.setProvince(rs.getString("province"));
         user.setCountry(rs.getString("country"));
         user.setCodFisc(rs.getString("cod_fisc"));
-        user.setCodId(rs.getString("codId"));
-        user.setPhoneNumber(rs.getString("phoneNumber"));
+        user.setCodId(rs.getString("cod_id"));
+        user.setPhoneNumber(rs.getString("phone_number"));
         user.setFidelityPoints(rs.getInt("fidelity_points"));
         user.setFidelityStatus(rs.getString("fidelity_status"));
 
         Passenger passenger = new Passenger();
-        passenger.setPassengerId(rs.getLong("passenger_id"));
+        passenger.setPassengerId(rs.getLong("self_passenger_id"));
         user.setSelfPassenger(passenger);
         return user;
     }

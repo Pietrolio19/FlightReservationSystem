@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="UI.controller.AuthController"
+            prefHeight="400.0" prefWidth="600.0"
+            stylesheets="style.css">
+
+    <VBox layoutX="600" layoutY="200" spacing="15" styleClass="login-wrapper">
+        <Label text="Log In" styleClass="login-title"/>
+
+        <Label fx:id="errorLabel" textFill="red" visible="false"/>
+        <HBox spacing="15">
+            <Label text="E-mail" styleClass="login-text"/>
+            <TextField fx:id="emailField" promptText="Inserisci la tua mail" styleClass="login-text-field"/>
+        </HBox>
+        <HBox spacing="15">
+            <Label text="Password" styleClass="login-text"/>
+            <PasswordField fx:id="passwordField" promptText="Inserisci una password" styleClass="login-text-field"/>
+        </HBox>
+        <HBox>
+            <VBox>
+                <Label text="Nuovo utente?" styleClass="login-text-signup"/>
+                <Hyperlink text="Registrati" onAction="#openSignUpPage" styleClass="login-text-signup" alignment="CENTER"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="loginButton" onAction="#handleLoginRequest" styleClass="primary-button-login">Log in</Button>
+        </HBox>
+    </VBox>
+</AnchorPane>

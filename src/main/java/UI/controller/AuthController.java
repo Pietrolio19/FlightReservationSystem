@@ -2,6 +2,8 @@ package UI.controller;
 
 import UI.navigator.Navigator;
 import UI.navigator.NavigatorAware;
+import dto.user.LoginRequest;
+import javafx.scene.control.Label;
 import service.AuthService;
 
 import dto.user.SignUpRequest;
@@ -31,6 +33,9 @@ public class AuthController implements NavigatorAware {
     private TextField surnameField;
 
     @FXML
+    private Label errorLabel;
+
+    @FXML
     private Button loginButton;
 
     @FXML
@@ -57,7 +62,7 @@ public class AuthController implements NavigatorAware {
     }
 
     @FXML
-    private void createSignUpRequest() {
+    private void handleSignUpRequest() {
         SignUpRequest request = new SignUpRequest();
 
         request.setUsername(usernameField.getText());
@@ -66,6 +71,34 @@ public class AuthController implements NavigatorAware {
         request.setName(nameField.getText());
         request.setSurname(surnameField.getText());
 
-        authService.saveUser(request);
+        try{
+            authService.registerUser(request);
+            errorLabel.setText("");
+            errorLabel.setVisible(false);
+            navigator.refreshAuthUI();
+            navigator.loadView("flight-search.fxml");
+        } catch (IllegalArgumentException e){
+            errorLabel.setText(e.getMessage());
+            errorLabel.setVisible(true);
+        }
+    }
+
+    @FXML
+    private void handleLoginRequest() {
+        LoginRequest request = new LoginRequest();
+
+        request.setEmail(emailField.getText().trim());
+        request.setRawPassword(passwordField.getText());
+
+        try{
+            authService.loginUser(request);
+            errorLabel.setText("");
+            errorLabel.setVisible(false);
+            navigator.refreshAuthUI();
+            navigator.loadView("flight-search.fxml");
+        } catch(IllegalArgumentException e) {
+            errorLabel.setText(e.getMessage());
+            errorLabel.setVisible(true);
+        }
     }
 }

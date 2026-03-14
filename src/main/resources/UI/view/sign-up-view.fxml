@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="UI.controller.AuthController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <VBox layoutX="600" layoutY="200" spacing="15" styleClass="login-wrapper">
+        <Label text="Registrati" styleClass="login-title"/>
+
+        <Label fx:id="errorLabel" textFill="red" visible="false"/>
+        <HBox spacing="15">
+            <Label text="Username" styleClass="signup-text"/>
+            <TextField fx:id="usernameField" promptText="Inserisci uno username" styleClass="signup-text-field"/>
+        </HBox>
+
+        <HBox spacing="15">
+            <Label text="E-mail" styleClass="signup-text"/>
+            <TextField fx:id="emailField" promptText="Inserisci la tua mail" styleClass="signup-text-field"/>
+        </HBox>
+
+        <HBox spacing="15">
+            <Label text="Password" styleClass="signup-text"/>
+            <PasswordField fx:id="passwordField" promptText="Inserisci una password" styleClass="signup-text-field"/>
+        </HBox>
+
+        <HBox spacing="15">
+            <Label text="Nome" styleClass="signup-text"/>
+            <TextField fx:id="nameField" styleClass="signup-text-field"/>
+        </HBox>
+
+        <HBox spacing="15">
+            <Label text="Cognome" styleClass="signup-text"/>
+            <TextField fx:id="surnameField" styleClass="signup-text-field"/>
+        </HBox>
+        <HBox>
+            <VBox spacing="2">
+                <Label text="Hai già un account?" styleClass="login-text-signup"/>
+                <Hyperlink text="Log in" onAction="#backToLogin" styleClass="login-text-signup"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="signUpButton" alignment="CENTER_RIGHT" styleClass="primary-button-login" onAction="#handleSignUpRequest">Registrati</Button>
+        </HBox>
+    </VBox>
+</AnchorPane>
