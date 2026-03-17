@@ -1,12 +1,15 @@
 package UI.controller;
 
+import UI.controller.flight.SeatReservationController;
 import UI.navigator.Navigator;
 import UI.navigator.NavigatorAware;
+import domain.flight.Flight;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
+import service.SeatReservationService;
 import util.session.SessionHandler;
 
 import java.io.IOException;
@@ -49,6 +52,30 @@ public class MainController implements Navigator {
     @Override
     public void refreshAuthUI() {
         updateAuthButton();
+    }
+
+    @Override
+    public void loadSeatReservationView(Flight flight) {
+        try{
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UI/view/seat-reservation-view.fxml"));
+            Parent view = loader.load();
+
+            Object controller = loader.getController();
+
+            if(controller instanceof NavigatorAware aware) {
+                aware.setNavigator(this);
+            }
+
+            if(controller instanceof SeatReservationController seatController){
+                seatController.setCurrentFlight(flight);
+            }
+
+            contentArea.getChildren().setAll(view);
+
+        } catch(IOException e){
+            throw new RuntimeException(e);
+        }
     }
 
     private void updateAuthButton() {
