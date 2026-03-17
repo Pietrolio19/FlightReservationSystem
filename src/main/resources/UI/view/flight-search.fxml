@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
 
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 <ScrollPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="UI.controller.FlightSearchController"
+            fx:controller="UI.controller.flight.FlightSearchController"
             prefWidth="1000"
             prefHeight="700"
             fitToWidth="true"

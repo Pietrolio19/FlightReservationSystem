@@ -1,4 +1,4 @@
-package UI.controller;
+package UI.controller.user;
 
 import UI.navigator.Navigator;
 import UI.navigator.NavigatorAware;

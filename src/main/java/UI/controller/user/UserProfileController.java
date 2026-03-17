@@ -1,4 +1,4 @@
-package UI.controller;
+package UI.controller.user;
 
 import domain.flight.Aircraft;
 import domain.flight.Airline;
@@ -118,7 +118,7 @@ public class UserProfileController {
 
         return vbox;
     }
-    //funzioni per creare la parte dei Companions
+    //funzioni per creare la parte Companions
     private void loadCompanions(User user){
         List<Passenger> comp = user.getCompanions();
         companions.getChildren().clear();

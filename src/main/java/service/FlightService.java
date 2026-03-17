@@ -124,7 +124,7 @@ public class FlightService {
 
         private String normalize(String str) {
             return str  == null ? "" : str.trim().toLowerCase();
-        }
+        } //funzione per normalizzare l'input
 
         private boolean matchesKey(String key, String input) {
             String[] parts = key.split("\\s+");

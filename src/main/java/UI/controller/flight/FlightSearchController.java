@@ -1,5 +1,7 @@
-package UI.controller;
+package UI.controller.flight;
 
+import UI.navigator.Navigator;
+import UI.navigator.NavigatorAware;
 import domain.flight.Airport;
 import domain.flight.Flight;
 import dto.flight.FlightSearchRequest;
@@ -22,13 +24,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import service.SeatReservationService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class FlightSearchController {
+public class FlightSearchController implements NavigatorAware {
     //attributi FXML
     //campi per la ricerca
     @FXML private ComboBox<String> departureField;
@@ -63,6 +66,7 @@ public class FlightSearchController {
     private final IntegerProperty Children = new SimpleIntegerProperty(0);
     private final IntegerProperty Newborns = new SimpleIntegerProperty(0);
     private final FlightService flightService = new FlightService();
+    public Navigator navigator;
 
     @FXML
     private void initialize() {
@@ -172,10 +176,11 @@ public class FlightSearchController {
             private final VBox middleInfoBox = new VBox(5, routeLineBox);
             private final HBox arrivalInfoBox = new HBox(5, land, arrivalCity, arrivalIata, arrivalTime);
 
-            private final HBox box = new HBox(100, airlineInfoBox, departureInfoBox, middleInfoBox, arrivalInfoBox);
+            private final HBox box1 = new HBox(10, departureInfoBox, middleInfoBox, arrivalInfoBox);
             private final HBox box2 = new HBox(departureDate);
             private final HBox box3 = new HBox(10, minPrice, flightReserve);
             private final Region spacer = new Region();
+            private final HBox box = new HBox(120, airlineInfoBox, box1);
 
             private final HBox bottomHBox = new HBox(box2, spacer, box3);
             private final VBox vbox = new VBox(10, box, bottomHBox);
@@ -207,16 +212,18 @@ public class FlightSearchController {
 
                 leftDashedLine.setPrefWidth(300);
                 rightDashedLine.setPrefWidth(300);
+                leftDashedLine.setTranslateY(-15);
+                rightDashedLine.setTranslateY(-15);
 
-                leftDashedLine.setMaxWidth(500);
-                rightDashedLine.setMaxWidth(500);
+                leftDashedLine.setMaxWidth(700);
+                rightDashedLine.setMaxWidth(700);
 
-                flightReserve.setOnAction(e -> {
-                    if (getIndex() >= 0 && getIndex() < getTableView().getItems().size()) {
-                        Flight flight = getTableView().getItems().get(getIndex());
-                        System.out.println("Prenotazione volo: " + flight.getFlightCode());
-                    }
-                });
+                    flightReserve.setOnAction(e -> {
+                        if (getIndex() >= 0 && getIndex() < getTableView().getItems().size()) {
+                            Flight currentFlight = getTableView().getItems().get(getIndex());
+                            navigator.loadSeatReservationView(currentFlight);
+                        }
+                    });
             }
 
             @Override
@@ -374,6 +381,11 @@ public class FlightSearchController {
             updateFlightsTable(result.getReturnFlights()); //TODO chiamata per la query andata e ritorno, aggiungere logica
         else
             updateFlightsTable(result.getOutwardFlights()); //query per l'andata
+    }
+
+    @Override
+    public void setNavigator(Navigator navigator) {
+        this.navigator = navigator;
     }
 }
 
