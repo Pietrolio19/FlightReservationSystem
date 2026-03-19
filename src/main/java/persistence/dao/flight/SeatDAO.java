@@ -38,6 +38,29 @@ public class SeatDAO implements CrudDAO<Seat, Long> {
         return Optional.empty();
     }
 
+    public List<Seat> findByFlightId(Long id) {
+        String sql= """
+                    SELECT *
+                    FROM Seat
+                    WHERE flight_id = ?
+                    """;
+        List<Seat> result = new ArrayList<>();
+        try(Connection conn = DBManager.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setLong(1, id);
+            try(ResultSet rs = ps.executeQuery()){
+                while(rs.next())
+                    result.add(mapRow(rs));
+            }
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
     @Override
     public List<Seat> findAll() {
         String sql = """
@@ -146,16 +169,16 @@ public class SeatDAO implements CrudDAO<Seat, Long> {
     private Seat mapRow(ResultSet rs) throws SQLException { //TODO aggiungere service flight
         Seat seat = new Seat();
 
-        seat.setSeatId(rs.getLong("seat_id"));
+        seat.setSeatId(rs.getLong("id"));
 
         Flight flight = new Flight();
         flight.setFlightId(rs.getLong("flight_id"));
         seat.setFlight(flight);
 
-        seat.setRow(rs.getInt("row"));
+        seat.setRow(rs.getInt("seat_row"));
         seat.setLetter(rs.getString("letter"));
-        seat.setType(rs.getString("type"));
-        seat.setSeatClass(rs.getString("class"));
+        seat.setType(rs.getString("type").toUpperCase());
+        seat.setSeatClass(rs.getString("class").toUpperCase());
         seat.setPrice(rs.getInt("price"));
 
         return seat;

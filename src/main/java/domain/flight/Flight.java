@@ -111,8 +111,6 @@ public class Flight {
         this.duration = duration;
     }
 
-    public float getPrice() {return price;}
-
     public void setPrice(float price) {this.price = price;}
 
     public String formattedDuration() {

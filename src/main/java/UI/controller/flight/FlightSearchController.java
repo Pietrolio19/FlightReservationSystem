@@ -26,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import service.SeatReservationService;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -174,7 +175,7 @@ public class FlightSearchController implements NavigatorAware {
             private final HBox departureInfoBox = new HBox(5, departureCity, departureIata, departureTime, takeoff);
             private final HBox routeLineBox = new HBox(8, leftDashedLine, duration, rightDashedLine);
             private final VBox middleInfoBox = new VBox(5, routeLineBox);
-            private final HBox arrivalInfoBox = new HBox(5, land, arrivalCity, arrivalIata, arrivalTime);
+            private final HBox arrivalInfoBox = new HBox(5, land, arrivalTime, arrivalCity, arrivalIata);
 
             private final HBox box1 = new HBox(10, departureInfoBox, middleInfoBox, arrivalInfoBox);
             private final HBox box2 = new HBox(departureDate);
@@ -241,11 +242,11 @@ public class FlightSearchController implements NavigatorAware {
                 flightCode.setText(flight.getFlightCode());
                 departureCity.setText(flight.getDeparture().getCity());
                 departureIata.setText(flight.getDeparture().getIata());
-                departureTime.setText(flight.getDepartureTime().toString());
+                departureTime.setText(flight.getDepartureTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
                 arrivalCity.setText(flight.getArrival().getCity());
                 arrivalIata.setText(flight.getArrival().getIata());
-                arrivalTime.setText(flight.getArrivalTime().toString());
-                departureDate.setText(flight.getDepartureDate().toString());
+                arrivalTime.setText(flight.getArrivalTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+                departureDate.setText(flight.getDepartureDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 duration.setText(flight.formattedDuration());
                 minPrice.setText(flight.formattedPrice());
 

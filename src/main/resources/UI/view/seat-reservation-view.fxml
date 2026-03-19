@@ -11,62 +11,77 @@
             fx:id="contentArea"
             fx:controller="UI.controller.flight.SeatReservationController"
             fitToWidth="true">
-        <content> <!-- TODO sistemare layout -->
-            <VBox HBox.hgrow="ALWAYS" maxWidth="Infinity" fillWidth="true">
-                <HBox maxWidth="Infinity">
-                    <VBox>
-                        <HBox alignment="CENTER">
-                            <VBox fx:id="airlineInfoBox" spacing="10" alignment="CENTER" styleClass="airline-box">
-                                <Label fx:id="airlineLabel"/>
-                                <Label fx:id="flightCodeLabel"/>
-                            </VBox>
 
-                            <HBox fx:id="departureInfoBox" spacing="5" alignment="CENTER_LEFT"
-                                  styleClass="departure-box">
-                                <Label fx:id="departureCityLabel"/>
-                                <Label fx:id="departureIataLabel"/>
-                                <Label fx:id="departureTimeLabel"/>
-                                <ImageView fx:id="takeoffImage" fitWidth="18" fitHeight="18" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../images/planeTakeoff.png"/>
-                                    </image>
-                                </ImageView>
-                            </HBox>
+    <content>
+        <VBox fillWidth="true" maxWidth="Infinity">
+           <HBox fx:id="mainBox">
+               <VBox fx:id="leftBox" styleClass="seat-reservation-left-box">
+                   <Label text="Selezione del Posto" styleClass="seat-reservation-title-text"/>
 
-                            <VBox fx:id="middleInfoBox" spacing="5" alignment="CENTER">
-                                <HBox fx:id="routeLineBox" spacing="8" alignment="CENTER">
-                                    <Region fx:id="leftDashedLine" prefWidth="300" maxWidth="500"
-                                            styleClass="dashed-line"/>
-                                    <Label fx:id="durationLabel"/>
-                                    <Region fx:id="rightDashedLine" prefWidth="300" maxWidth="500"
-                                            styleClass="dashed-line"/>
-                                </HBox>
-                            </VBox>
+                   <!-- CARD -->
+                   <VBox spacing="20" maxWidth="Infinity" fillWidth="true" styleClass="seat-reservation-card-wrapper">
 
-                            <HBox fx:id="arrivalInfoBox" spacing="5" alignment="CENTER_RIGHT" styleClass="arrival-box">
-                                <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../images/planeLand.png"/>
-                                    </image>
-                                </ImageView>
-                                <Label fx:id="arrivalCityLabel"/>
-                                <Label fx:id="arrivalIataLabel"/>
-                                <Label fx:id="arrivalTimeLabel"/>
-                            </HBox>
+                       <HBox alignment="CENTER_LEFT" maxWidth="Infinity" spacing="20">
+                           <VBox fx:id="airlineInfoBox" spacing="10" alignment="CENTER" styleClass="seat-reservation-airline-box">
+                               <Label fx:id="airlineLabel"/>
+                               <Label fx:id="flightCodeLabel"/>
+                           </VBox>
 
-                        </HBox>
+                           <HBox fx:id="departureInfoBox" spacing="5" alignment="CENTER_LEFT">
+                               <Label fx:id="departureCityLabel"/>
+                               <Label fx:id="departureIataLabel"/>
+                               <Label fx:id="departureTimeLabel"/>
+                               <ImageView>
+                                   <image>
+                                       <Image url="@../images/planeTakeoff.png"/>
+                                   </image>
+                               </ImageView>
+                           </HBox>
 
-                        <HBox fx:id="bottomHBox" alignment="CENTER_LEFT">
-                            <HBox fx:id="dateBox" alignment="CENTER_LEFT">
-                                <Label fx:id="departureDateLabel" styleClass="date-label"/>
-                            </HBox>
+                           <VBox fx:id="middleInfoBox" spacing="5" alignment="CENTER" HBox.hgrow="ALWAYS">
+                               <HBox fx:id="routeLineBox" spacing="8" alignment="CENTER">
+                                   <Region fx:id="leftDashedLine" HBox.hgrow="ALWAYS" maxWidth="Infinity" translateY="-20" styleClass="dashed-line"/>
+                                   <Label fx:id="durationLabel"/>
+                                   <Region fx:id="rightDashedLine" HBox.hgrow="ALWAYS" maxWidth="Infinity" translateY="-20" styleClass="dashed-line"/>
+                               </HBox>
+                           </VBox>
 
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Label fx:id="minPriceLabel" styleClass="price-label"/>
-                        </HBox>
+                           <HBox fx:id="arrivalInfoBox" spacing="5" alignment="CENTER_RIGHT">
+                               <ImageView>
+                                   <image>
+                                       <Image url="@../images/planeLand.png"/>
+                                   </image>
+                               </ImageView>
+                               <Label fx:id="arrivalCityLabel"/>
+                               <Label fx:id="arrivalIataLabel"/>
+                               <Label fx:id="arrivalTimeLabel"/>
+                           </HBox>
+                       </HBox>
 
-                    </VBox>
-                </HBox>
-            </VBox>
-        </content>
+                       <HBox fx:id="bottomHBox" alignment="CENTER_LEFT" maxWidth="Infinity">
+                           <HBox fx:id="dateBox" alignment="CENTER_LEFT">
+                               <Label fx:id="departureDateLabel"/>
+                           </HBox>
+
+                           <Region HBox.hgrow="ALWAYS"/>
+                           <Label fx:id="minPriceLabel"/>
+                       </HBox>
+                   </VBox>
+                   <GridPane fx:id="seatsGrid"/>
+               </VBox>
+               <VBox fx:id="rightBox">
+                   <Label text="Riepilogo Posti" styleClass="seat-reservation-title-text"/>
+                   <VBox fx:id="selectedSeatsBox" spacing="5"/>
+                   <HBox fx:id="resumeBox" visible="false" styleClass="seat-reservation-resume-box">
+                       <VBox>
+                           <Label fx:id="totalSeats" styleClass="seat-reservation-resume-text"/>
+                           <Label fx:id="totalPrice" styleClass="seat-reservation-resume-text"/>
+                       </VBox>
+                       <Region HBox.hgrow="ALWAYS"/>
+                       <Button text="Continua" styleClass="primary-button"/>
+                   </HBox>
+               </VBox>
+           </HBox>
+        </VBox>
+    </content>
 </ScrollPane>

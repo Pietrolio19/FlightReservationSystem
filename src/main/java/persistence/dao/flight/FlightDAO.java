@@ -18,10 +18,7 @@ public class FlightDAO implements CrudDAO<Flight, Long> {
     @Override
     public Optional<Flight> findById(Long id) {
         String sql =""" 
-                        SELECT id, flight_code, departure, arrival,
-                               departure_date, arrival_date, departure_time,
-                               arrival_time, duration, flight_duration,
-                               airline_id, aircraft_id
+                        SELECT *
                         From Flight
                         WHERE id = ?
                         """;

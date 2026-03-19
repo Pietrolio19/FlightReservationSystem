@@ -95,7 +95,13 @@ public class Seat {
         return price;
     }
 
+    public String getFormattedPrice() {return price + "€";}
+
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public String getSeatCode() {
+        return row + letter;
     }
 }

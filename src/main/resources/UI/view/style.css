@@ -273,3 +273,38 @@
     -fx-font-size: 48;
     -fx-font-weight: bold;
 }
+
+.seat-reservation-card-wrapper {
+    -fx-font-size: 32;
+    -fx-padding: 5;
+}
+
+.seat-reservation-left-box {
+    -fx-border-color: #1E88E5;
+    -fx-border-width: 0 2 0 0;
+    -fx-border-style: solid;
+}
+
+.seat-reservation-airline-box {
+    -fx-font-size: 26;
+}
+
+.seat-reservation-resume-text {
+    -fx-font-size: 24;
+}
+
+.seat-reservation-resume-wrapper {
+    -fx-padding: 5;
+}
+
+.seat-reservation-resume-type {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+}
+
+.seat-reservation-resume-box {
+    -fx-padding: 5;
+    -fx-border-color: #1E88E5;
+    -fx-border-width: 2 0 0 0;
+    -fx-border-style: solid;
+}
