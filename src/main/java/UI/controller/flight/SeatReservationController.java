@@ -116,7 +116,7 @@ public class SeatReservationController {
         List<Seat> seats = seatReservationService.getSeatsList(currentFlight.getFlightId());
         for(Seat s: seats) {
             int column = getSeatColumn(s);
-            seatsGrid.add(createToggleButton(s), s.getRow(), column);
+            seatsGrid.add(createToggleButton(s), column, s.getRow());
         }
     }
 

@@ -195,7 +195,7 @@ public class FlightSearchController implements NavigatorAware {
                 leftDashedLine.getStyleClass().add("dashed-line");
                 rightDashedLine.getStyleClass().add("dashed-line");
                 departureDate.getStyleClass().add("date-label");
-                minPrice.getStyleClass().add("price-label");
+                minPrice.getStyleClass().add("price-label"); //TODO modificare il prezzo con il prezzo minimo tra quello dei posti, rimuovere campo prezzo dal DB
                 flightReserve.getStyleClass().add("primary-button");
 
                 //Posizionamento
