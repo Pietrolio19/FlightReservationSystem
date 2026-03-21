@@ -4,7 +4,7 @@ import domain.user.User;
 import domain.flight.Flight;
 import java.time.LocalDateTime;
 
-enum ReservationState {PENDING, CONFIRMED, CANCELED, EXPIRED}
+enum ReservationState {PENDING, CONFIRMED, CANCELED}
 
 public class Reservation {
     //attributi
@@ -71,13 +71,6 @@ public class Reservation {
         } else {
             this.state = ReservationState.valueOf(state);
         }
-    }
-
-    public void setExpired() {
-        if(this.state != ReservationState.PENDING) {
-            throw  new IllegalStateException("Solo le prenotaizoni pending possono essere modificate");
-        }
-        this.state = ReservationState.EXPIRED;
     }
 
     public void confirm() {

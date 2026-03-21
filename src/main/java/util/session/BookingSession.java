@@ -2,6 +2,7 @@ package util.session;
 
 import domain.flight.Flight;
 import domain.flight.Seat;
+import domain.reservation.SeatReservation;
 import domain.user.Passenger;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public class BookingSession {
     private Flight selectedFlight;
     private List<Seat> selectedSeats = new ArrayList<>();
     private List<Passenger> passengers = new ArrayList<>();
+    private List<SeatReservation> seatReservations = new ArrayList<>();
 
     public static BookingSession getInstance() {
         if(instance == null)
@@ -65,6 +67,26 @@ public class BookingSession {
 
     public void clearPassengers() {
         this.passengers.clear();
+    }
+
+    public List<SeatReservation> getSeatReservations() {
+        return seatReservations;
+    }
+
+    public void setSeatReservations(List<SeatReservation> seatReservations) {
+        this.seatReservations = seatReservations;
+    }
+
+    public void addSeatReservation(SeatReservation reservation){
+        this.seatReservations.add(reservation);
+    }
+
+    public void removeSeatReservation(SeatReservation reservation) {
+        this.seatReservations.remove(reservation);
+    }
+
+    public void clearSeatReservations() {
+        this.seatReservations.clear();
     }
 
     public void clear() {

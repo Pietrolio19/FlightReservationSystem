@@ -82,13 +82,6 @@ public class SeatReservation {
         }
     }
 
-    public void setExpired() {
-        if(this.state != ReservationState.PENDING) {
-            throw  new IllegalStateException("Solo le prenotaizoni pending possono essere modificate");
-        }
-        this.state = ReservationState.EXPIRED;
-    }
-
     public void confirm() {
         if(this.state != ReservationState.PENDING) {
             throw new IllegalStateException("Solo le prenotaizoni pending possono essere modificate");
