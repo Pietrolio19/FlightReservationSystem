@@ -53,7 +53,7 @@ CREATE TABLE Passenger(
 	cod_fisc VARCHAR(50) UNIQUE,
 	cod_ID VARCHAR(50) UNIQUE,
 	phone_number VARCHAR(50),
-	companion_owner BIGINT NOT NULL REFERENCES Utente(id) 
+	companion_owner BIGINT REFERENCES Utente(id)
 		ON DELETE CASCADE 
 		ON UPDATE CASCADE
 );

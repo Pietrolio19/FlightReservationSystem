@@ -66,6 +66,8 @@
             <VBox fx:id="passengerCardsArea">
 
             </VBox>
+            <Button fx:id="confimButton" styleClass="primary-button"/>
+            <Label fx:id="confirmLabel"/>
         </VBox>
     </content>
 

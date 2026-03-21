@@ -1,21 +1,30 @@
 package UI.controller.flight;
 
+import UI.navigator.Navigator;
+import UI.navigator.NavigatorAware;
 import domain.flight.Seat;
+import domain.reservation.Reservation;
 import domain.reservation.SeatReservation;
 import domain.user.Passenger;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
+import service.BookingService;
 import util.session.BookingSession;
+import util.session.SessionHandler;
 
 import java.time.format.DateTimeFormatter;
 
-public class ConfirmationController {
+public class ConfirmationController implements NavigatorAware {
     //attributi
     private final BookingSession session = BookingSession.getInstance();
+    private final BookingService bookingService = new BookingService();
+    private Navigator navigator;
 
     @FXML
     private VBox passengerCardsArea;
@@ -51,9 +60,16 @@ public class ConfirmationController {
     private Label departureDateLabel;
 
     @FXML
+    private Button confirmButton;
+
+    @FXML
+    private Label confirmLabel;
+
+    @FXML
     private void initialize() {
         setFlightData();
         createPassengerCardList();
+        confirmButton.setOnAction(e -> completeBooking());
     }
 
     private void setFlightData() {
@@ -153,5 +169,25 @@ public class ConfirmationController {
         card.getStyleClass().add("passenger-card-wrapper");
 
         return card;
+    }
+
+    private void completeBooking() {
+        try {
+            bookingService.saveBookingData();
+            confirmLabel.setText("Prenotazione completata, verrai riindirizzato alla finestra principale");
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(3)); //simulazione attesa nel salvataggio sul DB
+            pause.setOnFinished(e -> navigator.loadView("flight-search.fxml"));
+            pause.play();
+
+        } catch (Exception e) {
+            confirmLabel.setText("Errore durante il salvataggio della prenotazione");
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setNavigator(Navigator navigator) {
+        this.navigator = navigator;
     }
 }

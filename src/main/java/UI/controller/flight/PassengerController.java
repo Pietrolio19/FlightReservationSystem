@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import service.BookingService;
 import util.session.BookingSession;
@@ -162,7 +161,7 @@ public class PassengerController implements NavigatorAware {
 
             passengersBySeatCode.put(seatCode, passenger);
         }
-        bookingService.savePassengers(passengersBySeatCode);
+        bookingService.saveSessionPassengers(passengersBySeatCode);
     }
 
 
