@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="UI.controller.flight.ConfirmationController"
+            prefHeight="400.0" prefWidth="600.0"
+            fitToWidth="true">
+    <content>
+        <VBox>
+            <Label text="Conferma dei Dati" styleClass="seat-reservation-title-text"/>
+
+            <!-- CARD -->
+            <VBox spacing="20" maxWidth="Infinity" fillWidth="true" styleClass="seat-reservation-card-wrapper">
+
+                <HBox alignment="CENTER_LEFT" maxWidth="Infinity" spacing="20">
+                    <VBox spacing="10" alignment="CENTER" styleClass="seat-reservation-airline-box">
+                        <Label fx:id="airlineLabel"/>
+                        <Label fx:id="flightCodeLabel"/>
+                    </VBox>
+
+                    <HBox spacing="5" alignment="CENTER_LEFT">
+                        <Label fx:id="departureCityLabel"/>
+                        <Label fx:id="departureIataLabel"/>
+                        <Label fx:id="departureTimeLabel"/>
+                        <ImageView>
+                            <image>
+                                <Image url="@../images/planeTakeoff.png"/>
+                            </image>
+                        </ImageView>
+                    </HBox>
+
+                    <VBox spacing="5" alignment="CENTER" HBox.hgrow="ALWAYS">
+                        <HBox spacing="8" alignment="CENTER">
+                            <Region fx:id="leftDashedLine" HBox.hgrow="ALWAYS" maxWidth="Infinity" translateY="-20" styleClass="dashed-line"/>
+                            <Label fx:id="durationLabel"/>
+                            <Region fx:id="rightDashedLine" HBox.hgrow="ALWAYS" maxWidth="Infinity" translateY="-20" styleClass="dashed-line"/>
+                        </HBox>
+                    </VBox>
+
+                    <HBox spacing="5" alignment="CENTER_RIGHT">
+                        <ImageView>
+                            <image>
+                                <Image url="@../images/planeLand.png"/>
+                            </image>
+                        </ImageView>
+                        <Label fx:id="arrivalCityLabel"/>
+                        <Label fx:id="arrivalIataLabel"/>
+                        <Label fx:id="arrivalTimeLabel"/>
+                    </HBox>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" maxWidth="Infinity">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label fx:id="departureDateLabel"/>
+                    </HBox>
+                </HBox>
+            </VBox>
+            <VBox fx:id="passengerCardsArea">
+
+            </VBox>
+        </VBox>
+    </content>
+
+</ScrollPane>
