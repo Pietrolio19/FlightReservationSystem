@@ -82,6 +82,7 @@
     -fx-faint-focus-color: transparent;
     -fx-font-size: 16;
     -fx-text-fill: black;
+    -fx-padding: 0;
 }
 
 .search-field-label {
@@ -307,4 +308,21 @@
     -fx-border-color: #1E88E5;
     -fx-border-width: 2 0 0 0;
     -fx-border-style: solid;
+}
+
+/* Passenger */
+.passenger-card-text {
+    -fx-font-size: 26;
+    -fx-padding: 0;
+}
+
+.passenger-card-field {
+    -fx-font-size: 26;
+    -fx-padding: 0;
+}
+
+.passenger-card-wrapper {
+    -fx-padding: 20;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: #1E88E5;
 }

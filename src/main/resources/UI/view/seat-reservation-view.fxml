@@ -62,9 +62,6 @@
                            <HBox fx:id="dateBox" alignment="CENTER_LEFT">
                                <Label fx:id="departureDateLabel"/>
                            </HBox>
-
-                           <Region HBox.hgrow="ALWAYS"/>
-                           <Label fx:id="minPriceLabel"/>
                        </HBox>
                    </VBox>
                    <GridPane fx:id="seatsGrid"/>
@@ -78,7 +75,7 @@
                            <Label fx:id="totalPrice" styleClass="seat-reservation-resume-text"/>
                        </VBox>
                        <Region HBox.hgrow="ALWAYS"/>
-                       <Button text="Continua" styleClass="primary-button"/>
+                       <Button fx:id="continueButton" text="Continua" styleClass="primary-button"/>
                    </HBox>
                </VBox>
            </HBox>

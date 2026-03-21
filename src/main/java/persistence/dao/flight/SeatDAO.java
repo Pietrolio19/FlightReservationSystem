@@ -166,7 +166,7 @@ public class SeatDAO implements CrudDAO<Seat, Long> {
 
     }
 
-    private Seat mapRow(ResultSet rs) throws SQLException { //TODO aggiungere service flight
+    private Seat mapRow(ResultSet rs) throws SQLException {
         Seat seat = new Seat();
 
         seat.setSeatId(rs.getLong("id"));

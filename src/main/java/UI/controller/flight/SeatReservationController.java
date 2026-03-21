@@ -1,5 +1,7 @@
 package UI.controller.flight;
 
+import UI.navigator.Navigator;
+import UI.navigator.NavigatorAware;
 import domain.flight.Flight;
 import domain.flight.Seat;
 import javafx.fxml.FXML;
@@ -10,17 +12,16 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 import service.SeatReservationService;
+import util.session.BookingSession;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class SeatReservationController {
+public class SeatReservationController implements NavigatorAware {
     //attributi
     private final SeatReservationService seatReservationService = new SeatReservationService();
-    private Flight currentFlight;
-    private List<Seat> selectedSeats = new ArrayList<>();
+    private Navigator navigator;
 
     @FXML
     public ScrollPane contentArea;
@@ -65,9 +66,6 @@ public class SeatReservationController {
     private Label durationLabel;
 
     @FXML
-    private Label minPriceLabel;
-
-    @FXML
     private GridPane seatsGrid;
 
     @FXML
@@ -83,22 +81,19 @@ public class SeatReservationController {
     private HBox resumeBox;
 
     @FXML
+    private Button continueButton;
+
+    @FXML
     private void initialize() {
-        leftBox.prefWidthProperty().bind(mainBox.widthProperty().multiply(0.8));
-        rightBox.prefWidthProperty().bind(mainBox.widthProperty().multiply(0.2));
-    }
-
-    public Flight getCurrentFlight() {
-        return currentFlight;
-    }
-
-    public void setCurrentFlight(Flight currentFlight) {
-        this.currentFlight = currentFlight;
         createFlightCard();
         createSeatsGrid();
+        leftBox.prefWidthProperty().bind(mainBox.widthProperty().multiply(0.8));
+        rightBox.prefWidthProperty().bind(mainBox.widthProperty().multiply(0.2));
+        continueButton.setOnAction(e -> continueToPassengerView());
     }
 
     private void createFlightCard() {
+        Flight currentFlight = BookingSession.getInstance().getSelectedFlight();
         airlineLabel.setText(currentFlight.getAirline().getName());
         flightCodeLabel.setText(currentFlight.getFlightCode());
         departureCityLabel.setText(currentFlight.getDeparture().getCity());
@@ -109,11 +104,10 @@ public class SeatReservationController {
         arrivalTimeLabel.setText(currentFlight.getArrivalTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
         departureDateLabel.setText(currentFlight.getDepartureDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         durationLabel.setText(currentFlight.formattedDuration());
-        minPriceLabel.setText(currentFlight.formattedPrice());
     }
 
     private void createSeatsGrid() {
-        List<Seat> seats = seatReservationService.getSeatsList(currentFlight.getFlightId());
+        List<Seat> seats = seatReservationService.getSeatsList(BookingSession.getInstance().getSelectedFlight().getFlightId());
         for(Seat s: seats) {
             int column = getSeatColumn(s);
             seatsGrid.add(createToggleButton(s), column, s.getRow());
@@ -133,7 +127,8 @@ public class SeatReservationController {
     }
 
     private ToggleButton createToggleButton(Seat seat) {
-        ToggleButton button = new ToggleButton(seat.getSeatCode());
+        ToggleButton button = new ToggleButton();
+        button.setText(seat.getSeatCode() + "\n" + seat.getFormattedPrice());
         //TODO applicare styleClass
 
         button.setOnAction(e -> handleSeatSelection(seat, button));
@@ -143,9 +138,9 @@ public class SeatReservationController {
 
     private void handleSeatSelection(Seat seat, ToggleButton button) {
         if(button.isSelected())
-            selectedSeats.add(seat);
+            BookingSession.getInstance().addSeat(seat);
         else
-            selectedSeats.remove(seat);
+            BookingSession.getInstance().removeSeat(seat);
         refreshSelectedSeatsBox();
     }
 
@@ -153,19 +148,19 @@ public class SeatReservationController {
         selectedSeatsBox.getChildren().clear();
         int totalPrice = 0;
 
-        for(Seat s: selectedSeats) {
+        for(Seat s: BookingSession.getInstance().getSelectedSeats()) {
             selectedSeatsBox.getChildren().add(createSelectedSeatEntry(s));
             totalPrice += s.getPrice();
         }
 
         resumeBox.setVisible(true);
         resumeBox.setManaged(true);
-        if(selectedSeats.isEmpty()) {
+        if(BookingSession.getInstance().getSelectedSeats().isEmpty()) {
             resumeBox.setVisible(false);
             resumeBox.setManaged(false);
         }
 
-        int totalSeats = selectedSeats.size();
+        int totalSeats = BookingSession.getInstance().getSelectedSeats().size();
         this.totalSeats.setText("Totale Posti: " + totalSeats);
         this.totalPrice.setText("Totale: " + totalPrice + "€");
     }
@@ -188,5 +183,14 @@ public class SeatReservationController {
         seatLabel.getStyleClass().add("seat-reservation-resume-text");
 
         return entry;
+    }
+
+    private void continueToPassengerView() {
+        navigator.loadView("passenger-view.fxml");
+    }
+
+    @Override
+    public void setNavigator(Navigator navigator) {
+        this.navigator = navigator;
     }
 }
