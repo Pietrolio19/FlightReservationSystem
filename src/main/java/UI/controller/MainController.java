@@ -54,30 +54,6 @@ public class MainController implements Navigator {
         updateAuthButton();
     }
 
-    @Override
-    public void loadSeatReservationView(Flight flight) {
-        try{
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UI/view/seat-reservation-view.fxml"));
-            Parent view = loader.load();
-
-            Object controller = loader.getController();
-
-            if(controller instanceof NavigatorAware aware) {
-                aware.setNavigator(this);
-            }
-
-            if(controller instanceof SeatReservationController seatController){
-                seatController.setCurrentFlight(flight);
-            }
-
-            contentArea.getChildren().setAll(view);
-
-        } catch(IOException e){
-            throw new RuntimeException(e);
-        }
-    }
-
     private void updateAuthButton() {
         if(SessionHandler.getInstance().isLoggedIn()) {
             userProfileButton.setText("Profilo");

@@ -25,6 +25,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import service.SeatReservationService;
+import util.session.BookingSession;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -195,7 +196,7 @@ public class FlightSearchController implements NavigatorAware {
                 leftDashedLine.getStyleClass().add("dashed-line");
                 rightDashedLine.getStyleClass().add("dashed-line");
                 departureDate.getStyleClass().add("date-label");
-                minPrice.getStyleClass().add("price-label"); //TODO modificare il prezzo con il prezzo minimo tra quello dei posti, rimuovere campo prezzo dal DB
+                minPrice.getStyleClass().add("price-label");
                 flightReserve.getStyleClass().add("primary-button");
 
                 //Posizionamento
@@ -222,7 +223,8 @@ public class FlightSearchController implements NavigatorAware {
                     flightReserve.setOnAction(e -> {
                         if (getIndex() >= 0 && getIndex() < getTableView().getItems().size()) {
                             Flight currentFlight = getTableView().getItems().get(getIndex());
-                            navigator.loadSeatReservationView(currentFlight);
+                            BookingSession.getInstance().setSelectedFlight(currentFlight);
+                            navigator.loadView("seat-reservation-view.fxml");
                         }
                     });
             }
@@ -248,7 +250,7 @@ public class FlightSearchController implements NavigatorAware {
                 arrivalTime.setText(flight.getArrivalTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
                 departureDate.setText(flight.getDepartureDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 duration.setText(flight.formattedDuration());
-                minPrice.setText(flight.formattedPrice());
+                minPrice.setText("A partire da " + flightService.getMinPriceAvailable(flight.getFlightId()) + "€");
 
                 setGraphic(vbox);
             }

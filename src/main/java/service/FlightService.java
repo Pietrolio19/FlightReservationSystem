@@ -37,6 +37,11 @@ public class FlightService {
             return flights;
         }
 
+        public int getMinPriceAvailable(Long flight_id){
+            Optional<Integer> tmpValue = flightDAO.findMinPriceAvailable(flight_id);
+            return tmpValue.orElseThrow(() -> new IllegalArgumentException("Volo non trovato"));
+        }
+
         private void createAirportsMap() {
             List<Airport> airports = airportDAO.findAll();
             for(Airport a: airports) {
