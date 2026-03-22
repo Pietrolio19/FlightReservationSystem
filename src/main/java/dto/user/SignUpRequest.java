@@ -5,8 +5,6 @@ public class SignUpRequest { //classe per registrazione parziale nella schermata
     private String username;
     private String email;
     private String rawPassword;
-    private String name;
-    private String surname;
 
     public String getUsername() {
         return username;
@@ -30,21 +28,5 @@ public class SignUpRequest { //classe per registrazione parziale nella schermata
 
     public void setRawPassword(String rawPassword) {
         this.rawPassword = rawPassword;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 }

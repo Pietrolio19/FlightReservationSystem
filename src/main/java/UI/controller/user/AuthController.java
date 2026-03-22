@@ -68,8 +68,6 @@ public class AuthController implements NavigatorAware {
         request.setUsername(usernameField.getText());
         request.setEmail(emailField.getText());
         request.setRawPassword(passwordField.getText());
-        request.setName(nameField.getText());
-        request.setSurname(surnameField.getText());
 
         try{
             authService.registerUser(request);

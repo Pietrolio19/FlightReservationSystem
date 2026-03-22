@@ -41,17 +41,6 @@
             <PasswordField fx:id="passwordField" promptText="Inserisci una password" styleClass="signup-text-field"/>
         </HBox>
 
-        <HBox spacing="15">
-            <Label text="Nome" styleClass="signup-text"/>
-            <Region HBox.hgrow="ALWAYS"/>
-            <TextField fx:id="nameField" styleClass="signup-text-field"/>
-        </HBox>
-
-        <HBox spacing="15">
-            <Label text="Cognome" styleClass="signup-text"/>
-            <Region HBox.hgrow="ALWAYS"/>
-            <TextField fx:id="surnameField" styleClass="signup-text-field"/>
-        </HBox>
         <HBox>
             <VBox spacing="2">
                 <Label text="Hai già un account?" styleClass="login-text-signup"/>

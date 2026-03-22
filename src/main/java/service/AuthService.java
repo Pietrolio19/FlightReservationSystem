@@ -21,10 +21,7 @@ public class AuthService {
         String hashedPassword = PasswordHasher.hash(request.getRawPassword());
         user.setHashPassword(hashedPassword);
 
-        user.setName(request.getName());
-        user.setSurname(request.getSurname());
-
-        userDAO.insertBasicUser(user);
+        userDAO.insert(user);
         SessionHandler.getInstance().login(user);
     }
 
@@ -68,14 +65,6 @@ public class AuthService {
 
         if (request.getRawPassword() == null || request.getRawPassword().length() < 8) {
             throw new IllegalArgumentException("La password deve contenere almeno 8 caratteri");
-        }
-
-        if (request.getName() == null || request.getName().isBlank()) {
-            throw new IllegalArgumentException("Nome obbligatorio");
-        }
-
-        if (request.getSurname() == null || request.getSurname().isBlank()) {
-            throw new IllegalArgumentException("Cognome obbligatorio");
         }
 
         if (userDAO.findByUsername(request.getUsername()).isPresent()) {

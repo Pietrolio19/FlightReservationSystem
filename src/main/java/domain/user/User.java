@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 enum FidelityStatus {BRONZE, SILVER, GOLD, PLATINUM}
 
-public class User extends Person {
+public class User {
     //attributi
     private Long userId;
     private String username;
@@ -19,13 +19,7 @@ public class User extends Person {
     //costruttori
     public User(){}
 
-    public User(String name, String surname, LocalDate dateOfBirth, String address, String city, String province,
-                String country, String codFisc, String codId, String phoneNumber, Long userId, String username,
-                String email, String hashPassword) {
-
-        super(name, surname, dateOfBirth,  address,
-              city, province, country, codFisc, codId,
-              phoneNumber);
+    public User(Long userId, String username, String email, String hashPassword) {
         this.userId = userId;
         this.username = username;
         this.email = email;

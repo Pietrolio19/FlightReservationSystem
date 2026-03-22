@@ -15,12 +15,7 @@ public class UserDAO implements CrudDAO<User, Long> {
     @Override
     public Optional<User> findById(Long id) {
         String sql = """
-                        SELECT id, username, email,
-                            hashed_password, name, surname,
-                            date_of_birth, address, city, province,
-                            country,  cod_fisc, codId, phoneNumber,
-                            fidelity_points, fidelity_status,
-                            self_passenger_id
+                        SELECT *
                         FROM Utente
                         WHERE id = ?
                     """;
@@ -135,14 +130,11 @@ public class UserDAO implements CrudDAO<User, Long> {
     public void insert(User user) {
         String sql = """
             INSERT INTO Utente(
-                username, email,
-                hashed_password, name, surname,
-                date_of_birth, address, city, province,
-                country, cod_fisc, codId, phoneNumber,
+                username, email, hashed_password,
                 fidelity_points, fidelity_status,
                 self_passenger_id
             )
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES(?, ?, ?, ?, ?, ?)
             """;
 
         try (Connection conn = DBManager.getInstance().getConnection();
@@ -151,26 +143,12 @@ public class UserDAO implements CrudDAO<User, Long> {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getHashPassword());
-            ps.setString(4, user.getName());
-            ps.setString(5, user.getSurname());
-            if (user.getDateOfBirth() != null) { //null-safe
-                ps.setDate(6, Date.valueOf(user.getDateOfBirth()));
-            } else {
-                ps.setNull(6, Types.DATE);
-            }
-            ps.setString(7, user.getAddress());
-            ps.setString(8, user.getCity());
-            ps.setString(9, user.getProvince());
-            ps.setString(10, user.getCountry());
-            ps.setString(11, user.getCodFisc());
-            ps.setString(12, user.getCodId());
-            ps.setString(13, user.getPhoneNumber());
-            ps.setLong(14, user.getFidelityPoints());
-            ps.setString(15, user.getFidelityStatus());
+            ps.setLong(4, user.getFidelityPoints());
+            ps.setString(5, user.getFidelityStatus());
             if (user.getSelfPassenger() != null && user.getSelfPassenger().getPassengerId() != null) {
-                ps.setLong(16, user.getSelfPassenger().getPassengerId());
+                ps.setLong(6, user.getSelfPassenger().getPassengerId());
             } else {
-                ps.setNull(16, Types.BIGINT);
+                ps.setNull(6, Types.BIGINT);
             }
 
             ps.executeUpdate();
@@ -186,41 +164,11 @@ public class UserDAO implements CrudDAO<User, Long> {
         }
     }
 
-    public void insertBasicUser(User user) {
-        String sql= """
-                    INSERT INTO Utente(
-                    username, email, hashed_password, name, surname
-                    )
-                    VALUES(?,?,?,?,?)
-                    """;
-        try(Connection conn = DBManager.getInstance().getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getEmail());
-            ps.setString(3, user.getHashPassword());
-            ps.setString(4, user.getName());
-            ps.setString(5, user.getSurname());
-
-            ps.executeUpdate();
-
-            try (ResultSet keys = ps.getGeneratedKeys()) {
-                if (keys.next()) {
-                    user.setUserId(keys.getLong(1));
-                }
-            }
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void update(User user) {
         String sql = """
                         UPDATE Utente
                         SET username = ?, email = ?, hashed_password = ?,
-                        name = ?, surname = ?, date_of_birth = ?, address = ?,
-                        city = ?, province = ?, country = ?,
-                        cod_fisc = ?, codId = ?, phoneNumber = ?,
                         fidelity_points = ?, fidelity_status = ?,
                         self_passenger_id = ?
                         WHERE id = ?
@@ -232,28 +180,14 @@ public class UserDAO implements CrudDAO<User, Long> {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getHashPassword());
-            ps.setString(4, user.getName());
-            ps.setString(5, user.getSurname());
-            if (user.getDateOfBirth() != null) { //null-safe
-                ps.setDate(6, Date.valueOf(user.getDateOfBirth()));
-            } else {
-                ps.setNull(6, Types.DATE);
-            }
-            ps.setString(7, user.getAddress());
-            ps.setString(8, user.getCity());
-            ps.setString(9, user.getProvince());
-            ps.setString(10, user.getCountry());
-            ps.setString(11, user.getCodFisc());
-            ps.setString(12, user.getCodId());
-            ps.setString(13, user.getPhoneNumber());
-            ps.setLong(14, user.getFidelityPoints());
-            ps.setString(15, user.getFidelityStatus());
+            ps.setLong(4, user.getFidelityPoints());
+            ps.setString(5, user.getFidelityStatus());
             if (user.getSelfPassenger() != null && user.getSelfPassenger().getPassengerId() != null) { //null-safe
-                ps.setLong(16, user.getSelfPassenger().getPassengerId());
+                ps.setLong(6, user.getSelfPassenger().getPassengerId());
             } else {
-                ps.setNull(16, Types.BIGINT);
+                ps.setNull(6, Types.BIGINT);
             }
-            ps.setLong(17, user.getUserId());
+            ps.setLong(7, user.getUserId());
 
             ps.executeUpdate();
         } catch(SQLException e){
@@ -268,17 +202,6 @@ public class UserDAO implements CrudDAO<User, Long> {
         user.setUsername(rs.getString("username"));
         user.setEmail(rs.getString("email"));
         user.setHashPassword(rs.getString("hashed_password"));
-        user.setName(rs.getString("name"));
-        user.setSurname(rs.getString("surname"));
-        Date dateOFBirth = rs.getDate("date_of_birth");
-        if(dateOFBirth != null) {user.setDateOfBirth(dateOFBirth.toLocalDate());}
-        user.setAddress(rs.getString("address"));
-        user.setCity(rs.getString("city"));
-        user.setProvince(rs.getString("province"));
-        user.setCountry(rs.getString("country"));
-        user.setCodFisc(rs.getString("cod_fisc"));
-        user.setCodId(rs.getString("cod_id"));
-        user.setPhoneNumber(rs.getString("phone_number"));
         user.setFidelityPoints(rs.getInt("fidelity_points"));
         user.setFidelityStatus(rs.getString("fidelity_status"));
 
