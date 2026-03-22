@@ -29,6 +29,7 @@ public class MainController implements Navigator {
         loadView("flight-search.fxml");
         backToMain.setOnAction(event -> {
             loadView("flight-search.fxml");
+
         });
         updateAuthButton();
     }

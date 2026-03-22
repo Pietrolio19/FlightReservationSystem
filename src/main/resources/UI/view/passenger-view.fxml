@@ -15,7 +15,11 @@
             <VBox fx:id="passengerCardsArea">
 
             </VBox>
-            <Button fx:id="continueButton" text="Conferma" styleClass="primary-button"/>
+            <HBox>
+                <Button fx:id="backToSeatReservation" text="Indietro"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="continueButton" text="Conferma" styleClass="primary-button"/>
+            </HBox>
         </VBox>
     </content>
 

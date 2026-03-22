@@ -66,10 +66,14 @@ public class ConfirmationController implements NavigatorAware {
     private Label confirmLabel;
 
     @FXML
+    private Button backToPassenger;
+
+    @FXML
     private void initialize() {
         setFlightData();
         createPassengerCardList();
         confirmButton.setOnAction(e -> completeBooking());
+        backToPassenger.setOnAction(e -> backToPassenger());
     }
 
     private void setFlightData() {
@@ -184,6 +188,11 @@ public class ConfirmationController implements NavigatorAware {
             confirmLabel.setText("Errore durante il salvataggio della prenotazione");
             e.printStackTrace();
         }
+    }
+
+    private void backToPassenger() {
+        BookingSession.getInstance().clearPassengers();
+        navigator.loadView("passenger-view.fxml");
     }
 
     @Override

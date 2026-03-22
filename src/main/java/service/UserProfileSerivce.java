@@ -8,7 +8,6 @@ import persistence.dao.reservation.ReservationDAO;
 import persistence.dao.user.PassengerDAO;
 import util.session.SessionHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

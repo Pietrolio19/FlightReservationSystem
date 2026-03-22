@@ -31,9 +31,13 @@ public class PassengerController implements NavigatorAware {
     private Button continueButton;
 
     @FXML
+    private Button backToSeatReservation;
+
+    @FXML
     private void initialize() {
         createPassengerCardList();
         continueButton.setOnAction(e -> continueToConfirmView());
+        backToSeatReservation.setOnAction(e -> backToSeatReservation());
     }
 
     private void createPassengerCardList() {
@@ -176,6 +180,12 @@ public class PassengerController implements NavigatorAware {
                 bookingService.saveSelfPassenger(passenger);
         }
         bookingService.saveSessionPassengers();
+    }
+
+    private void backToSeatReservation() {
+        BookingSession.getInstance().clearSeats();
+        BookingSession.getInstance().clearPassengers();
+        navigator.loadView("seat-reservation-view.fxml");
     }
 
     @Override

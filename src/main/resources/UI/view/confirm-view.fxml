@@ -66,8 +66,12 @@
             <VBox fx:id="passengerCardsArea">
 
             </VBox>
-            <Button fx:id="confirmButton" styleClass="primary-button"/>
-            <Label fx:id="confirmLabel"/>
+            <HBox>
+                <Button fx:id="backToPassenger" text="Indietro"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="confirmButton" styleClass="primary-button"/>
+                <Label fx:id="confirmLabel"/>
+            </HBox>
         </VBox>
     </content>
 

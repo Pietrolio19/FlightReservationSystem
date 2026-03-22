@@ -13,7 +13,9 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 import service.SeatReservationService;
 import util.session.BookingSession;
+import util.session.SessionHandler;
 
+import java.awt.print.Book;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -84,12 +86,16 @@ public class SeatReservationController implements NavigatorAware {
     private Button continueButton;
 
     @FXML
+    private Button backToMain;
+
+    @FXML
     private void initialize() {
         createFlightCard();
         createSeatsGrid();
         leftBox.prefWidthProperty().bind(mainBox.widthProperty().multiply(0.8));
         rightBox.prefWidthProperty().bind(mainBox.widthProperty().multiply(0.2));
         continueButton.setOnAction(e -> continueToPassengerView());
+        backToMain.setOnAction(e -> returnToMain());
     }
 
     private void createFlightCard() {
@@ -187,6 +193,11 @@ public class SeatReservationController implements NavigatorAware {
 
     private void continueToPassengerView() {
         navigator.loadView("passenger-view.fxml");
+    }
+
+    private void returnToMain() {
+        BookingSession.getInstance().clearSeats();
+        navigator.loadView("flight-search.fxml");
     }
 
     @Override
