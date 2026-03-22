@@ -16,7 +16,7 @@ public class PassengerDAO implements CrudDAO<Passenger, Long> {
     public Optional<Passenger> findById(Long id) {
         String sql= """
                         SELECT id, name, surname, date_of_birth, address,
-                               city, province, country, cos_fisc, cod_id,
+                               city, province, country, cod_fisc, cod_id,
                                phone_number, companion_owner
                         FROM Passenger
                         WHERE id = ?
@@ -90,15 +90,16 @@ public class PassengerDAO implements CrudDAO<Passenger, Long> {
 
     @Override
     public void insert(Passenger entity) {
-        String  sql = """
-                        INSERT INTO Passenger(name, surname, date_of_birth, address,
-                                              city, province, country, cos_fisc, cod_id,
-                                              phone_number, companion_owner)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                     """;
+        String sql = """
+            INSERT INTO Passenger(name, surname, date_of_birth, address,
+                                  city, province, country, cod_fisc, cod_id,
+                                  phone_number, companion_owner)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            RETURNING id
+            """;
 
-        try(Connection conn = DBManager.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
+        try (Connection conn = DBManager.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, entity.getName());
             ps.setString(2, entity.getSurname());
@@ -110,18 +111,23 @@ public class PassengerDAO implements CrudDAO<Passenger, Long> {
             ps.setString(8, entity.getCodFisc());
             ps.setString(9, entity.getCodId());
             ps.setString(10, entity.getPhoneNumber());
-            ps.setLong(11, entity.getCompanionOwner().getUserId());
 
-            ps.executeUpdate();
+            if (entity.getCompanionOwner() != null && entity.getCompanionOwner().getUserId() != null) {
+                ps.setLong(11, entity.getCompanionOwner().getUserId());
+            } else {
+                ps.setNull(11, Types.BIGINT);
+            }
 
-            try(ResultSet keys = ps.getGeneratedKeys();){
-                if(keys.next()){
-                    entity.setPassengerId(keys.getLong(1));
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    entity.setPassengerId(rs.getLong("id"));
+                } else {
+                    throw new SQLException("Insert Passenger riuscita ma nessun id restituito.");
                 }
             }
 
-        } catch(SQLException e){
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore nel salvataggio Passenger", e);
         }
     }
 
@@ -131,7 +137,7 @@ public class PassengerDAO implements CrudDAO<Passenger, Long> {
                         UPDATE Passenger
                         SET name = ?, surname = ?, date_of_birth = ?, address = ?,
                             city = ?, province = ?, country = ?,
-                            cos_fisc = ?, cod_id = ?, phone_number = ?,
+                            cod_fisc = ?, cod_id = ?, phone_number = ?,
                             companion_owner = ?
                         WHERE id = ?
                     """;

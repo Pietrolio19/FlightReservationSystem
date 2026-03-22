@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import service.BookingService;
 import util.session.BookingSession;
@@ -19,8 +21,8 @@ public class PassengerController implements NavigatorAware {
     private Navigator navigator;
     private final Map<String, Map<String, Control>> cardFields = new HashMap<>();
     private final BookingService bookingService = new BookingService();
-    private final Map<String, Passenger> passengersBySeatCode = new LinkedHashMap<>();
     private final BookingSession session = BookingSession.getInstance();
+    private final ToggleGroup toggleGroup = new ToggleGroup();
 
     @FXML
     private VBox passengerCardsArea;
@@ -102,7 +104,14 @@ public class PassengerController implements NavigatorAware {
 
         HBox lastRow = new HBox(100, codFiscBox, codIdBox, phoneBox);
 
-        VBox card = new VBox(10, seatLabel, firstRow, secondRow, thirdRow, lastRow);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        RadioButton radioButton = new RadioButton("Sono io");
+        radioButton.setUserData(seat.getSeatCode());
+        radioButton.setToggleGroup(toggleGroup);
+
+        HBox buttonRow = new HBox(spacer, radioButton);
+        VBox card = new VBox(10, seatLabel, firstRow, secondRow, thirdRow, lastRow, buttonRow);
 
         //Associazione CSS
         seatLabel.getStyleClass().add("passenger-card-text");
@@ -138,11 +147,14 @@ public class PassengerController implements NavigatorAware {
 
     private void continueToConfirmView(){
         savePassengersData();
-        bookingService.createSeatReservations(passengersBySeatCode);
+        session.clearSeatReservations();
+        bookingService.createSeatReservations();
         navigator.loadView("confirm-view.fxml");
     }
 
     private void savePassengersData() {
+        Toggle selectedToggle = toggleGroup.getSelectedToggle();
+        String selfSeatCode = selectedToggle != null ? (String) selectedToggle.getUserData() : null;
         for(Map.Entry<String, Map<String, Control>> entry: cardFields.entrySet()){
             String seatCode = entry.getKey();
             Map<String, Control> fields = entry.getValue();
@@ -159,11 +171,12 @@ public class PassengerController implements NavigatorAware {
             passenger.setCodId(((TextField) fields.get("codId")).getText());
             passenger.setPhoneNumber(((TextField) fields.get("phone")).getText());
 
-            passengersBySeatCode.put(seatCode, passenger);
+            bookingService.mapPassengersAndSeats(seatCode, passenger);
+            if(seatCode.equals(selfSeatCode))
+                bookingService.saveSelfPassenger(passenger);
         }
-        bookingService.saveSessionPassengers(passengersBySeatCode);
+        bookingService.saveSessionPassengers();
     }
-
 
     @Override
     public void setNavigator(Navigator navigator) {

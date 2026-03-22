@@ -8,27 +8,36 @@ import persistence.dao.flight.SeatDAO;
 import persistence.dao.reservation.ReservationDAO;
 import persistence.dao.reservation.SeatReservationDAO;
 import persistence.dao.user.PassengerDAO;
+import persistence.dao.user.UserDAO;
 import util.session.BookingSession;
 import util.session.SessionHandler;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class BookingService {
     private final PassengerDAO passengerDAO = new PassengerDAO();
     private final SeatReservationDAO seatReservationDAO = new SeatReservationDAO();
-    private final SeatDAO seatDAO = new SeatDAO();
     private final ReservationDAO reservationDAO = new ReservationDAO();
+    private final UserDAO userDAO = new UserDAO();
     private final BookingSession session = BookingSession.getInstance();
     private final Reservation bookingReservation = new Reservation();
 
-    public void saveSessionPassengers(Map<String, Passenger> passengerMap) {
-        session.setPassengers(new ArrayList<>(passengerMap.values()));//.values() restituisce una Collection<Passenger>
+
+    public void saveSelfPassenger(Passenger passenger) {
+        SessionHandler.getInstance().getCurrentUser().setSelfPassenger(passenger);
     }
 
-    public void createSeatReservations(Map<String, Passenger> passengerMap) {
+    public void saveSessionPassengers() {
+        session.setPassengers(new ArrayList<>(session.getPassengerBySeatCode().values()));
+    }
+
+    public void mapPassengersAndSeats(String seatCode, Passenger passenger) {
+        session.addMappedElement(seatCode, passenger);
+    }
+
+    public void createSeatReservations() {
         for(Seat s: session.getSelectedSeats()) {
-            Passenger currentPassenger = passengerMap.get(s.getSeatCode());
+            Passenger currentPassenger = session.getPassengerBySeatCode().get(s.getSeatCode());
             SeatReservation currentReservation = new SeatReservation();
             currentReservation.setSeat(s);
             currentReservation.setPassenger(currentPassenger);
@@ -37,10 +46,10 @@ public class BookingService {
     }
 
     public void saveBookingData() {
-        saveReservation();
         savePassengers();
-        saveSeats();
+        saveReservation();
         saveSeatReservations();
+        userDAO.save(SessionHandler.getInstance().getCurrentUser());
     }
 
     private void saveReservation() {
@@ -48,25 +57,21 @@ public class BookingService {
         bookingReservation.setUser(SessionHandler.getInstance().getCurrentUser());
         bookingReservation.confirm();
 
-        reservationDAO.insert(bookingReservation);
+        reservationDAO.save(bookingReservation);
     }
 
     private void savePassengers() {
-        for(Passenger p : session.getPassengers()) {
-            passengerDAO.insert(p);
-        }
-    }
-
-    private void saveSeats() {
-        for(Seat s : session.getSelectedSeats()) {
-            seatDAO.insert(s);
+        for (Passenger p : session.getPassengerBySeatCode().values()) {
+            passengerDAO.save(p);
+            System.out.println("Passenger salvato: " + p + " id=" + p.getPassengerId());
         }
     }
 
     private void saveSeatReservations() {
         for(SeatReservation sr : session.getSeatReservations()) {
             sr.setReservation(bookingReservation);
-            seatReservationDAO.insert(sr);
+            sr.confirm();
+            seatReservationDAO.save(sr);
         }
     }
 }

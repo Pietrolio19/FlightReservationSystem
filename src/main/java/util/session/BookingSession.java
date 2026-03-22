@@ -5,8 +5,7 @@ import domain.flight.Seat;
 import domain.reservation.SeatReservation;
 import domain.user.Passenger;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class BookingSession {
     private static BookingSession instance;
@@ -14,6 +13,7 @@ public class BookingSession {
     private List<Seat> selectedSeats = new ArrayList<>();
     private List<Passenger> passengers = new ArrayList<>();
     private List<SeatReservation> seatReservations = new ArrayList<>();
+    private final Map<String, Passenger> passengerBySeatCode = new LinkedHashMap<>();
 
     public static BookingSession getInstance() {
         if(instance == null)
@@ -87,6 +87,14 @@ public class BookingSession {
 
     public void clearSeatReservations() {
         this.seatReservations.clear();
+    }
+
+    public void addMappedElement(String seatCode, Passenger passenger){
+        passengerBySeatCode.put(seatCode, passenger);
+    }
+
+    public Map<String, Passenger> getPassengerBySeatCode() {
+        return passengerBySeatCode;
     }
 
     public void clear() {

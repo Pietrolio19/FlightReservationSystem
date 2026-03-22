@@ -70,10 +70,6 @@ public class SeatReservation {
         return state.toString();
     }
 
-    public void setState(ReservationState state) {
-        this.state = state;
-    }
-
     public void setState(String state) {
         if (state == null) {
             this.state = null;
