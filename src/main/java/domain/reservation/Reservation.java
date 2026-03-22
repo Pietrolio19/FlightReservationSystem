@@ -2,6 +2,8 @@ package domain.reservation;
 
 import domain.user.User;
 import domain.flight.Flight;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 enum ReservationState {PENDING, CONFIRMED, CANCELED}
@@ -12,6 +14,7 @@ public class Reservation {
     private User user;
     private Flight flight;
     private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDate date;
     private LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(20);
     private ReservationState state = ReservationState.PENDING;
 
@@ -85,5 +88,13 @@ public class Reservation {
             throw  new IllegalStateException("Solo le prenotaizoni pending possono essere modificate");
         }
         this.state = ReservationState.CANCELED;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

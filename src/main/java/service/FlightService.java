@@ -27,14 +27,18 @@ public class FlightService {
         //metodi
         public List<Flight> getFlightList() {
             List<Flight> flights = flightDAO.findAll();
+            setUpMaps();
+            objectMapper(flights);
+            return flights;
+        }
+
+        private void setUpMaps() {
             if(aircraftMap.isEmpty())
                 createAircraftMap();
             if(airlineMap.isEmpty())
                 createAirlinesMap();
             if(airportsMap.isEmpty())
                 createAirportsMap();
-            objectMapper(flights);
-            return flights;
         }
 
         public int getMinPriceAvailable(Long flight_id){
@@ -111,20 +115,27 @@ public class FlightService {
         }
 
         private List<Flight> objectMapper(List<Flight> flights) {
-            for(Flight f: flights) {
-                Aircraft aircraft = aircraftMap.get(f.getAircraft().getAircraftId());
-                f.setAircraft(aircraft);
-
-                Airline airline = airlineMap.get(f.getAirline().getAirlineId());
-                f.setAirline(airline);
-
-                Airport departure = airportsMap.get(f.getDeparture().getAirportId());
-                Airport arrival = airportsMap.get(f.getArrival().getAirportId());
-
-                f.setDeparture(departure);
-                f.setArrival(arrival);
+            for (Flight flight : flights) {
+                objectMapper(flight);
             }
             return flights;
+        }
+
+        public Flight objectMapper(Flight flight) {
+            setUpMaps();
+            Aircraft aircraft = aircraftMap.get(flight.getAircraft().getAircraftId());
+            flight.setAircraft(aircraft);
+
+            Airline airline = airlineMap.get(flight.getAirline().getAirlineId());
+            flight.setAirline(airline);
+
+            Airport departure = airportsMap.get(flight.getDeparture().getAirportId());
+            Airport arrival = airportsMap.get(flight.getArrival().getAirportId());
+
+            flight.setDeparture(departure);
+            flight.setArrival(arrival);
+
+            return flight;
         }
 
         private String normalize(String str) {

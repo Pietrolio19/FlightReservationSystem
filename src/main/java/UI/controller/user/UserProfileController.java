@@ -12,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import service.UserProfileSerivce;
+import util.session.SessionHandler;
 
 import java.sql.Time;
 import java.time.LocalDate;
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfileController {
+    //attributi
+    UserProfileSerivce userProfileSerivce = new UserProfileSerivce();
     //attributi FXML
     @FXML private VBox userInfo;
 
@@ -28,38 +32,42 @@ public class UserProfileController {
 
     @FXML
     private void initialize() {
+        loadUserInfo();
+        loadReservation();
     }
 
     //funzioni per creare la parte anagrafica
-    private void loadUserInfo(User user){
+    private void loadUserInfo(){
+        userProfileSerivce.getSelfPassengerInfo();
         userInfo.getChildren().clear();
-        userInfo.getChildren().addAll(createUserInfo(user));
+        userInfo.getChildren().addAll(createUserInfo(SessionHandler.getInstance().getCurrentUser()));
     }
 
     private VBox createUserInfo(User user){
         VBox vbox = new VBox(7);
         vbox.getChildren().addAll(
-                //new HBox(1, new Label("Username: "),       new Label(user.getUsername())),
-                //new HBox(1, new Label("Email: "),          new Label(user.getEmail())),
-                //new HBox(1, new Label("Nome: "),           new Label(user.getName())),
-                //new HBox(1, new Label("Cognome: "),        new Label(user.getSurname())),
-                //new HBox(1, new Label("Data di nascita: "),new Label(user.getDateOfBirth().toString())),
-                //new HBox(1, new Label("Indirizzo: "),      new Label(user.getAddress())),
-                //new HBox(1, new Label("Città: "),          new Label(user.getCity())),
-                //new HBox(1, new Label("Provincia: "),      new Label(user.getProvince())),
-                //new HBox(1, new Label("Paese: "),          new Label(user.getCountry())),
-                //new HBox(1, new Label("Codice fiscale: "), new Label(user.getCodFisc())),
-                //new HBox(1, new Label("Cod. ID: "),        new Label(user.getCodId())),
-                //new HBox(1, new Label("Telefono: "),       new Label(user.getPhoneNumber()))
+                new HBox(1, new Label("Username: "),       new Label(user.getUsername())),
+                new HBox(1, new Label("Email: "),          new Label(user.getEmail())),
+                new HBox(1, new Label("Nome: "),           new Label(user.getSelfPassenger().getName())),
+                new HBox(1, new Label("Cognome: "),        new Label(user.getSelfPassenger().getSurname())),
+                new HBox(1, new Label("Data di nascita: "),new Label(user.getSelfPassenger().getDateOfBirth().toString())),
+                new HBox(1, new Label("Indirizzo: "),      new Label(user.getSelfPassenger().getAddress())),
+                new HBox(1, new Label("Città: "),          new Label(user.getSelfPassenger().getCity())),
+                new HBox(1, new Label("Provincia: "),      new Label(user.getSelfPassenger().getProvince())),
+                new HBox(1, new Label("Paese: "),          new Label(user.getSelfPassenger().getCountry())),
+                new HBox(1, new Label("Codice fiscale: "), new Label(user.getSelfPassenger().getCodFisc())),
+                new HBox(1, new Label("Cod. ID: "),        new Label(user.getSelfPassenger().getCodId())),
+                new HBox(1, new Label("Telefono: "),       new Label(user.getSelfPassenger().getPhoneNumber()))
         );
 
         return vbox;
     }
 
     //funzioni per creare la parte delle prenotazioni
-    private void loadReservation(List<Reservation> reservation){
+    private void loadReservation(){
         reservations.getChildren().clear();
-        for(Reservation r : reservation)
+        List<Reservation> reservationsList = userProfileSerivce.getUserReservations();
+        for(Reservation r : reservationsList)
             reservations.getChildren().addAll(createReservation(r));
     }
 

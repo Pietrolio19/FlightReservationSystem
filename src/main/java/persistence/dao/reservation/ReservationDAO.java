@@ -15,7 +15,7 @@ public class ReservationDAO implements CrudDAO<Reservation, Long> {
     @Override
     public Optional<Reservation> findById(Long id) {
         String sql= """
-                        SELECT user_id, flight_id, date, state
+                        SELECT *
                         FROM Reservation
                         WHERE id = ?
                     """;
@@ -54,6 +54,29 @@ public class ReservationDAO implements CrudDAO<Reservation, Long> {
             }
         } catch(SQLException e){
             e.printStackTrace();
+        }
+        return result;
+    }
+
+    public List<Reservation> findByUser(Long userId) {
+        String sql= """
+                    SELECT *
+                    FROM Reservation
+                    WHERE user_id = ?
+                    """;
+        List<Reservation> result = new ArrayList<>();
+
+        try(Connection conn  = DBManager.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setLong(1, userId);
+            try(ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(mapRow(rs));
+                }
+            }
+        } catch(SQLException e){
+          e.printStackTrace();
         }
         return result;
     }
@@ -137,7 +160,7 @@ public class ReservationDAO implements CrudDAO<Reservation, Long> {
     private Reservation mapRow(ResultSet rs) throws SQLException {//TODO aggiungere service per User e Flight
         Reservation reservation = new Reservation();
 
-        reservation.setReservationId(rs.getLong("reservation_id"));
+        reservation.setReservationId(rs.getLong("id"));
 
         User user = new User();
         user.setUserId(rs.getLong("user_id"));
@@ -147,7 +170,7 @@ public class ReservationDAO implements CrudDAO<Reservation, Long> {
         flight.setFlightId(rs.getLong("flight_id"));
         reservation.setFlight(flight);
 
-        //TODO rivedere classe Reservation e DB per consistenza
+        reservation.setDate(rs.getDate("date").toLocalDate());
 
         reservation.setState(rs.getString("state"));
 

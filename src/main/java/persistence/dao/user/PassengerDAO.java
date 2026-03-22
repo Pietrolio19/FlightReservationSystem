@@ -15,9 +15,7 @@ public class PassengerDAO implements CrudDAO<Passenger, Long> {
     @Override
     public Optional<Passenger> findById(Long id) {
         String sql= """
-                        SELECT id, name, surname, date_of_birth, address,
-                               city, province, country, cod_fisc, cod_id,
-                               phone_number, companion_owner
+                        SELECT *
                         FROM Passenger
                         WHERE id = ?
                     """;
@@ -164,7 +162,7 @@ public class PassengerDAO implements CrudDAO<Passenger, Long> {
         }
     }
 
-    private Passenger mapRow(ResultSet rs) throws SQLException { //TODO aggiungere service per User
+    private Passenger mapRow(ResultSet rs) throws SQLException {
         Passenger passenger = new Passenger();
 
         passenger.setPassengerId(rs.getLong("id"));
@@ -180,9 +178,15 @@ public class PassengerDAO implements CrudDAO<Passenger, Long> {
         passenger.setCodId(rs.getString("cod_id"));
         passenger.setPhoneNumber(rs.getString("phone_number"));
 
-        User user = new User();
-        user.setUserId(rs.getLong("user_id"));
-        passenger.setCompanionOwner(user);
+        Long companionOwnerId = rs.getObject("companion_owner", Long.class);
+
+        if (companionOwnerId != null) {
+            User user = new User();
+            user.setUserId(companionOwnerId);
+            passenger.setCompanionOwner(user);
+        } else {
+            passenger.setCompanionOwner(null);
+        }
 
         return passenger;
     }
