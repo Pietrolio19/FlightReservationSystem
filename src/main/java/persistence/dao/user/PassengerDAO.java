@@ -37,6 +37,29 @@ public class PassengerDAO implements CrudDAO<Passenger, Long> {
         return Optional.empty();
     }
 
+    public Optional<Passenger> findByCodFiscOrCodId(String codFisc, String codId) {
+        String sql= """
+                    SELECT *
+                    FROM Passenger
+                    WHERE cod_fisc = ? AND cod_id = ?
+                    """;
+        try(Connection conn = DBManager.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setString(1, codFisc);
+            ps.setString(2, codId);
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()){
+                    return Optional.of(mapRow(rs));
+                }
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
     @Override
     public List<Passenger> findAll() {
         String sql = """
@@ -152,7 +175,11 @@ public class PassengerDAO implements CrudDAO<Passenger, Long> {
             ps.setString(8, entity.getCodFisc());
             ps.setString(9, entity.getCodId());
             ps.setString(10, entity.getPhoneNumber());
-            ps.setLong(11, entity.getCompanionOwner().getUserId());
+            if (entity.getCompanionOwner() != null && entity.getCompanionOwner().getUserId() != null) {
+                ps.setLong(11, entity.getCompanionOwner().getUserId());
+            } else {
+                ps.setNull(11, Types.BIGINT);
+            }
             ps.setLong(12, entity.getPassengerId());
 
             ps.executeUpdate();

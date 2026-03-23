@@ -33,12 +33,6 @@ public class AuthController implements NavigatorAware {
     private Label loginLabel;
 
     @FXML
-    private Button loginButton;
-
-    @FXML
-    private Button signUpButton;
-
-    @FXML
     private void initialize() {
         loginLabel.setVisible(true);
         loginLabel.setManaged(true);
@@ -95,7 +89,7 @@ public class AuthController implements NavigatorAware {
             errorLabel.setVisible(false);
             errorLabel.setManaged(false);
             navigator.refreshAuthUI();
-            navigator.loadView("flight-search.fxml");
+            navigator.loadView("user-profile-view.fxml");
         } catch(IllegalArgumentException e) {
             loginLabel.setManaged(false);
             loginLabel.setVisible(false);

@@ -42,7 +42,7 @@
                 <Hyperlink text="Registrati" onAction="#openSignUpPage" styleClass="login-text-signup" alignment="CENTER"/>
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
-            <Button fx:id="loginButton" onAction="#handleLoginRequest" styleClass="primary-button-login">Log in</Button>
+            <Button onAction="#handleLoginRequest" styleClass="primary-button-login">Log in</Button>
         </HBox>
     </VBox>
 </AnchorPane>

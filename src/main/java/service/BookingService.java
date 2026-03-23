@@ -4,7 +4,6 @@ import domain.flight.Seat;
 import domain.reservation.Reservation;
 import domain.reservation.SeatReservation;
 import domain.user.Passenger;
-import persistence.dao.flight.SeatDAO;
 import persistence.dao.reservation.ReservationDAO;
 import persistence.dao.reservation.SeatReservationDAO;
 import persistence.dao.user.PassengerDAO;
@@ -13,6 +12,7 @@ import util.session.BookingSession;
 import util.session.SessionHandler;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class BookingService {
     private final PassengerDAO passengerDAO = new PassengerDAO();
@@ -63,8 +63,16 @@ public class BookingService {
 
     private void savePassengers() {
         for (Passenger p : session.getPassengerBySeatCode().values()) {
+            Optional<Passenger> existing = passengerDAO.findByCodFiscOrCodId(
+                    p.getCodFisc(), p.getCodId()
+            );
+
+            if (existing.isPresent()) {
+                Passenger current = existing.get();
+                p.setPassengerId(current.getPassengerId());
+            }
+
             passengerDAO.save(p);
-            System.out.println("Passenger salvato: " + p + " id=" + p.getPassengerId());
         }
     }
 

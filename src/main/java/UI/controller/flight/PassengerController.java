@@ -13,6 +13,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import service.BookingService;
 import util.session.BookingSession;
+import util.session.SessionHandler;
 
 import java.util.*;
 
@@ -36,6 +37,18 @@ public class PassengerController implements NavigatorAware {
     @FXML
     private void initialize() {
         createPassengerCardList();
+
+        toggleGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+            if(newToggle != null) {
+                String seatCode = (String) newToggle.getUserData();
+                autocompleteUserInfo(seatCode);
+            }
+            if(oldToggle != null) {
+                String seatCode = (String) oldToggle.getUserData();
+                removeAutocompleteData(seatCode);
+            }
+        });
+
         continueButton.setOnAction(e -> continueToConfirmView());
         backToSeatReservation.setOnAction(e -> backToSeatReservation());
     }
@@ -164,6 +177,7 @@ public class PassengerController implements NavigatorAware {
             Map<String, Control> fields = entry.getValue();
 
             Passenger passenger = new Passenger();
+
             passenger.setName(((TextField) fields.get("name")).getText());
             passenger.setSurname(((TextField) fields.get("surname")).getText());
             passenger.setDateOfBirth(((DatePicker) fields.get("birthDate")).getValue());
@@ -186,6 +200,45 @@ public class PassengerController implements NavigatorAware {
         BookingSession.getInstance().clearSeats();
         BookingSession.getInstance().clearPassengers();
         navigator.loadView("seat-reservation-view.fxml");
+    }
+
+    private void autocompleteUserInfo(String seatCode) {
+        Passenger currentSelfPassenger = SessionHandler.getInstance().getCurrentUser().getSelfPassenger();
+        if (currentSelfPassenger == null) return;
+
+        Map<String, Control> fields = cardFields.get(seatCode);
+        if (fields == null) return;
+
+        ((TextField) fields.get("name")).setText(currentSelfPassenger.getName());
+        ((TextField) fields.get("surname")).setText(currentSelfPassenger.getSurname());
+        ((DatePicker) fields.get("birthDate")).setValue(currentSelfPassenger.getDateOfBirth());
+        ((TextField) fields.get("address")).setText(currentSelfPassenger.getAddress());
+        ((TextField) fields.get("city")).setText(currentSelfPassenger.getCity());
+        ((TextField) fields.get("province")).setText(currentSelfPassenger.getProvince());
+        ((TextField) fields.get("country")).setText(currentSelfPassenger.getCountry());
+        ((TextField) fields.get("codFisc")).setText(currentSelfPassenger.getCodFisc());
+        ((TextField) fields.get("codId")).setText(currentSelfPassenger.getCodId());
+        ((TextField) fields.get("phone")).setText(currentSelfPassenger.getPhoneNumber());
+    }
+
+    private void removeAutocompleteData(String seatCode) {
+        Passenger currentSelfPassenger = SessionHandler.getInstance().getCurrentUser().getSelfPassenger();
+        if (currentSelfPassenger == null) return;
+
+        Map<String, Control> fields = cardFields.get(seatCode);
+        if (fields == null) return;
+
+        ((TextField) fields.get("name")).setText("");
+        ((TextField) fields.get("surname")).setText("");
+        ((DatePicker) fields.get("birthDate")).setValue(null);
+        ((TextField) fields.get("address")).setText("");
+        ((TextField) fields.get("city")).setText("");
+        ((TextField) fields.get("province")).setText("");
+        ((TextField) fields.get("country")).setText("");
+        ((TextField) fields.get("codFisc")).setText("");
+        ((TextField) fields.get("codId")).setText("");
+        ((TextField) fields.get("phone")).setText("");
+
     }
 
     @Override
