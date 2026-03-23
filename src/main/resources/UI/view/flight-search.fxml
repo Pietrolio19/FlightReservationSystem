@@ -64,7 +64,7 @@
                                         </HBox>
                                         <Region HBox.hgrow="ALWAYS"/> <!-- spacer -->
                                         <HBox alignment="BOTTOM_CENTER">
-                                            <Button fx:id="searchButton" text="Cerca" styleClass="primary-button" onAction="#onSearchClicked"/>
+                                            <Button fx:id="searchButton" text="Cerca" styleClass="primary-button"/>
                                         </HBox>
                                     </HBox>
                                 </VBox>

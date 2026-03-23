@@ -1,19 +1,16 @@
 package UI.controller;
 
-import UI.controller.flight.SeatReservationController;
 import UI.navigator.Navigator;
 import UI.navigator.NavigatorAware;
-import domain.flight.Flight;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
-import service.SeatReservationService;
+import util.session.BookingSession;
 import util.session.SessionHandler;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class MainController implements Navigator {
     //attributi FXML
@@ -29,7 +26,7 @@ public class MainController implements Navigator {
         loadView("flight-search.fxml");
         backToMain.setOnAction(event -> {
             loadView("flight-search.fxml");
-
+            BookingSession.getInstance().clear();
         });
         updateAuthButton();
     }

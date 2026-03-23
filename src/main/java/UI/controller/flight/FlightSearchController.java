@@ -26,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import service.SeatReservationService;
 import util.session.BookingSession;
+import util.session.SessionHandler;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -34,6 +35,13 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FlightSearchController implements NavigatorAware {
+    //attributi
+    private final IntegerProperty Adults = new SimpleIntegerProperty(1);
+    private final IntegerProperty Children = new SimpleIntegerProperty(0);
+    private final IntegerProperty Newborns = new SimpleIntegerProperty(0);
+    private final FlightService flightService = new FlightService();
+    public Navigator navigator;
+
     //attributi FXML
     //campi per la ricerca
     @FXML private ComboBox<String> departureField;
@@ -63,21 +71,14 @@ public class FlightSearchController implements NavigatorAware {
 
     @FXML private TableColumn<Flight, Void> actionsColumn;
 
-    //attributi non FXML
-    private final IntegerProperty Adults = new SimpleIntegerProperty(1);
-    private final IntegerProperty Children = new SimpleIntegerProperty(0);
-    private final IntegerProperty Newborns = new SimpleIntegerProperty(0);
-    private final FlightService flightService = new FlightService();
-    public Navigator navigator;
-
     @FXML
     private void initialize() {
         createSearchForm();
         createFlightsTable();
         updateFlights();
+        searchButton.setOnAction(e -> onSearchClicked());
     }
 
-    //metodi per la creazione del layout della finestra
     private void createSearchForm(){
         journeyType.getItems().addAll("Andata e Ritorno", "Solo Andata");
         journeyType.setValue("Andata e Ritorno");
@@ -220,11 +221,16 @@ public class FlightSearchController implements NavigatorAware {
                 rightDashedLine.setMaxWidth(700);
 
                     flightReserve.setOnAction(e -> {
-                        if (getIndex() >= 0 && getIndex() < getTableView().getItems().size()) {
-                            Flight currentFlight = getTableView().getItems().get(getIndex());
-                            BookingSession.getInstance().setSelectedFlight(currentFlight);
-                            navigator.loadView("seat-reservation-view.fxml");
+                        if(SessionHandler.getInstance().isLoggedIn()){
+                            if (getIndex() >= 0 && getIndex() < getTableView().getItems().size()) {
+                                Flight currentFlight = getTableView().getItems().get(getIndex());
+                                BookingSession.getInstance().setSelectedFlight(currentFlight);
+                                navigator.loadView("seat-reservation-view.fxml");
+                            }
                         }
+                        else
+                            navigator.loadView("login-view.fxml");
+
                     });
             }
 
@@ -272,7 +278,6 @@ public class FlightSearchController implements NavigatorAware {
         flightsTable.setItems(availableFlights);
     }
 
-    //funzione di ripristino e rimozione dei campi "Andata" e "Ritorno"
     private void checkFlightType(String flightType) {
         if(flightType.equals("Solo Andata")) {
             returnFieldsWrapper.setVisible(false);
@@ -284,7 +289,6 @@ public class FlightSearchController implements NavigatorAware {
         }
     }
 
-    //funzione per aggiornare il contenuto del campo "Passeggeri"
     private void updatePassengerSummary() {
         int adults = Adults.get();
         int children = Children.get();
@@ -310,7 +314,6 @@ public class FlightSearchController implements NavigatorAware {
         passengerSummary.setText(sb.toString());
     }
 
-    //funzione di creazione delle righe del passengerMenu
     private HBox createPassengerMenuRow(String labelText, IntegerProperty passengerCount) {
         Label passengerLabel = new Label(labelText);
 
@@ -338,7 +341,6 @@ public class FlightSearchController implements NavigatorAware {
         return passengerMenuRow;
     }
 
-    //funzione di creazione del passengerMenu
     private CustomMenuItem createPassengerMenuItem() {
         VBox root = new VBox(12);
 
@@ -352,7 +354,6 @@ public class FlightSearchController implements NavigatorAware {
         return item;
     }
 
-    //funzione per la visualizzazione del menu a tendina
     private void openPassengerMenu() {
 
         ContextMenu menu = new ContextMenu();
@@ -372,7 +373,6 @@ public class FlightSearchController implements NavigatorAware {
         return filtered;
     }
 
-    //funzione che crea la ricerca
     @FXML
     private void onSearchClicked() {
         FlightSearchRequest request = new FlightSearchRequest();
