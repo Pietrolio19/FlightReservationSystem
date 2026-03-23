@@ -139,6 +139,23 @@
     -fx-cursor: hand;
 }
 
+.secondary-button {
+    -fx-padding: 10;
+    -fx-background-color: white;
+    -fx-border-color: #1330c6;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-width: 3;
+    -fx-font-size: 18;
+    -fx-text-fill: #1330c6;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #1330c6;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
 .results-table {
     -fx-padding: 20;
     -fx-border-color: white;

@@ -22,7 +22,7 @@ public class BookingService {
     private final BookingSession session = BookingSession.getInstance();
     private final Reservation bookingReservation = new Reservation();
 
-
+    //Service per Passeggeri
     public void saveSelfPassenger(Passenger passenger) {
         SessionHandler.getInstance().getCurrentUser().setSelfPassenger(passenger);
     }
@@ -45,11 +45,12 @@ public class BookingService {
         }
     }
 
+    //Service per la conferma
     public void saveBookingData() {
         savePassengers();
         saveReservation();
         saveSeatReservations();
-        userDAO.save(SessionHandler.getInstance().getCurrentUser());
+        saveUser();
     }
 
     private void saveReservation() {
@@ -73,5 +74,15 @@ public class BookingService {
             sr.confirm();
             seatReservationDAO.save(sr);
         }
+    }
+
+    private void saveUser() {
+        int totalPrice = 0;
+        for(Seat s : session.getSelectedSeats()){
+            totalPrice += s.getPrice();
+        }
+        SessionHandler.getInstance().getCurrentUser().setFidelityPoints(totalPrice);
+        SessionHandler.getInstance().getCurrentUser().calculateFidelityStatus();
+        userDAO.save(SessionHandler.getInstance().getCurrentUser());
     }
 }

@@ -152,7 +152,6 @@ public class FlightSearchController implements NavigatorAware {
             private final Label airline = new Label();
             private final Label flightCode = new Label();
 
-            //TODO migliorare immagini
             private final Label departureCity = new Label();
             private final Label departureIata = new Label();
             private final Label departureTime = new Label();
@@ -265,7 +264,12 @@ public class FlightSearchController implements NavigatorAware {
 
     private void updateFlightsTable(List<Flight> flights) {
         ObservableList<Flight> obsFlights = FXCollections.observableArrayList(flights);
-        flightsTable.setItems(obsFlights);
+        ObservableList<Flight> availableFlights = FXCollections.observableArrayList();
+        for(Flight f : obsFlights){
+            if(flightService.isAvailable(f))
+                availableFlights.add(f);
+        }
+        flightsTable.setItems(availableFlights);
     }
 
     //funzione di ripristino e rimozione dei campi "Andata" e "Ritorno"

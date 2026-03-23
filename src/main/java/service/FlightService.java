@@ -6,10 +6,8 @@ import domain.flight.Airline;
 import domain.flight.Flight;
 import dto.flight.FlightSearchRequest;
 import dto.flight.FlightSearchResult;
-import persistence.dao.flight.FlightDAO;
-import persistence.dao.flight.AircraftDAO;
-import persistence.dao.flight.AirlineDAO;
-import persistence.dao.flight.AirportDAO;
+import dto.flight.SeatAvailability;
+import persistence.dao.flight.*;
 
 import java.util.*;
 
@@ -23,6 +21,7 @@ public class FlightService {
         private final AircraftDAO aircraftDAO = new AircraftDAO();
         private final AirlineDAO airlineDAO = new AirlineDAO();
         private final AirportDAO airportDAO = new AirportDAO();
+        private final SeatDAO seatDAO = new SeatDAO();
 
         //metodi
         public List<Flight> getFlightList() {
@@ -136,6 +135,11 @@ public class FlightService {
             flight.setArrival(arrival);
 
             return flight;
+        }
+
+        public boolean isAvailable(Flight flight) {
+            SeatAvailability seatAvailability = seatDAO.getSeatAvailabilityByFlightId(flight.getFlightId());
+            return seatAvailability.getAvailableSeats() != 0;
         }
 
         private String normalize(String str) {

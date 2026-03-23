@@ -79,7 +79,7 @@
                    </HBox>
                </VBox>
            </HBox>
-            <Button fx:id="backToMain" text="Indietro"/>
+            <Button fx:id="backToMain" text="Indietro" styleClass="secondary-button"/>
         </VBox>
     </content>
 </ScrollPane>

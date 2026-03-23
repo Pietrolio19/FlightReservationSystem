@@ -2,6 +2,7 @@ package persistence.dao.flight;
 
 import domain.flight.Flight;
 import domain.flight.Seat;
+import dto.flight.SeatAvailability;
 import persistence.DBManager;
 import persistence.dao.CrudDAO;
 
@@ -59,6 +60,37 @@ public class SeatDAO implements CrudDAO<Seat, Long> {
         }
 
         return result;
+    }
+
+    public SeatAvailability getSeatAvailabilityByFlightId(long flightId) {
+        String sql= """                
+                SELECT
+                    COUNT(s.id) AS total_seats,
+                    COUNT(sr.seat_id) AS confirmed_seats,
+                    COUNT(s.id) - COUNT(sr.seat_id) AS available_seats
+                FROM Seat s
+                LEFT JOIN SeatReservation sr
+                    ON sr.seat_id = s.id
+                   AND sr.state = 'CONFIRMED'
+                WHERE s.flight_id = ?;
+                """;
+
+        try(Connection conn = DBManager.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setLong(1, flightId);
+            try(ResultSet rs = ps.executeQuery()){
+                rs.next();
+
+                return new SeatAvailability(
+                        rs.getInt("total_seats"),
+                        rs.getInt("confirmed_seats"),
+                        rs.getInt("available_seats")
+                );
+            }
+        } catch(SQLException e){
+            throw new RuntimeException("Errore nel recupero disponibilità posti", e);
+        }
     }
 
     @Override

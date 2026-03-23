@@ -64,7 +64,7 @@ public class User {
     }
 
     public void setFidelityPoints(int fidelityPoints) {
-        this.fidelityPoints = fidelityPoints;
+        this.fidelityPoints += fidelityPoints;
     }
 
     public String getFidelityStatus() {

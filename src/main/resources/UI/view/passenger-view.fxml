@@ -16,7 +16,7 @@
 
             </VBox>
             <HBox>
-                <Button fx:id="backToSeatReservation" text="Indietro"/>
+                <Button fx:id="backToSeatReservation" text="Indietro" styleClass="secondary-button"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 <Button fx:id="continueButton" text="Conferma" styleClass="primary-button"/>
             </HBox>
