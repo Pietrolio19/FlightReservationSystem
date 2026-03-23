@@ -27,13 +27,10 @@ public class AuthController implements NavigatorAware {
     private TextField usernameField;
 
     @FXML
-    private TextField nameField;
-
-    @FXML
-    private TextField surnameField;
-
-    @FXML
     private Label errorLabel;
+
+    @FXML
+    private Label loginLabel;
 
     @FXML
     private Button loginButton;
@@ -43,7 +40,9 @@ public class AuthController implements NavigatorAware {
 
     @FXML
     private void initialize() {
-
+        loginLabel.setVisible(true);
+        loginLabel.setManaged(true);
+        loginLabel.setText("Per favore esegui il login");
     }
 
     @Override
@@ -72,11 +71,13 @@ public class AuthController implements NavigatorAware {
         try{
             authService.registerUser(request);
             errorLabel.setText("");
+            errorLabel.setManaged(false);
             errorLabel.setVisible(false);
             navigator.refreshAuthUI();
             navigator.loadView("flight-search.fxml");
         } catch (IllegalArgumentException e){
             errorLabel.setText(e.getMessage());
+            errorLabel.setManaged(true);
             errorLabel.setVisible(true);
         }
     }
@@ -92,10 +93,14 @@ public class AuthController implements NavigatorAware {
             authService.loginUser(request);
             errorLabel.setText("");
             errorLabel.setVisible(false);
+            errorLabel.setManaged(false);
             navigator.refreshAuthUI();
             navigator.loadView("flight-search.fxml");
         } catch(IllegalArgumentException e) {
+            loginLabel.setManaged(false);
+            loginLabel.setVisible(false);
             errorLabel.setText(e.getMessage());
+            errorLabel.setManaged(true);
             errorLabel.setVisible(true);
         }
     }
