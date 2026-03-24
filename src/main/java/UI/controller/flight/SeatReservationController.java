@@ -21,6 +21,7 @@ import java.util.List;
 public class SeatReservationController implements NavigatorAware {
     //attributi
     private final SeatReservationService seatReservationService = new SeatReservationService();
+    BookingSession session = BookingSession.getInstance();
     private Navigator navigator;
 
     @FXML
@@ -97,7 +98,7 @@ public class SeatReservationController implements NavigatorAware {
     }
 
     private void createFlightCard() {
-        Flight currentFlight = BookingSession.getInstance().getSelectedFlight();
+        Flight currentFlight = session.getSelectedFlight();
         airlineLabel.setText(currentFlight.getAirline().getName());
         flightCodeLabel.setText(currentFlight.getFlightCode());
         departureCityLabel.setText(currentFlight.getDeparture().getCity());
@@ -111,8 +112,8 @@ public class SeatReservationController implements NavigatorAware {
     }
 
     private void createSeatsGrid() {
-        List<Seat> seats = seatReservationService.getSeatsList(BookingSession.getInstance().getSelectedFlight().getFlightId());
-        List<SeatState> seatStates = seatReservationService.getSeatStates(BookingSession.getInstance().getSelectedFlight().getFlightId());
+        List<Seat> seats = seatReservationService.getSeatsList(session.getSelectedFlight().getFlightId());
+        List<SeatState> seatStates = seatReservationService.getSeatStates(session.getSelectedFlight().getFlightId());
         for(Seat s: seats) {
             int column = getSeatColumn(s);
             seatsGrid.add(createToggleButton(s, seatStates), column, s.getRow());
@@ -151,10 +152,16 @@ public class SeatReservationController implements NavigatorAware {
     }
 
     private void handleSeatSelection(Seat seat, ToggleButton button) {
-        if(button.isSelected())
-            BookingSession.getInstance().addSeat(seat);
+        if (button.isSelected()) {
+            if (session.getSelectedSeats().size() < session.getTotalPassengers()) {
+                session.addSeat(seat);
+            } else {
+                button.setSelected(false);
+                return;
+            }
+        }
         else
-            BookingSession.getInstance().removeSeat(seat);
+            session.removeSeat(seat);
         refreshSelectedSeatsBox();
     }
 
@@ -162,19 +169,19 @@ public class SeatReservationController implements NavigatorAware {
         selectedSeatsBox.getChildren().clear();
         int totalPrice = 0;
 
-        for(Seat s: BookingSession.getInstance().getSelectedSeats()) {
+        for(Seat s: session.getSelectedSeats()) {
             selectedSeatsBox.getChildren().add(createSelectedSeatEntry(s));
             totalPrice += s.getPrice();
         }
 
         resumeBox.setVisible(true);
         resumeBox.setManaged(true);
-        if(BookingSession.getInstance().getSelectedSeats().isEmpty()) {
+        if(session.getSelectedSeats().isEmpty()) {
             resumeBox.setVisible(false);
             resumeBox.setManaged(false);
         }
 
-        int totalSeats = BookingSession.getInstance().getSelectedSeats().size();
+        int totalSeats = session.getSelectedSeats().size();
         this.totalSeats.setText("Totale Posti: " + totalSeats);
         this.totalPrice.setText("Totale: " + totalPrice + "€");
     }
@@ -204,7 +211,7 @@ public class SeatReservationController implements NavigatorAware {
     }
 
     private void returnToMain() {
-        BookingSession.getInstance().clearSeats();
+        session.clearSeats();
         navigator.loadView("flight-search.fxml");
     }
 
