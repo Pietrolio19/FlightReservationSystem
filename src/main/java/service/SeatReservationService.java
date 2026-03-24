@@ -2,6 +2,7 @@ package service;
 
 import domain.flight.Flight;
 import domain.flight.Seat;
+import dto.flight.SeatState;
 import persistence.dao.flight.FlightDAO;
 import persistence.dao.flight.SeatDAO;
 
@@ -29,5 +30,9 @@ public class SeatReservationService {
         }
 
         return currentSeats;
+    }
+
+    public List<SeatState> getSeatStates(Long id) {
+        return seatDAO.getSeatStateByFlightId(id);
     }
 }

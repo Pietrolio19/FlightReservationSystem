@@ -3,6 +3,7 @@ package persistence.dao.flight;
 import domain.flight.Flight;
 import domain.flight.Seat;
 import dto.flight.SeatAvailability;
+import dto.flight.SeatState;
 import persistence.DBManager;
 import persistence.dao.CrudDAO;
 
@@ -62,7 +63,34 @@ public class SeatDAO implements CrudDAO<Seat, Long> {
         return result;
     }
 
-    public SeatAvailability getSeatAvailabilityByFlightId(long flightId) {
+    public List<SeatState> getSeatStateByFlightId(Long id) {
+        String sql ="""
+                    SELECT s.id, s.flight_id, s.seat_row, s.letter, s.type, s.class, s.price, sr.state AS reservation_state
+                    FROM Seat s 
+                        join SeatReservation sr on s.id=sr.seat_id
+                    WHERE s.flight_id = ?
+                    """;
+        List<SeatState> result = new ArrayList<>();
+        try(Connection conn = DBManager.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setLong(1, id);
+            try(ResultSet rs = ps.executeQuery()){
+                while(rs.next()) {
+                    SeatState seatState = new SeatState();
+                    seatState.setSeat(mapRow(rs));
+                    seatState.setState(rs.getString("reservation_state"));
+                    result.add(seatState);
+                }
+            }
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public SeatAvailability getSeatAvailabilityByFlightId(Long id) {
         String sql= """                
                 SELECT
                     COUNT(s.id) AS total_seats,
@@ -78,7 +106,7 @@ public class SeatDAO implements CrudDAO<Seat, Long> {
         try(Connection conn = DBManager.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
 
-            ps.setLong(1, flightId);
+            ps.setLong(1, id);
             try(ResultSet rs = ps.executeQuery()){
                 rs.next();
 

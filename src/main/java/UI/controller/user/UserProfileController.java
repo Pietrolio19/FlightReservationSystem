@@ -53,7 +53,9 @@ public class UserProfileController {
                 new HBox(1, new Label("Paese: "),          new Label(user.getSelfPassenger().getCountry())),
                 new HBox(1, new Label("Codice fiscale: "), new Label(user.getSelfPassenger().getCodFisc())),
                 new HBox(1, new Label("Cod. ID: "),        new Label(user.getSelfPassenger().getCodId())),
-                new HBox(1, new Label("Telefono: "),       new Label(user.getSelfPassenger().getPhoneNumber()))
+                new HBox(1, new Label("Telefono: "),       new Label(user.getSelfPassenger().getPhoneNumber())),
+                new HBox(1, new Label("Punti Fedeltà:" ), new Label(String.valueOf(user.getFidelityPoints()))),
+                new HBox(1, new Label("Status Fedeltà:" ), new Label(String.valueOf(user.getFidelityStatus())))
         );
 
         return vbox;

@@ -63,10 +63,6 @@ public class Seat {
         return type.toString();
     }
 
-    public void setType(SeatType type) {
-        this.type = type;
-    }
-
     public void setType(String type) {
         if (type == null) {
             this.type = null;
@@ -77,10 +73,6 @@ public class Seat {
 
     public String getSeatClass() {
         return seatClass.toString();
-    }
-
-    public void setSeatClass(SeatClass seatClass) {
-        this.seatClass = seatClass;
     }
 
     public void setSeatClass(String seatClass) {

@@ -327,6 +327,30 @@
     -fx-border-style: solid;
 }
 
+.seat-button {
+    -fx-max-width: 60;
+    -fx-max-height: 60;
+    -fx-padding: 5;
+    -fx-background-color: #1E88E5;
+    -fx-border-color: black;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-width: 0.5;
+    -fx-font-size: 14;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 6, 0.2, 0, 2);
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+.seat-button:hover, .seat-button:selected {
+    -fx-cursor: hand;
+    -fx-text-fill: #1E88E5;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 8, 0.25, 0, 3);
+}
+
 /* Passenger */
 .passenger-card-text {
     -fx-font-size: 26;

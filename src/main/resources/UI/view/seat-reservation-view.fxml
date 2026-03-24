@@ -13,7 +13,7 @@
             fitToWidth="true">
 
     <content>
-        <VBox fillWidth="true" maxWidth="Infinity">
+        <VBox fillWidth="true" maxWidth="Infinity" maxHeight="Infinity">
            <HBox fx:id="mainBox">
                <VBox fx:id="leftBox" styleClass="seat-reservation-left-box">
                    <Label text="Selezione del Posto" styleClass="seat-reservation-title-text"/>
@@ -22,12 +22,12 @@
                    <VBox spacing="20" maxWidth="Infinity" fillWidth="true" styleClass="seat-reservation-card-wrapper">
 
                        <HBox alignment="CENTER_LEFT" maxWidth="Infinity" spacing="20">
-                           <VBox fx:id="airlineInfoBox" spacing="10" alignment="CENTER" styleClass="seat-reservation-airline-box">
+                           <VBox spacing="10" alignment="CENTER" styleClass="seat-reservation-airline-box">
                                <Label fx:id="airlineLabel"/>
                                <Label fx:id="flightCodeLabel"/>
                            </VBox>
 
-                           <HBox fx:id="departureInfoBox" spacing="5" alignment="CENTER_LEFT">
+                           <HBox spacing="5" alignment="CENTER_LEFT">
                                <Label fx:id="departureCityLabel"/>
                                <Label fx:id="departureIataLabel"/>
                                <Label fx:id="departureTimeLabel"/>
@@ -64,7 +64,7 @@
                            </HBox>
                        </HBox>
                    </VBox>
-                   <GridPane fx:id="seatsGrid"/>
+                   <GridPane fx:id="seatsGrid" hgap="10" vgap="10"/>
                </VBox>
                <VBox fx:id="rightBox">
                    <Label text="Riepilogo Posti" styleClass="seat-reservation-title-text"/>

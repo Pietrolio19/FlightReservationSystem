@@ -4,6 +4,7 @@ import UI.navigator.Navigator;
 import UI.navigator.NavigatorAware;
 import domain.flight.Flight;
 import domain.flight.Seat;
+import dto.flight.SeatState;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -13,7 +14,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 import service.SeatReservationService;
 import util.session.BookingSession;
-
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -112,9 +112,10 @@ public class SeatReservationController implements NavigatorAware {
 
     private void createSeatsGrid() {
         List<Seat> seats = seatReservationService.getSeatsList(BookingSession.getInstance().getSelectedFlight().getFlightId());
+        List<SeatState> seatStates = seatReservationService.getSeatStates(BookingSession.getInstance().getSelectedFlight().getFlightId());
         for(Seat s: seats) {
             int column = getSeatColumn(s);
-            seatsGrid.add(createToggleButton(s), column, s.getRow());
+            seatsGrid.add(createToggleButton(s, seatStates), column, s.getRow());
         }
     }
 
@@ -130,10 +131,19 @@ public class SeatReservationController implements NavigatorAware {
         };
     }
 
-    private ToggleButton createToggleButton(Seat seat) {
+    private ToggleButton createToggleButton(Seat seat, List<SeatState> states) {
         ToggleButton button = new ToggleButton();
         button.setText(seat.getSeatCode() + "\n" + seat.getFormattedPrice());
-        //TODO applicare styleClass
+        button.setUserData(seat.getSeatCode());
+
+        for (SeatState s : states) {
+            if (s.getSeat().getSeatId().equals(seat.getSeatId()) && s.getState() != null) {
+                button.setDisable(true);
+                break;
+            }
+        }
+
+        button.getStyleClass().add("seat-button");
 
         button.setOnAction(e -> handleSeatSelection(seat, button));
 
