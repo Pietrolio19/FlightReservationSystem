@@ -31,8 +31,7 @@ public class UserProfileService {
         for (Reservation reservation : reservationList) {
             Long flightId = reservation.getFlight().getFlightId();
 
-            Flight currentFlight = flightDAO.findById(flightId)
-                    .orElseThrow(() -> new IllegalArgumentException("Volo non valido"));
+            Flight currentFlight = flightDAO.findById(flightId).orElseThrow(() -> new IllegalArgumentException("Volo non valido"));
 
             reservation.setFlight(flightService.objectMapper(currentFlight));
         }
@@ -41,6 +40,9 @@ public class UserProfileService {
     }
 
     public List<Passenger> getUserCompanions() {
-        return passengerDAO.findByCompanionOwner(session.getCurrentUser().getUserId());
+        List<Passenger> current =  passengerDAO.findByCompanionOwner(session.getCurrentUser().getUserId());
+        for(Passenger p : current)
+            session.getCurrentUser().addCompanion(p);
+        return current;
     }
 }

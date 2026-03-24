@@ -29,7 +29,8 @@ public class PassengerController implements NavigatorAware {
     private final BookingService bookingService = new BookingService();
     private final BookingSession session = BookingSession.getInstance();
     private final ToggleGroup toggleGroup = new ToggleGroup(); // oggetto per tenere traccia dei RadioButton nelle card
-    private final Map<String, ToggleButton> toggleButtonMap = new HashMap<>(); //mappa per tenere traccia dei ToggleButton per i companion nelle card
+    private final Map<String, ToggleButton> saveCompanionButtonMap = new HashMap<>(); //mappa per tenere traccia dei ToggleButton per i companion nelle card
+    private final Map<String, Button> companionButtonMap = new HashMap<>();
 
     @FXML
     private VBox passengerCardsArea;
@@ -46,14 +47,18 @@ public class PassengerController implements NavigatorAware {
         toggleGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
             if(newToggle != null) {
                 String seatCode = (String) newToggle.getUserData();
-                toggleButtonMap.get(seatCode).setVisible(false);
-                toggleButtonMap.get(seatCode).setManaged(false);
+                saveCompanionButtonMap.get(seatCode).setVisible(false);
+                saveCompanionButtonMap.get(seatCode).setManaged(false);
+                companionButtonMap.get(seatCode).setVisible(false);
+                companionButtonMap.get(seatCode).setManaged(false);
                 autocompleteUserInfo(seatCode);
             }
             if(oldToggle != null) {
                 String seatCode = (String) oldToggle.getUserData();
-                toggleButtonMap.get(seatCode).setVisible(true);
-                toggleButtonMap.get(seatCode).setManaged(true);
+                saveCompanionButtonMap.get(seatCode).setVisible(true);
+                saveCompanionButtonMap.get(seatCode).setManaged(true);
+                companionButtonMap.get(seatCode).setVisible(true);
+                companionButtonMap.get(seatCode).setManaged(true);
                 removeAutocompleteData(seatCode);
             }
         });
@@ -75,15 +80,28 @@ public class PassengerController implements NavigatorAware {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
         ImageView bookmark = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/UI/images/bookmark.png")).toExternalForm()));
+        ImageView add = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/UI/images/add.png")).toExternalForm()));
+        add.setFitHeight(20);
+        add.setFitWidth(20);
 
         ToggleButton button = new ToggleButton("Salva Companion");
         button.setUserData(seat.getSeatCode());
         button.setGraphic(bookmark);
         button.setContentDisplay(ContentDisplay.LEFT);
         button.setGraphicTextGap(8);
-        toggleButtonMap.put(seat.getSeatCode(), button);
+        saveCompanionButtonMap.put(seat.getSeatCode(), button);
 
-        HBox seatRow = new HBox(seatLabel, spacer, button);
+        Button compButton = new Button("Aggiungi Companion");
+        compButton.setUserData(seat.getSeatCode());
+        compButton.setGraphic(add);
+        compButton.setContentDisplay(ContentDisplay.LEFT);
+        compButton.setGraphicTextGap(8);
+        compButton.setOnAction(e -> handleAddCompanion(seat.getSeatCode()));
+        companionButtonMap.put(seat.getSeatCode(), compButton);
+
+        HBox buttonBox = new HBox(5, button, compButton);
+
+        HBox seatRow = new HBox(seatLabel, spacer, buttonBox);
 
         Label nameLabel = new Label("Nome:");
         TextField nameField = new TextField();
@@ -190,6 +208,63 @@ public class PassengerController implements NavigatorAware {
         navigator.loadView("confirm-view.fxml");
     }
 
+    private void handleAddCompanion(String seatCode) {
+        List<Passenger> companions = SessionHandler.getInstance().getCurrentUser().getCompanions();
+
+        if (companions == null || companions.isEmpty()) {
+            return;
+        }
+
+        Dialog<Passenger> dialog = new Dialog<>();
+        dialog.setTitle("Seleziona Companion");
+
+        ButtonType confirmButtonType = new ButtonType("Conferma", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
+
+        ListView<Passenger> listView = new ListView<>();
+        listView.getItems().addAll(companions);
+
+        listView.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Passenger item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getName() + " " + item.getSurname());
+                }
+            }
+        });
+
+        dialog.getDialogPane().setContent(listView);
+
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == confirmButtonType) {
+                return listView.getSelectionModel().getSelectedItem();
+            }
+            return null;
+        });
+
+        Optional<Passenger> result = dialog.showAndWait();
+        result.ifPresent(passenger -> fillPassengerCard(seatCode, passenger));
+    }
+
+    private void fillPassengerCard(String seatCode, Passenger passenger) {
+        Map<String, Control> fields = cardFields.get(seatCode);
+        if (fields == null) return;
+
+        ((TextField) fields.get("name")).setText(passenger.getName());
+        ((TextField) fields.get("surname")).setText(passenger.getSurname());
+        ((DatePicker) fields.get("birthDate")).setValue(passenger.getDateOfBirth());
+        ((TextField) fields.get("address")).setText(passenger.getAddress());
+        ((TextField) fields.get("city")).setText(passenger.getCity());
+        ((TextField) fields.get("province")).setText(passenger.getProvince());
+        ((TextField) fields.get("country")).setText(passenger.getCountry());
+        ((TextField) fields.get("codFisc")).setText(passenger.getCodFisc());
+        ((TextField) fields.get("codId")).setText(passenger.getCodId());
+        ((TextField) fields.get("phone")).setText(passenger.getPhoneNumber());
+    }
+
     private void savePassengersData() {
         Toggle selectedRadio = toggleGroup.getSelectedToggle();
         String selfSeatCode = selectedRadio != null ? (String) selectedRadio.getUserData() : null;
@@ -197,7 +272,7 @@ public class PassengerController implements NavigatorAware {
         for(Map.Entry<String, Map<String, Control>> entry: cardFields.entrySet()){
             String seatCode = entry.getKey();
             Map<String, Control> fields = entry.getValue();
-            selectedToggle = toggleButtonMap.get(seatCode);
+            selectedToggle = saveCompanionButtonMap.get(seatCode);
 
             Passenger passenger = new Passenger();
 

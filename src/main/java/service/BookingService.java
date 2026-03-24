@@ -63,14 +63,15 @@ public class BookingService {
 
     private void savePassengers() {
         for (Passenger p : session.getPassengerBySeatCode().values()) {
-            Optional<Passenger> existing = passengerDAO.findByCodFiscOrCodId(
-                    p.getCodFisc(), p.getCodId()
-            );
+            Optional<Passenger> existing = passengerDAO.findByCodFiscOrCodId(p.getCodFisc(), p.getCodId());
 
-            if (existing.isPresent()) {
-                Passenger current = existing.get();
+            existing.ifPresent(current -> {
                 p.setPassengerId(current.getPassengerId());
-            }
+
+                if (p.getCompanionOwner() == null) {
+                    p.setCompanionOwner(current.getCompanionOwner());
+                }
+            });
 
             passengerDAO.save(p);
         }

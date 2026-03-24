@@ -95,8 +95,6 @@ public class UserProfileController {
     //funzioni per creare la parte Companions
     private void loadCompanions(){
         List<Passenger> comp = userProfileSerivce.getUserCompanions();
-        if(comp.isEmpty())
-            companions.setVisible(false);
         companions.getChildren().clear();
         companions.getChildren().addAll(createCompanions(comp));
     }

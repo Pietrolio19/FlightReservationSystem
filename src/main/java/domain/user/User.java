@@ -13,7 +13,7 @@ public class User {
     private String hashPassword;
     private int fidelityPoints = 0;
     private FidelityStatus fidelityStatus =  FidelityStatus.BRONZE;
-    private ArrayList<Passenger> companions =  new ArrayList<>();
+    private final ArrayList<Passenger> companions =  new ArrayList<>();
     private Passenger selfPassenger; //lo user crea un passeggero clone per prenotare i posti
 
     //costruttori
