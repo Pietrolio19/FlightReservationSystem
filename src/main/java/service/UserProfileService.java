@@ -11,7 +11,7 @@ import util.session.SessionHandler;
 import java.util.List;
 import java.util.Optional;
 
-public class UserProfileSerivce {
+public class UserProfileService {
     private final PassengerDAO passengerDAO = new PassengerDAO();
     private final ReservationDAO reservationDAO = new ReservationDAO();
     private final FlightDAO flightDAO = new FlightDAO();
@@ -38,5 +38,9 @@ public class UserProfileSerivce {
         }
 
         return reservationList;
+    }
+
+    public List<Passenger> getUserCompanions() {
+        return passengerDAO.findByCompanionOwner(session.getCurrentUser().getUserId());
     }
 }

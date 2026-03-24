@@ -64,6 +64,14 @@ public class Reservation {
         return state.toString();
     }
 
+    public String getFormattedState() {
+        String state = this.state.toString().trim();
+        if (state.isEmpty()) return state;
+
+        state = state.toLowerCase();
+        return Character.toUpperCase(state.charAt(0)) + state.substring(1);
+    }
+
     public void setState(ReservationState state) {
         this.state = state;
     }

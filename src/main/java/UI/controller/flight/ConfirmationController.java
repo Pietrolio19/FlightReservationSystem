@@ -3,9 +3,11 @@ package UI.controller.flight;
 import UI.navigator.Navigator;
 import UI.navigator.NavigatorAware;
 import domain.flight.Seat;
-import domain.reservation.Reservation;
 import domain.reservation.SeatReservation;
 import domain.user.Passenger;
+import service.BookingService;
+import util.session.BookingSession;
+
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -14,9 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import service.BookingService;
-import util.session.BookingSession;
-import util.session.SessionHandler;
 
 import java.time.format.DateTimeFormatter;
 

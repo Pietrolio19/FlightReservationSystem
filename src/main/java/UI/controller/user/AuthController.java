@@ -5,10 +5,9 @@ import UI.navigator.NavigatorAware;
 import dto.user.LoginRequest;
 import javafx.scene.control.Label;
 import service.AuthService;
-
 import dto.user.SignUpRequest;
+
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 

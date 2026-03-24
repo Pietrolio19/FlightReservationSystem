@@ -13,9 +13,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 import service.SeatReservationService;
 import util.session.BookingSession;
-import util.session.SessionHandler;
 
-import java.awt.print.Book;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 

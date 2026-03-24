@@ -7,6 +7,11 @@ import domain.user.Passenger;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -20,10 +25,11 @@ import java.util.*;
 public class PassengerController implements NavigatorAware {
     //attributi
     private Navigator navigator;
-    private final Map<String, Map<String, Control>> cardFields = new HashMap<>();
+    private final Map<String, Map<String, Control>> cardFields = new HashMap<>(); //mappa per tenere traccia dei Fields nelle card
     private final BookingService bookingService = new BookingService();
     private final BookingSession session = BookingSession.getInstance();
-    private final ToggleGroup toggleGroup = new ToggleGroup();
+    private final ToggleGroup toggleGroup = new ToggleGroup(); // oggetto per tenere traccia dei RadioButton nelle card
+    private final Map<String, ToggleButton> toggleButtonMap = new HashMap<>(); //mappa per tenere traccia dei ToggleButton per i companion nelle card
 
     @FXML
     private VBox passengerCardsArea;
@@ -37,14 +43,17 @@ public class PassengerController implements NavigatorAware {
     @FXML
     private void initialize() {
         createPassengerCardList();
-
         toggleGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
             if(newToggle != null) {
                 String seatCode = (String) newToggle.getUserData();
+                toggleButtonMap.get(seatCode).setVisible(false);
+                toggleButtonMap.get(seatCode).setManaged(false);
                 autocompleteUserInfo(seatCode);
             }
             if(oldToggle != null) {
                 String seatCode = (String) oldToggle.getUserData();
+                toggleButtonMap.get(seatCode).setVisible(true);
+                toggleButtonMap.get(seatCode).setManaged(true);
                 removeAutocompleteData(seatCode);
             }
         });
@@ -63,6 +72,18 @@ public class PassengerController implements NavigatorAware {
         Map<String, Control> fields = new HashMap<>();
 
         Label seatLabel = new Label("Posto " + seat.getSeatCode());
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        ImageView bookmark = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/UI/images/bookmark.png")).toExternalForm()));
+
+        ToggleButton button = new ToggleButton("Salva Companion");
+        button.setUserData(seat.getSeatCode());
+        button.setGraphic(bookmark);
+        button.setContentDisplay(ContentDisplay.LEFT);
+        button.setGraphicTextGap(8);
+        toggleButtonMap.put(seat.getSeatCode(), button);
+
+        HBox seatRow = new HBox(seatLabel, spacer, button);
 
         Label nameLabel = new Label("Nome:");
         TextField nameField = new TextField();
@@ -121,14 +142,14 @@ public class PassengerController implements NavigatorAware {
 
         HBox lastRow = new HBox(100, codFiscBox, codIdBox, phoneBox);
 
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
+        Region radioSpacer = new Region();
+        HBox.setHgrow(radioSpacer, Priority.ALWAYS);
         RadioButton radioButton = new RadioButton("Sono io");
         radioButton.setUserData(seat.getSeatCode());
         radioButton.setToggleGroup(toggleGroup);
 
-        HBox buttonRow = new HBox(spacer, radioButton);
-        VBox card = new VBox(10, seatLabel, firstRow, secondRow, thirdRow, lastRow, buttonRow);
+        HBox buttonRow = new HBox(radioSpacer, radioButton);
+        VBox card = new VBox(10, seatRow, firstRow, secondRow, thirdRow, lastRow, buttonRow);
 
         //Associazione CSS
         seatLabel.getStyleClass().add("passenger-card-text");
@@ -170,11 +191,13 @@ public class PassengerController implements NavigatorAware {
     }
 
     private void savePassengersData() {
-        Toggle selectedToggle = toggleGroup.getSelectedToggle();
-        String selfSeatCode = selectedToggle != null ? (String) selectedToggle.getUserData() : null;
+        Toggle selectedRadio = toggleGroup.getSelectedToggle();
+        String selfSeatCode = selectedRadio != null ? (String) selectedRadio.getUserData() : null;
+        Toggle selectedToggle;
         for(Map.Entry<String, Map<String, Control>> entry: cardFields.entrySet()){
             String seatCode = entry.getKey();
             Map<String, Control> fields = entry.getValue();
+            selectedToggle = toggleButtonMap.get(seatCode);
 
             Passenger passenger = new Passenger();
 
@@ -188,6 +211,8 @@ public class PassengerController implements NavigatorAware {
             passenger.setCodFisc(((TextField) fields.get("codFisc")).getText());
             passenger.setCodId(((TextField) fields.get("codId")).getText());
             passenger.setPhoneNumber(((TextField) fields.get("phone")).getText());
+            if(selectedToggle.isSelected())
+                passenger.setCompanionOwner(SessionHandler.getInstance().getCurrentUser());
 
             bookingService.mapPassengersAndSeats(seatCode, passenger);
             if(seatCode.equals(selfSeatCode))

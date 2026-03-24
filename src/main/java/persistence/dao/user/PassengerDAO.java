@@ -60,6 +60,29 @@ public class PassengerDAO implements CrudDAO<Passenger, Long> {
         return Optional.empty();
     }
 
+    public List<Passenger> findByCompanionOwner(Long id) {
+        String sql= """
+                    SELECT *
+                    FROM Passenger p
+                    WHERE companion_owner = ?
+                    """;
+        List<Passenger> result = new ArrayList<>();
+        try(Connection conn = DBManager.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setLong(1, id);
+            try(ResultSet rs = ps.executeQuery()){
+                while(rs.next())
+                    result.add(mapRow(rs));
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
     @Override
     public List<Passenger> findAll() {
         String sql = """

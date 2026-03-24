@@ -1,9 +1,5 @@
 package UI.controller.user;
 
-import domain.flight.Aircraft;
-import domain.flight.Airline;
-import domain.flight.Airport;
-import domain.flight.Flight;
 import domain.reservation.Reservation;
 import domain.user.Passenger;
 import domain.user.User;
@@ -12,17 +8,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import service.UserProfileSerivce;
+import service.UserProfileService;
 import util.session.SessionHandler;
 
-import java.sql.Time;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class UserProfileController {
     //attributi
-    UserProfileSerivce userProfileSerivce = new UserProfileSerivce();
+    UserProfileService userProfileSerivce = new UserProfileService();
+
     //attributi FXML
     @FXML private VBox userInfo;
 
@@ -34,6 +29,7 @@ public class UserProfileController {
     private void initialize() {
         loadUserInfo();
         loadReservation();
+        loadCompanions();
     }
 
     //funzioni per creare la parte anagrafica
@@ -50,7 +46,7 @@ public class UserProfileController {
                 new HBox(1, new Label("Email: "),          new Label(user.getEmail())),
                 new HBox(1, new Label("Nome: "),           new Label(user.getSelfPassenger().getName())),
                 new HBox(1, new Label("Cognome: "),        new Label(user.getSelfPassenger().getSurname())),
-                new HBox(1, new Label("Data di nascita: "),new Label(user.getSelfPassenger().getDateOfBirth().toString())),
+                new HBox(1, new Label("Data di nascita: "),new Label(user.getSelfPassenger().getDateOfBirth().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))),
                 new HBox(1, new Label("Indirizzo: "),      new Label(user.getSelfPassenger().getAddress())),
                 new HBox(1, new Label("Città: "),          new Label(user.getSelfPassenger().getCity())),
                 new HBox(1, new Label("Provincia: "),      new Label(user.getSelfPassenger().getProvince())),
@@ -77,25 +73,28 @@ public class UserProfileController {
                 new HBox(3, new Label("Volo: "), new Label(reservation.getFlight().getFlightCode())),
                 new HBox(3, new Label("Da: "), new Label(reservation.getFlight().getDeparture().getName())),
                 new HBox(3, new Label("A: "), new Label(reservation.getFlight().getArrival().getName())),
-                new HBox(3, new Label("Data Partenza-Arrivo: "), new Label(reservation.getFlight().getDepartureDate().toString()
+                new HBox(3, new Label("Data Partenza-Arrivo: "), new Label(reservation.getFlight().getDepartureDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                                                                                 + "->"
-                                                                                + reservation.getFlight().getArrivalDate().toString())),
-                new HBox(3, new Label("Orario Partenza-Arrivo: "), new Label(reservation.getFlight().getDepartureTime().toString()
+                                                                                + reservation.getFlight().getArrivalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))),
+                new HBox(3, new Label("Orario Partenza-Arrivo: "), new Label(reservation.getFlight().getDepartureTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
                                                                                 + "->"
-                                                                                + reservation.getFlight().getArrivalTime().toString())),
+                                                                                + reservation.getFlight().getArrivalTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")))),
                 new HBox(3, new Label("Durata Totale: "), new Label(reservation.getFlight().formattedDuration())),
                 new HBox(3, new Label("Operato da: "), new Label(reservation.getFlight().getAirline().getName())),
                 new HBox(3, new Label("Velivolo: "), new Label(reservation.getFlight().getAircraft().getModel())),
                 new HBox(3, new Label("Numero Prenotazione: "), new Label(String.valueOf(reservation.getReservationId()))),
-                new HBox(3, new Label("Stato Prenotazione: "), new Label(reservation.getState())),
+                new HBox(3, new Label("Stato Prenotazione: "), new Label(reservation.getFormattedState())),
                 new Separator()
         );
 
         return vbox;
     }
+
     //funzioni per creare la parte Companions
-    private void loadCompanions(User user){
-        List<Passenger> comp = user.getCompanions();
+    private void loadCompanions(){
+        List<Passenger> comp = userProfileSerivce.getUserCompanions();
+        if(comp.isEmpty())
+            companions.setVisible(false);
         companions.getChildren().clear();
         companions.getChildren().addAll(createCompanions(comp));
     }
@@ -114,7 +113,7 @@ public class UserProfileController {
                     passengerMarkerLabel,
                     new HBox(1, new Label("Nome: "),           new Label(p.getName())),
                     new HBox(1, new Label("Cognome: "),        new Label(p.getSurname())),
-                    new HBox(1, new Label("Data di nascita: "),new Label(p.getDateOfBirth().toString())),
+                    new HBox(1, new Label("Data di nascita: "),new Label(p.getDateOfBirth().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))),
                     new HBox(1, new Label("Indirizzo: "),      new Label(p.getAddress())),
                     new HBox(1, new Label("Città: "),          new Label(p.getCity())),
                     new HBox(1, new Label("Provincia: "),      new Label(p.getProvince())),
