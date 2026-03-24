@@ -1,9 +1,6 @@
 package service;
 
-import domain.flight.Airport;
-import domain.flight.Aircraft;
-import domain.flight.Airline;
-import domain.flight.Flight;
+import domain.flight.*;
 import dto.flight.FlightSearchRequest;
 import dto.flight.FlightSearchResult;
 import dto.flight.SeatAvailability;
@@ -79,7 +76,12 @@ public class FlightService {
 
             if(request.getJourneyType().equals("Solo Andata")){
                 List<Flight> flights = objectMapper(flightDAO.oneWayFlightSearch(departureId, arrivalId, request.getDepartureDate()));
-                result.setOutwardFlights(flights);
+                for(Flight f : flights){
+                    SeatAvailability seatAvailability = seatDAO.getSeatAvailabilityByFlightId(f.getFlightId());
+                    if(request.getTotalPassengers() <= seatAvailability.getAvailableSeats())
+                        outward.add(f);
+                }
+                result.setOutwardFlights(outward);
                 return result;
             }
 

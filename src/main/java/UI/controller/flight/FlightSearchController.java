@@ -57,8 +57,6 @@ public class FlightSearchController implements NavigatorAware {
 
     @FXML private ComboBox<String> journeyType;
 
-    @FXML private CheckBox checkDirect;
-
     //menu a tendina per la selzione dei passeggeri
     @FXML private HBox passengerSelector;
 
@@ -82,8 +80,6 @@ public class FlightSearchController implements NavigatorAware {
         journeyType.getItems().addAll("Andata e Ritorno", "Solo Andata");
         journeyType.setValue("Andata e Ritorno");
         journeyType.valueProperty().addListener((ov, oldV, newV) -> checkFlightType(newV));
-
-        checkDirect.setSelected(false);
 
         initializeComboBox();
 
@@ -268,6 +264,11 @@ public class FlightSearchController implements NavigatorAware {
     }
 
     private void updateFlightsTable(List<Flight> flights) {
+        if(flights == null || flights.isEmpty()){
+            flightsTable.setItems(FXCollections.observableArrayList());
+            flightsTable.setPlaceholder(new Label("Nessun volo disponibile per la ricerca"));
+            return;
+        }
         ObservableList<Flight> obsFlights = FXCollections.observableArrayList(flights);
         ObservableList<Flight> availableFlights = FXCollections.observableArrayList();
         for(Flight f : obsFlights){
@@ -376,8 +377,11 @@ public class FlightSearchController implements NavigatorAware {
     private void onSearchClicked() {
         FlightSearchRequest request = new FlightSearchRequest();
 
+        int total = Adults.getValue() + Children.getValue() + Newborns.getValue();
         request.setDepartureAirport(departureField.getEditor().getText().trim().toLowerCase());
         request.setArrivalAirport(arrivalField.getEditor().getText().trim().toLowerCase());
+        request.setTotalPassengers(total);
+        BookingSession.getInstance().setTotalPassengers(total);
         request.setDepartureDate(datePickerDeparture.getValue());
         request.setReturnDate(datePickerReturn.getValue());
         request.setJourneyType(journeyType.getValue());

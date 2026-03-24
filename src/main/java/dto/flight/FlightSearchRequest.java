@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 public class FlightSearchRequest {
     //attributi
-    //TODO controllare come modificare la logica per aggiungere: numero passeggeri, animali, voli diretti
     private String departureAirport;
     private String arrivalAirport;
+    private int totalPassengers;
     private LocalDate departureDate;
     private LocalDate returnDate;
     private String journeyType;
@@ -25,6 +25,14 @@ public class FlightSearchRequest {
 
     public void setArrivalAirport(String arrivalAirport) {
         this.arrivalAirport = arrivalAirport;
+    }
+
+    public int getTotalPassengers() {
+        return this.totalPassengers;
+    }
+
+    public void setTotalPassengers(int total) {
+        this.totalPassengers = total;
     }
 
     public LocalDate getDepartureDate() {

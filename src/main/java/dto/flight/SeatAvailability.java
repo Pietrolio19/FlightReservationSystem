@@ -5,8 +5,6 @@ public class SeatAvailability {
     private int confirmedSeats;
     private int availableSeats;
 
-    public SeatAvailability() {}
-
     public SeatAvailability(int totalSeats, int confirmedSeats, int availableSeats) {
         this.totalSeats = totalSeats;
         this.confirmedSeats = confirmedSeats;

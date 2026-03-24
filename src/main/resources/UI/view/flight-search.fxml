@@ -47,7 +47,6 @@
                                     <HBox styleClass="search-bar">
                                         <VBox alignment="BOTTOM_CENTER">
                                             <ComboBox fx:id="journeyType" styleClass="journey-type"/>
-                                            <CheckBox fx:id="checkDirect" text="Solo voli diretti" styleClass="direct-flight"> </CheckBox>
                                         </VBox>
                                         <Region HBox.hgrow="ALWAYS"/> <!-- spacer -->
                                         <HBox spacing="50">

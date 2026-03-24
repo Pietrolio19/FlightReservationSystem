@@ -10,6 +10,7 @@ import java.util.*;
 public class BookingSession {
     private static BookingSession instance;
     private Flight selectedFlight;
+    private int totalPassengers;
     private List<Seat> selectedSeats = new ArrayList<>();
     private List<Passenger> passengers = new ArrayList<>();
     private List<SeatReservation> seatReservations = new ArrayList<>();
@@ -35,6 +36,14 @@ public class BookingSession {
 
     public void setSelectedSeats(List<Seat> selectedSeats) {
         this.selectedSeats = selectedSeats;
+    }
+
+    public int getTotalPassengers() {
+        return totalPassengers;
+    }
+
+    public void setTotalPassengers(int totalPassengers) {
+        this.totalPassengers = totalPassengers;
     }
 
     public void addSeat(Seat seat){
