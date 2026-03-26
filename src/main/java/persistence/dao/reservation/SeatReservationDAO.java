@@ -143,6 +143,7 @@ public class SeatReservationDAO implements CrudDAO<SeatReservation, Long> {
     private SeatReservation mapRow(ResultSet rs) throws SQLException {//TODO aggiungere service per passenger reservation e seat
         SeatReservation seatReservation = new SeatReservation();
 
+        seatReservation.setSeatReservationId(rs.getLong("id"));
         Passenger passenger = new Passenger();
         passenger.setPassengerId(rs.getLong("passenger_id"));
         seatReservation.setPassenger(passenger);

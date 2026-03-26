@@ -7,6 +7,7 @@ module flightreservationsystem {
 
     opens UI to javafx.fxml;
     opens UI.controller to javafx.fxml;
+    opens UI.controller.admin to javafx.fxml;
     exports UI;
     exports UI.controller;
     exports UI.controller.user;

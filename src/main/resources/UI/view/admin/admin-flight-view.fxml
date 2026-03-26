@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="UI.controller.admin.AdminFlightController"
+            prefHeight="400.0" prefWidth="600.0">
+    <HBox fx:id="mainBox"
+          AnchorPane.topAnchor="0.0"
+          AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0"
+          AnchorPane.rightAnchor="0.0">
+        <VBox fx:id="leftBox">
+            <Label text="Voli"/>
+            <ListView fx:id="flightListView">
+
+            </ListView>
+        </VBox>
+        <VBox fx:id="rightBox">
+            <Label fx:id="idLabel" styleClass="admin-label-text"/>
+            <Label fx:id="flightCodeLabel" styleClass="admin-label-text"/>
+            <Label fx:id="departureLabel" styleClass="admin-label-text"/>
+            <Label fx:id="arrivalLabel" styleClass="admin-label-text"/>
+            <Label fx:id="departureDateLabel" styleClass="admin-label-text"/>
+            <Label fx:id="arrivalDateLabel" styleClass="admin-label-text"/>
+            <Label fx:id="departureTimeLabel" styleClass="admin-label-text"/>
+            <Label fx:id="arrivalTimeLabel" styleClass="admin-label-text"/>
+            <Label fx:id="airlineIdLabel" styleClass="admin-label-text"/>
+            <Label fx:id="aircraftIdLabel" styleClass="admin-label-text"/>
+        </VBox>
+
+    </HBox>
+
+</AnchorPane>

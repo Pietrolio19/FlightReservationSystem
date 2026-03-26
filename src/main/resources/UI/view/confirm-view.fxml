@@ -69,7 +69,7 @@
             <HBox>
                 <Button fx:id="backToPassenger" text="Indietro" styleClass="secondary-button"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Button fx:id="confirmButton" styleClass="primary-button"/>
+                <Button fx:id="confirmButton" text="Conferma" styleClass="primary-button"/>
                 <Label fx:id="confirmLabel"/>
             </HBox>
         </VBox>

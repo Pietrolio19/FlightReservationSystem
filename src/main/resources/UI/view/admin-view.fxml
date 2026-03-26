@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="UI.controller.admin.AdminController"
+            prefHeight="400.0" prefWidth="600.0">
+    <children>
+        <HBox fx:id="mainBox"
+              AnchorPane.topAnchor="0.0"
+              AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0">
+
+            <VBox fx:id="leftBox" styleClass="admin-dashboard">
+                <Label text="Admin Panel"/>
+                <Button fx:id="userButton" text="Utenti"/>
+                <Button fx:id="flightButton" text="Voli"/>
+                <Button fx:id="reservationButton" text="Prenotazioni"/>
+                <Button fx:id="seatButton" text="Posti"/>
+                <Button fx:id="passengerButton" text="Passeggeri"/>
+
+                <Region VBox.vgrow="ALWAYS"/>
+
+                <Button fx:id="backToMain" text="Indietro"/>
+            </VBox>
+            <AnchorPane fx:id="viewArea" HBox.hgrow="ALWAYS">
+                <children>
+
+                </children>
+            </AnchorPane>
+        </HBox>
+    </children>
+
+</AnchorPane>

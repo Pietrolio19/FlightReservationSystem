@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 enum FidelityStatus {BRONZE, SILVER, GOLD, PLATINUM}
+enum UserRole {USER, ADMIN}
 
 public class User {
     //attributi
@@ -14,7 +15,8 @@ public class User {
     private int fidelityPoints = 0;
     private FidelityStatus fidelityStatus =  FidelityStatus.BRONZE;
     private final ArrayList<Passenger> companions =  new ArrayList<>();
-    private Passenger selfPassenger; //lo user crea un passeggero clone per prenotare i posti
+    private Passenger selfPassenger; //lo user ha un passeggero associato per i dati anagrafici
+    private UserRole userRole = UserRole.USER;
 
     //costruttori
     public User(){}
@@ -71,10 +73,6 @@ public class User {
         return fidelityStatus.toString();
     }
 
-    public void setFidelityStatus(FidelityStatus fidelityStatus) {
-        this.fidelityStatus = fidelityStatus;
-    }
-
     //setter per chi non vede l'enum
     public void setFidelityStatus(String status) {
         if (status != null) {
@@ -99,11 +97,11 @@ public class User {
     }
 
     public void calculateFidelityStatus() {
-        if (this.fidelityPoints >= 100000) {
+        if (this.fidelityPoints >= 10000) {
             this.fidelityStatus = FidelityStatus.PLATINUM;
-        } else if (this.fidelityPoints >= 50000) {
+        } else if (this.fidelityPoints >= 5000) {
             this.fidelityStatus = FidelityStatus.GOLD;
-        } else if (this.fidelityPoints >= 20000) {
+        } else if (this.fidelityPoints >= 2000) {
             this.fidelityStatus = FidelityStatus.SILVER;
         } else {
             this.fidelityStatus = FidelityStatus.BRONZE;
@@ -116,5 +114,17 @@ public class User {
 
     public void setSelfPassenger(Passenger selfPassenger) {
         this.selfPassenger = selfPassenger;
+    }
+
+    public String getUserRole() {
+        return userRole.toString();
+    }
+
+    public void setUserRole(String role) {
+        if(role != null) {
+            this.userRole = UserRole.valueOf(role);
+        } else {
+            this.userRole = null;
+        }
     }
 }

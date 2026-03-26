@@ -14,6 +14,7 @@
             </HBox>
             <Region HBox.hgrow="ALWAYS"/>
             <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button fx:id="adminButton" text="Admin" styleClass="user-profile-button" visible="false" managed="false"/>
                 <Button fx:id="userProfileButton" text="Accedi" styleClass="user-profile-button"/>
             </HBox>
         </HBox>

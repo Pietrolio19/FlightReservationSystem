@@ -18,7 +18,7 @@ public class SeatDAO implements CrudDAO<Seat, Long> {
     public Optional<Seat> findById(Long id) {
         String sql= """
                         SELECT id, flight_id, seat_row, letter,
-                               type, classs, price
+                               type, class, price
                         FROM Seat
                         WHERE id = ?
                     """;
@@ -172,7 +172,7 @@ public class SeatDAO implements CrudDAO<Seat, Long> {
     @Override
     public void insert(Seat entity) {
         String  sql = """
-                        INSERT INTO Seat(flight_id, seat_row, letter, type, classs, price)
+                        INSERT INTO Seat(flight_id, seat_row, letter, type, class, price)
                         VALUES (?, ?, ?, ?, ?, ?)
                      """;
 

@@ -367,3 +367,13 @@
     -fx-border-width: 0 0 2 0;
     -fx-border-color: #1E88E5;
 }
+
+/* admin */
+.admin-dashboard {
+    -fx-border-width: 0 2 0 0;
+    -fx-border-color: #1E88E5;;
+}
+
+.admin-label-text {
+    -fx-font-size: 26;
+}

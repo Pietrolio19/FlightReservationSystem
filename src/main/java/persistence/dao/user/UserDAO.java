@@ -195,7 +195,7 @@ public class UserDAO implements CrudDAO<User, Long> {
         }
     }
 
-    private User mapRow(ResultSet rs) throws SQLException { //TODO aggiungere service per passenger
+    private User mapRow(ResultSet rs) throws SQLException {
         User user = new User();
 
         user.setUserId(rs.getLong("id"));
@@ -204,6 +204,11 @@ public class UserDAO implements CrudDAO<User, Long> {
         user.setHashPassword(rs.getString("hashed_password"));
         user.setFidelityPoints(rs.getInt("fidelity_points"));
         user.setFidelityStatus(rs.getString("fidelity_status"));
+        boolean admin = rs.getBoolean("is_admin");
+        if(admin)
+            user.setUserRole("ADMIN");
+        else
+            user.setUserRole("USER");
 
         Passenger passenger = new Passenger();
         passenger.setPassengerId(rs.getLong("self_passenger_id"));

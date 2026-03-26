@@ -14,17 +14,22 @@ import java.io.IOException;
 
 public class MainController implements Navigator {
     //attributi FXML
-    @FXML private Button backToMain;
+    @FXML
+    private Button backToMain;
 
-    @FXML private Button userProfileButton;
+    @FXML
+    private Button userProfileButton;
 
-    @FXML private StackPane contentArea;
+    @FXML
+    private Button adminButton;
+
+    @FXML
+    private StackPane contentArea;
 
     @FXML
     private void initialize() {
-        //carica la prima view
         loadView("flight-search.fxml");
-        backToMain.setOnAction(event -> {
+        backToMain.setOnAction(e -> {
             loadView("flight-search.fxml");
             BookingSession.getInstance().clear();
         });
@@ -56,6 +61,11 @@ public class MainController implements Navigator {
         if(SessionHandler.getInstance().isLoggedIn()) {
             userProfileButton.setText("Profilo");
             userProfileButton.setOnAction(e -> loadView("user-profile-view.fxml"));
+            if(SessionHandler.getInstance().getCurrentUser().getUserRole().equals("ADMIN")){
+                adminButton.setVisible(true);
+                adminButton.setManaged(true);
+                adminButton.setOnAction(e -> loadView("admin-view.fxml"));
+            }
         }
         else {
             userProfileButton.setText("Accedi");

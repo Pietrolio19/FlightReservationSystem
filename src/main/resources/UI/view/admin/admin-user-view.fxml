@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="UI.controller.admin.AdminUserController"
+            prefHeight="400.0" prefWidth="600.0">
+    <HBox fx:id="mainBox"
+          AnchorPane.topAnchor="0.0"
+          AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0"
+          AnchorPane.rightAnchor="0.0">
+        <VBox fx:id="leftBox">
+            <Label text="Utenti"/>
+            <ListView fx:id="userListView">
+
+            </ListView>
+        </VBox>
+        <VBox fx:id="rightBox">
+            <Label fx:id="usernameLabel" styleClass="admin-label-text"/>
+            <Label fx:id="emailLabel" styleClass="admin-label-text"/>
+        </VBox>
+
+    </HBox>
+</AnchorPane>
