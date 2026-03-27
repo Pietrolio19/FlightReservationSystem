@@ -16,11 +16,11 @@
                 xmlns="http://javafx.com/javafx"
                 xmlns:fx="http://javafx.com/fxml">
         <content>
-            <VBox>
-                <HBox>
-                    <Button fx:id="allButton" text="Tutte"/>
-                    <Button fx:id="activeButton" text="Attive"/>
-                    <Button fx:id="removedButton" text="Cancellate"/>
+            <VBox spacing="10">
+                <HBox spacing="15" styleClass="manage-card-wrapper">
+                    <Button fx:id="allButton" text="Tutte" styleClass="primary-button"/>
+                    <Button fx:id="activeButton" text="Attive" styleClass="primary-button"/>
+                    <Button fx:id="removedButton" text="Cancellate" styleClass="primary-button"/>
                 </HBox>
                 <VBox fx:id="reservationsContainer"
                       spacing="12"

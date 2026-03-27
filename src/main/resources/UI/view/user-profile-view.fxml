@@ -15,9 +15,11 @@
                     <ColumnConstraints percentWidth="25"/> <!-- Colonna Companions  -->
                 </columnConstraints>
 
-                <VBox GridPane.columnIndex="0" maxWidth="Infinity">
-                    <Label text="Anagrafica" styleClass="user-profile-vbox-label"/>
-                    <VBox fx:id="userInfo" styleClass="user-profile-info-vbox"/>
+                <VBox GridPane.columnIndex="0" maxWidth="Infinity" spacing="10">
+                    <VBox>
+                        <Label text="Anagrafica" styleClass="user-profile-vbox-label"/>
+                        <VBox fx:id="userInfo" styleClass="user-profile-info-vbox"/>
+                    </VBox>
                     <Button fx:id="manageReservation" text="Gestici Prenotazioni" styleClass="primary-button"/>
                 </VBox>
                 <VBox GridPane.columnIndex="1" maxWidth="Infinity">

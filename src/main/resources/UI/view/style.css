@@ -411,3 +411,7 @@
     -fx-font-weight: bold;
     -fx-font-size: 14px;
 }
+
+.manage-card-wrapper {
+    -fx-padding: 10;
+}
