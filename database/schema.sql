@@ -5,7 +5,8 @@ CREATE TABLE Utente(
 	hashed_password VARCHAR(255) NOT NULL,
 	fidelity_points INT DEFAULT 0,
 	fidelity_status VARCHAR(50),
-	self_passenger_id BIGINT UNIQUE
+	self_passenger_id BIGINT UNIQUE,
+    is_admin BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE Airport(
@@ -44,7 +45,7 @@ CREATE TABLE Passenger(
 	cod_ID VARCHAR(50) UNIQUE,
 	phone_number VARCHAR(50),
 	companion_owner BIGINT REFERENCES Utente(id)
-		ON DELETE CASCADE 
+		ON DELETE CASCADE
 		ON UPDATE CASCADE
 );
 

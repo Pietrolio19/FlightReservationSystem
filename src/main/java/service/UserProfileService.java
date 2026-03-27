@@ -3,6 +3,7 @@ package service;
 import domain.flight.Flight;
 import domain.reservation.Reservation;
 import domain.user.Passenger;
+import domain.user.User;
 import persistence.dao.flight.FlightDAO;
 import persistence.dao.reservation.ReservationDAO;
 import persistence.dao.user.PassengerDAO;
@@ -19,12 +20,20 @@ public class UserProfileService {
     private final SessionHandler session = SessionHandler.getInstance();
 
     public void getSelfPassengerInfo() {
-        Optional<Passenger> currentPassenger = passengerDAO.findById(session.getCurrentUser().getSelfPassenger().getPassengerId());
-        Passenger current = currentPassenger.orElseThrow(() -> new IllegalArgumentException("Passeggero non valido"));
+        User currentUser = session.getCurrentUser();
 
-        session.getCurrentUser().setSelfPassenger(current);
+        if (currentUser == null || currentUser.getSelfPassenger() == null) {
+            return;
+        }
+
+        Long passengerId = currentUser.getSelfPassenger().getPassengerId();
+        if (passengerId == null) {
+            return;
+        }
+
+        Optional<Passenger> currentPassenger = passengerDAO.findById(passengerId);
+        currentPassenger.ifPresent(currentUser::setSelfPassenger);
     }
-
     public List<Reservation> getUserReservations() {
         List<Reservation> reservationList = reservationDAO.findByUser(session.getCurrentUser().getUserId());
 

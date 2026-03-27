@@ -39,26 +39,45 @@ public class UserProfileController {
         userInfo.getChildren().addAll(createUserInfo(SessionHandler.getInstance().getCurrentUser()));
     }
 
-    private VBox createUserInfo(User user){
+    private VBox createUserInfo(User user) {
         VBox vbox = new VBox(7);
+
         vbox.getChildren().addAll(
-                new HBox(1, new Label("Username: "),       new Label(user.getUsername())),
-                new HBox(1, new Label("Email: "),          new Label(user.getEmail())),
-                new HBox(1, new Label("Nome: "),           new Label(user.getSelfPassenger().getName())),
-                new HBox(1, new Label("Cognome: "),        new Label(user.getSelfPassenger().getSurname())),
-                new HBox(1, new Label("Data di nascita: "),new Label(user.getSelfPassenger().getDateOfBirth().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))),
-                new HBox(1, new Label("Indirizzo: "),      new Label(user.getSelfPassenger().getAddress())),
-                new HBox(1, new Label("Città: "),          new Label(user.getSelfPassenger().getCity())),
-                new HBox(1, new Label("Provincia: "),      new Label(user.getSelfPassenger().getProvince())),
-                new HBox(1, new Label("Paese: "),          new Label(user.getSelfPassenger().getCountry())),
-                new HBox(1, new Label("Codice fiscale: "), new Label(user.getSelfPassenger().getCodFisc())),
-                new HBox(1, new Label("Cod. ID: "),        new Label(user.getSelfPassenger().getCodId())),
-                new HBox(1, new Label("Telefono: "),       new Label(user.getSelfPassenger().getPhoneNumber())),
-                new HBox(1, new Label("Punti Fedeltà:" ), new Label(String.valueOf(user.getFidelityPoints()))),
-                new HBox(1, new Label("Status Fedeltà:" ), new Label(String.valueOf(user.getFidelityStatus())))
+                new HBox(1, new Label("Username: "), new Label(user.getUsername())),
+                new HBox(1, new Label("Email: "), new Label(user.getEmail())),
+                new HBox(1, new Label("Punti Fedeltà: "), new Label(String.valueOf(user.getFidelityPoints()))),
+                new HBox(1, new Label("Status Fedeltà: "), new Label(String.valueOf(user.getFidelityStatus())))
         );
 
+        Passenger passenger = user.getSelfPassenger();
+
+        if (passenger != null) {
+            vbox.getChildren().addAll(
+                    new HBox(1, new Label("Nome: "), new Label(passenger.getName())),
+                    new HBox(1, new Label("Cognome: "), new Label(passenger.getSurname())),
+                    new HBox(1, new Label("Data di nascita: "),
+                            new Label(passenger.getDateOfBirth() != null
+                                    ? passenger.getDateOfBirth().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                                    : "-")),
+                    new HBox(1, new Label("Indirizzo: "), new Label(safe(passenger.getAddress()))),
+                    new HBox(1, new Label("Città: "), new Label(safe(passenger.getCity()))),
+                    new HBox(1, new Label("Provincia: "), new Label(safe(passenger.getProvince()))),
+                    new HBox(1, new Label("Paese: "), new Label(safe(passenger.getCountry()))),
+                    new HBox(1, new Label("Codice fiscale: "), new Label(safe(passenger.getCodFisc()))),
+                    new HBox(1, new Label("Cod. ID: "), new Label(safe(passenger.getCodId()))),
+                    new HBox(1, new Label("Telefono: "), new Label(safe(passenger.getPhoneNumber())))
+            );
+        } else {
+            vbox.getChildren().add(
+                    new Label("Nessun profilo passeggero associato.")
+            );
+        }
+
         return vbox;
+    }
+
+    private String safe(String value) { //controllo per primi login o accesso a pagina Profilo senza prenotazioni
+        return value != null ? value : "-";
     }
 
     //funzioni per creare la parte delle prenotazioni

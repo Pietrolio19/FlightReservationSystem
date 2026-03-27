@@ -22,6 +22,7 @@
             </ImageView>
         </HBox>
 
+        <Label fx:id="loginLabel"/>
         <Label fx:id="errorLabel" textFill="red" visible="false"/>
         <HBox spacing="15">
             <Label text="Username" styleClass="signup-text"/>
