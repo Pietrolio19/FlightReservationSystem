@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.chart.BubbleChart?>
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="UI.controller.user.UserProfileController" stylesheets="@style.css">
     <center>
@@ -17,6 +18,7 @@
                 <VBox GridPane.columnIndex="0" maxWidth="Infinity">
                     <Label text="Anagrafica" styleClass="user-profile-vbox-label"/>
                     <VBox fx:id="userInfo" styleClass="user-profile-info-vbox"/>
+                    <Button fx:id="manageReservation" text="Gestici Prenotazioni" styleClass="primary-button"/>
                 </VBox>
                 <VBox GridPane.columnIndex="1" maxWidth="Infinity">
                     <Label text="Prenotazioni" styleClass="user-profile-vbox-label"/>

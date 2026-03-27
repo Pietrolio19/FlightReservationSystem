@@ -377,3 +377,37 @@
 .admin-label-text {
     -fx-font-size: 26;
 }
+
+/* Manage Reservation */
+.reservations-container {
+    -fx-padding: 15;
+}
+
+.reservation-card {
+    -fx-padding: 14;
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #d9d9d9;
+    -fx-border-radius: 10;
+    -fx-spacing: 10;
+}
+
+.reservation-id-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.reservation-action-row {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.reservation-details-box {
+    -fx-padding: 10 0 0 0;
+    -fx-border-color: #dddddd transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+}
+
+.reservation-details-title {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}

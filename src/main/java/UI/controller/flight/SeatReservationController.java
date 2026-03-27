@@ -138,9 +138,13 @@ public class SeatReservationController implements NavigatorAware {
         button.setUserData(seat.getSeatCode());
 
         for (SeatState s : states) {
-            if (s.getSeat().getSeatId().equals(seat.getSeatId()) && s.getState() != null) {
-                button.setDisable(true);
-                break;
+            if (s.getSeat().getSeatId().equals(seat.getSeatId())) {
+                String state = s.getState();
+
+                if ("PENDING".equals(state) || "CONFIRMED".equals(state)) {
+                    button.setDisable(true);
+                    break;
+                }
             }
         }
 

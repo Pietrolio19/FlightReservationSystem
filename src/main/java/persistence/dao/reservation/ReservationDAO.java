@@ -148,7 +148,10 @@ public class ReservationDAO implements CrudDAO<Reservation, Long> {
 
             ps.setLong(1, entity.getUser().getUserId());
             ps.setLong(2, entity.getFlight().getFlightId());
-            //TODO rivedere classe Reservation e DB per consistenza
+            ps.setDate(3, Date.valueOf(entity.getDate()));
+            ps.setString(4, entity.getState());
+            ps.setLong(5, entity.getReservationId());
+
             ps.executeUpdate();
 
         } catch(SQLException e){

@@ -59,6 +59,27 @@ public class SeatReservationDAO implements CrudDAO<SeatReservation, Long> {
         return result;
     }
 
+    public List<SeatReservation> findByReservationId(Long id) {
+        String sql= """
+                    SELECT *
+                    FROM SeatReservation
+                    WHERE reservation_id = ?
+                    """;
+        List<SeatReservation> result = new ArrayList<>();
+        try(Connection conn = DBManager.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setLong(1, id);
+            try(ResultSet rs = ps.executeQuery()){
+                while(rs.next())
+                    result.add(mapRow(rs));
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     @Override
     public void save(SeatReservation entity) {
         if(entity.getSeatReservationId() == null){
@@ -119,7 +140,7 @@ public class SeatReservationDAO implements CrudDAO<SeatReservation, Long> {
     public void update(SeatReservation entity) {
         String sql= """
                         UPDATE SeatReservation
-                        SET passenger_id = ?, reservation = ?, seat_id = ?, date = ?, state = ?
+                        SET passenger_id = ?, reservation_id = ?, seat_id = ?, date = ?, state = ?
                         WHERE id = ?
                     """;
 
@@ -140,7 +161,7 @@ public class SeatReservationDAO implements CrudDAO<SeatReservation, Long> {
 
     }
 
-    private SeatReservation mapRow(ResultSet rs) throws SQLException {//TODO aggiungere service per passenger reservation e seat
+    private SeatReservation mapRow(ResultSet rs) throws SQLException {
         SeatReservation seatReservation = new SeatReservation();
 
         seatReservation.setSeatReservationId(rs.getLong("id"));

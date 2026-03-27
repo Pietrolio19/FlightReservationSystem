@@ -1,9 +1,12 @@
 package UI.controller.user;
 
+import UI.navigator.Navigator;
+import UI.navigator.NavigatorAware;
 import domain.reservation.Reservation;
 import domain.user.Passenger;
 import domain.user.User;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
@@ -14,9 +17,10 @@ import util.session.SessionHandler;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class UserProfileController {
+public class UserProfileController implements NavigatorAware {
     //attributi
-    UserProfileService userProfileSerivce = new UserProfileService();
+    private final UserProfileService userProfileSerivce = new UserProfileService();
+    private Navigator navigator;
 
     //attributi FXML
     @FXML private VBox userInfo;
@@ -25,11 +29,14 @@ public class UserProfileController {
 
     @FXML private VBox companions;
 
+    @FXML private Button manageReservation;
+
     @FXML
     private void initialize() {
         loadUserInfo();
         loadReservation();
         loadCompanions();
+        manageReservation.setOnAction(e -> navigator.loadView("manage-reservation.fxml"));
     }
 
     //funzioni per creare la parte anagrafica
@@ -84,8 +91,10 @@ public class UserProfileController {
     private void loadReservation(){
         reservations.getChildren().clear();
         List<Reservation> reservationsList = userProfileSerivce.getUserReservations();
-        for(Reservation r : reservationsList)
-            reservations.getChildren().addAll(createReservation(r));
+        for(Reservation r : reservationsList){
+            if(r.getState().equals("CONFIRMED"))
+                reservations.getChildren().addAll(createReservation(r));
+        }
     }
 
     private VBox createReservation(Reservation reservation){
@@ -145,5 +154,10 @@ public class UserProfileController {
             i++;
         }
         return vbox;
+    }
+
+    @Override
+    public void setNavigator(Navigator navigator) {
+        this.navigator = navigator;
     }
 }
