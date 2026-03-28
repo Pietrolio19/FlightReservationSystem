@@ -5,7 +5,7 @@ import UI.navigator.NavigatorAware;
 import domain.flight.Seat;
 import domain.reservation.SeatReservation;
 import domain.user.Passenger;
-import service.BookingService;
+import service.flight.BookingService;
 import util.session.BookingSession;
 
 import javafx.animation.PauseTransition;

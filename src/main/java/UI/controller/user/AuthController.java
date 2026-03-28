@@ -4,7 +4,7 @@ import UI.navigator.Navigator;
 import UI.navigator.NavigatorAware;
 import dto.user.LoginRequest;
 import javafx.scene.control.Label;
-import service.AuthService;
+import service.user.AuthService;
 import dto.user.SignUpRequest;
 
 import javafx.fxml.FXML;

@@ -1,7 +1,6 @@
-package service;
+package service.admin;
 
 import domain.flight.Flight;
-import domain.flight.Seat;
 import domain.reservation.Reservation;
 import domain.reservation.SeatReservation;
 import domain.user.User;
@@ -11,6 +10,7 @@ import persistence.dao.reservation.ReservationDAO;
 import persistence.dao.reservation.SeatReservationDAO;
 import persistence.dao.user.PassengerDAO;
 import persistence.dao.user.UserDAO;
+import service.flight.FlightService;
 
 import java.util.List;
 

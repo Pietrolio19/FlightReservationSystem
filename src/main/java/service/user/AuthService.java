@@ -1,4 +1,4 @@
-package service;
+package service.user;
 
 import domain.user.User;
 import dto.user.LoginRequest;

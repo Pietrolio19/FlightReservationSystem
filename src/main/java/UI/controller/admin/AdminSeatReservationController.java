@@ -1,13 +1,12 @@
 package UI.controller.admin;
 
-import domain.flight.Seat;
 import domain.reservation.SeatReservation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import service.AdminService;
+import service.admin.AdminService;
 
 import java.time.format.DateTimeFormatter;
 

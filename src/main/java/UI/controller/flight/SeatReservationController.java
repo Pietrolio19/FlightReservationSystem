@@ -12,7 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
-import service.SeatReservationService;
+import service.flight.SeatReservationService;
 import util.session.BookingSession;
 import java.time.format.DateTimeFormatter;
 import java.util.List;

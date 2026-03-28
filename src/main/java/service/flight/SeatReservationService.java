@@ -1,4 +1,4 @@
-package service;
+package service.flight;
 
 import domain.flight.Flight;
 import domain.flight.Seat;

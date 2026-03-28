@@ -1,4 +1,4 @@
-package service;
+package service.flight;
 
 import domain.flight.*;
 import dto.flight.FlightSearchRequest;
