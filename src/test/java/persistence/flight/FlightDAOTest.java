@@ -130,9 +130,11 @@ public class FlightDAOTest {
      @Test void update_should_modify_target_flight() {
          flight = new Flight(null, "AB234", departure, arrival, LocalDate.of(2026, 5, 1), LocalDate.of(2026, 5, 1),
                  Time.valueOf("08:00:00"), Time.valueOf("09:20:00"), 80, airline, aircraft);
+
          flightDAO.insert(flight);
          flight.setFlightCode("AB333");
          flightDAO.update(flight);
+
          flight = flightDAO.findById(flight.getFlightId()).orElseThrow(() -> new IllegalArgumentException("Volo non trovato"));
          assertEquals("AB333", flight.getFlightCode());
      }

@@ -204,7 +204,7 @@ public class SeatDAO implements CrudDAO<Seat, Long> {
         String sql= """
                         UPDATE Seat
                         SET flight_id = ?, seat_row = ?, letter = ?, type = ?,
-                            classs = ?, price = ?
+                            class = ?, price = ?
                         WHERE id = ?
                     """;
         try(Connection conn = DBManager.getInstance().getConnection();
