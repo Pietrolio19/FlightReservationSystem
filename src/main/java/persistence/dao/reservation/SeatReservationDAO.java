@@ -16,7 +16,7 @@ public class SeatReservationDAO implements CrudDAO<SeatReservation, Long> {
     @Override
     public Optional<SeatReservation> findById(Long id) {
         String sql= """
-                        SELECT passenger_id, reservation_id, seat_id, date, state
+                        SELECT *
                         FROM SeatReservation
                         WHERE id = ?
                     """;

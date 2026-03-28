@@ -1,6 +1,5 @@
 package domain.user;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 enum FidelityStatus {BRONZE, SILVER, GOLD, PLATINUM}
@@ -65,12 +64,12 @@ public class User {
         return fidelityPoints;
     }
 
-    public void setFidelityPoints(int fidelityPoints) {
+    public void addFidelityPoints(int fidelityPoints) {
         this.fidelityPoints += fidelityPoints;
     }
 
     public String getFidelityStatus() {
-        return fidelityStatus.toString();
+        return fidelityStatus != null ? fidelityStatus.toString() : null;
     }
 
     //setter per chi non vede l'enum
@@ -117,7 +116,7 @@ public class User {
     }
 
     public String getUserRole() {
-        return userRole.toString();
+        return userRole != null ? userRole.toString() : null;
     }
 
     public void setUserRole(String role) {

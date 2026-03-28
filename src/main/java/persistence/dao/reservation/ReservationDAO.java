@@ -160,7 +160,7 @@ public class ReservationDAO implements CrudDAO<Reservation, Long> {
 
     }
 
-    private Reservation mapRow(ResultSet rs) throws SQLException {//TODO aggiungere service per User e Flight
+    private Reservation mapRow(ResultSet rs) throws SQLException {
         Reservation reservation = new Reservation();
 
         reservation.setReservationId(rs.getLong("id"));

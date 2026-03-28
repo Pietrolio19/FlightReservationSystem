@@ -202,7 +202,7 @@ public class UserDAO implements CrudDAO<User, Long> {
         user.setUsername(rs.getString("username"));
         user.setEmail(rs.getString("email"));
         user.setHashPassword(rs.getString("hashed_password"));
-        user.setFidelityPoints(rs.getInt("fidelity_points"));
+        user.addFidelityPoints(rs.getInt("fidelity_points"));
         user.setFidelityStatus(rs.getString("fidelity_status"));
         boolean admin = rs.getBoolean("is_admin");
         if(admin)

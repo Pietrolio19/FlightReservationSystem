@@ -90,7 +90,7 @@ public class BookingService {
         for(Seat s : session.getSelectedSeats()){
             totalPrice += s.getPrice();
         }
-        SessionHandler.getInstance().getCurrentUser().setFidelityPoints(totalPrice);
+        SessionHandler.getInstance().getCurrentUser().addFidelityPoints(totalPrice);
         SessionHandler.getInstance().getCurrentUser().calculateFidelityStatus();
         userDAO.save(SessionHandler.getInstance().getCurrentUser());
     }
