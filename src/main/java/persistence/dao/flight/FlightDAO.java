@@ -45,19 +45,19 @@ public class FlightDAO implements CrudDAO<Flight, Long> {
                 WHERE flight_id=? AND sr.seat_id IS NULL
                 """;
         try(Connection conn = DBManager.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)){
+            PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, id);
-            try(ResultSet rs = ps.executeQuery()){
-                if(rs.next()){
+            try(ResultSet rs = ps.executeQuery()) {
+                if(rs.next()) {
                     int value = rs.getInt("start_price");
                     return Optional.of(value);
                 }
-                if(rs.wasNull()){
+                if(rs.wasNull()) {
                     return Optional.empty();
                 }
             }
-        } catch(SQLException e){
+        } catch(SQLException e) {
             e.printStackTrace();
         }
         return Optional.empty();
@@ -123,8 +123,8 @@ public class FlightDAO implements CrudDAO<Flight, Long> {
             PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
 
             ps.setString(1, entity.getFlightCode());
-            ps.setString(2, entity.getDeparture().getName());
-            ps.setString(3, entity.getArrival().getName());
+            ps.setLong(2, entity.getDeparture().getAirportId());
+            ps.setLong(3, entity.getArrival().getAirportId());
             ps.setDate(4, Date.valueOf(entity.getDepartureDate()));
             ps.setDate(5, Date.valueOf(entity.getArrivalDate()));
             ps.setTime(6, entity.getDepartureTime());
@@ -160,8 +160,8 @@ public class FlightDAO implements CrudDAO<Flight, Long> {
             PreparedStatement ps = conn.prepareStatement(sql)){
 
             ps.setString(1, entity.getFlightCode());
-            ps.setString(2, entity.getDeparture().getName());
-            ps.setString(3, entity.getArrival().getName());
+            ps.setLong(2, entity.getDeparture().getAirportId());
+            ps.setLong(3, entity.getArrival().getAirportId());
             ps.setDate(4, Date.valueOf(entity.getDepartureDate()));
             ps.setDate(5, Date.valueOf(entity.getArrivalDate()));
             ps.setTime(6, entity.getDepartureTime());

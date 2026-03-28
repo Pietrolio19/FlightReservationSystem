@@ -16,6 +16,14 @@ public class Seat {
     //costruttori
     public Seat(){}
 
+    public Seat(Long seatId, Flight flight, int row, String letter, int price) { //per test
+        this.seatId = seatId;
+        this.flight = flight;
+        this.row = row;
+        this.letter = letter;
+        this.price = price;
+    }
+
     public Seat(Long seatId, Flight flight, int row, String letter, SeatType type, SeatClass seatClass, int price) {
         this.seatId = seatId;
         this.flight = flight;

@@ -14,7 +14,6 @@ public class Flight {
     private Time  departureTime;
     private Time arrivalTime;
     private int duration; //espressa in minuti
-    private float price;
     private Airline airline;
     private Aircraft aircraft;
 
@@ -23,7 +22,7 @@ public class Flight {
 
     public Flight(Long flightId, String flightCode, Airport departure, Airport arrival,
                   LocalDate departureDate, LocalDate arrivalDate, Time departureTime,
-                  Time arrivalTime, int duration, float price, Airline airline, Aircraft aircraft) {
+                  Time arrivalTime, int duration, Airline airline, Aircraft aircraft) {
         this.flightId = flightId;
         this.flightCode = flightCode;
         this.departure = departure;
@@ -33,7 +32,6 @@ public class Flight {
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.duration = duration;
-        this.price = price;
         this.airline = airline;
         this.aircraft = aircraft;
     }
@@ -111,17 +109,11 @@ public class Flight {
         this.duration = duration;
     }
 
-    public void setPrice(float price) {this.price = price;}
-
     public String formattedDuration() {
         int hours = duration / 60;
         int minutes = duration % 60;
         String formattedMinutes = (minutes < 10) ? "0" + minutes: Integer.toString(minutes);
         return hours + "h" + formattedMinutes + "m";
-    }
-
-    public String formattedPrice() {
-        return price + "0€";
     }
 
     public Airline getAirline() {
