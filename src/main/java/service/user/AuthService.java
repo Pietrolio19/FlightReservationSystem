@@ -36,7 +36,7 @@ public class AuthService {
         SessionHandler.getInstance().login(user);
     }
 
-    public void validateLogin(LoginRequest request) {
+    private void validateLogin(LoginRequest request) {
         if (request.getEmail() == null || request.getEmail().isBlank()) {
             throw new IllegalArgumentException("Email obbligatoria");
         }

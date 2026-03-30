@@ -38,8 +38,7 @@ public class FlightService {
         }
 
         public int getMinPriceAvailable(Long flight_id){
-            Optional<Integer> tmpValue = flightDAO.findMinPriceAvailable(flight_id);
-            return tmpValue.orElseThrow(() -> new IllegalArgumentException("Volo non trovato"));
+            return flightDAO.findMinPriceAvailable(flight_id).orElseThrow(() -> new IllegalArgumentException("Volo non trovato"));
         }
 
         private void createAirportsMap() {
@@ -68,8 +67,9 @@ public class FlightService {
         }
 
         public FlightSearchResult searchFlights(FlightSearchRequest request) {
-            Long departureId = airportsByName.get(request.getDepartureAirport());
-            Long arrivalId = airportsByName.get(request.getArrivalAirport());
+            setUpMaps();
+            Long departureId = airportsByName.get(request.getDepartureAirport().trim().toLowerCase());
+            Long arrivalId = airportsByName.get(request.getArrivalAirport().trim().toLowerCase());
             FlightSearchResult result = new FlightSearchResult();
             List<Flight> outward = new ArrayList<>();
             List<Flight> arrival = new ArrayList<>();
@@ -87,13 +87,18 @@ public class FlightService {
 
             List<Flight> twoWay = objectMapper(flightDAO.twoWayFlightSearch(departureId, arrivalId, request.getDepartureDate(), request.getReturnDate()));
             for(Flight f: twoWay){
+                SeatAvailability seatAvailability = seatDAO.getSeatAvailabilityByFlightId(f.getFlightId());
                 if(f.getDeparture().getAirportId().equals(departureId) && f.getArrival().getAirportId().equals(arrivalId)
-                        && f.getDepartureDate().equals(request.getDepartureDate()))
-                    outward.add(f);
+                        && f.getDepartureDate().equals(request.getDepartureDate())){
+                    if(request.getTotalPassengers() <= seatAvailability.getAvailableSeats())
+                        outward.add(f);
+                }
 
                 if(f.getDeparture().getAirportId().equals(arrivalId) && f.getArrival().getAirportId().equals(departureId)
-                        && f.getDepartureDate().equals(request.getReturnDate()))
-                    arrival.add(f);
+                        && f.getDepartureDate().equals(request.getReturnDate())){
+                    if(request.getTotalPassengers() <= seatAvailability.getAvailableSeats())
+                        arrival.add(f);
+                }
             }
 
             result.setOutwardFlights(outward);
@@ -102,6 +107,7 @@ public class FlightService {
         }
 
         public List<Airport> airportsFilter(String input) {
+            setUpMaps();
             List<Airport> filtered = new ArrayList<>();
             Set<Long> addedIds = new HashSet<>(); //set per evitare i duplicati
 

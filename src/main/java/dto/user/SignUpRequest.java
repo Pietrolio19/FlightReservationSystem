@@ -1,6 +1,6 @@
 package dto.user;
 
-public class SignUpRequest { //classe per registrazione parziale nella schermata di Sign Up
+public class SignUpRequest {
     //attributi
     private String username;
     private String email;

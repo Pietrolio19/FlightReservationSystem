@@ -284,6 +284,7 @@ public class PassengerDAOTest {
     private User createTestUser() {
         User user = new User();
 
+        user.setUserId(null);
         user.setUsername("user_test_passenger");
         user.setEmail("user_test_passenger@example.com");
         user.setHashPassword("hashed_password_test");

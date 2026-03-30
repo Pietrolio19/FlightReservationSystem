@@ -11,6 +11,18 @@ public class FlightSearchRequest {
     private LocalDate returnDate;
     private String journeyType;
 
+    public FlightSearchRequest() {}
+
+    public FlightSearchRequest(String departureAirport, String arrivalAirport, int totalPassengers, LocalDate departureDate,
+                               LocalDate returnDate, String journeyType){
+        this.departureAirport = departureAirport;
+        this.arrivalAirport = arrivalAirport;
+        this.totalPassengers = totalPassengers;
+        this.departureDate = departureDate;
+        this.returnDate = returnDate;
+        this.journeyType = journeyType;
+    }
+
     public String getDepartureAirport() {
         return departureAirport;
     }

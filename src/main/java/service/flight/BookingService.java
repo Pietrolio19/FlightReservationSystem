@@ -94,4 +94,8 @@ public class BookingService {
         SessionHandler.getInstance().getCurrentUser().calculateFidelityStatus();
         userDAO.save(SessionHandler.getInstance().getCurrentUser());
     }
+
+    public Reservation getBookingReservation() {
+        return bookingReservation;
+    }
 }

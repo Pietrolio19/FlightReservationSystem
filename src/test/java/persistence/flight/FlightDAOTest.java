@@ -32,10 +32,12 @@ public class FlightDAOTest {
          airportDAO = new AirportDAO();
          airlineDAO = new AirlineDAO();
          seatDAO = new SeatDAO();
+
          departure = new Airport(null, "JFK", "New York", "Stati Uniti", "John F. Kennedy International Airport");
          arrival = new Airport(null, "NRT", "Tokyo", "Giappone", "Narita International Airport");
          airline = new Airline(null, "Japan Airlines", "JL", "JAL",  "Giappone");
          aircraft = new Aircraft(null, "B787", "Boeing", 242);
+
 
          airportDAO.insert(departure);
          airportDAO.insert(arrival);

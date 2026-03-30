@@ -92,9 +92,6 @@ public class Reservation {
     }
 
     public void cancel() {
-        if(this.state != ReservationState.PENDING) {
-            throw  new IllegalStateException("Solo le prenotaizoni pending possono essere modificate");
-        }
         this.state = ReservationState.CANCELED;
     }
 
