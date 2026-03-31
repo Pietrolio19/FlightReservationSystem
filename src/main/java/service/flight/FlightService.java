@@ -37,8 +37,8 @@ public class FlightService {
                 createAirportsMap();
         }
 
-        public int getMinPriceAvailable(Long flight_id){
-            return flightDAO.findMinPriceAvailable(flight_id).orElseThrow(() -> new IllegalArgumentException("Volo non trovato"));
+        public int getMinPriceAvailable(Long flightId){
+            return flightDAO.findMinPriceAvailable(flightId).orElseThrow(() -> new IllegalArgumentException("Volo non trovato"));
         }
 
         private void createAirportsMap() {

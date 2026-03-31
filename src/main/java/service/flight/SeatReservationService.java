@@ -13,8 +13,8 @@ import java.util.Optional;
 
 public class SeatReservationService {
     //attributi
-    SeatDAO seatDAO = new SeatDAO();
-    FlightDAO flightDAO = new FlightDAO();
+    private final SeatDAO seatDAO = new SeatDAO();
+    private final FlightDAO flightDAO = new FlightDAO();
     private Map<String, Seat> seatsMap = new HashMap<>();
 
     public List<Seat> getSeatsList(Long flightId) {

@@ -9,7 +9,7 @@ import util.session.SessionHandler;
 
 
 public class AuthService {
-    UserDAO userDAO = new UserDAO();
+    private final UserDAO userDAO = new UserDAO();
 
     public void registerUser(SignUpRequest request) {
         validateSignUpRequest(request);
