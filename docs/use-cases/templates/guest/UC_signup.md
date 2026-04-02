@@ -10,15 +10,15 @@ Guest Goal
 Guest
 
 ### Basic Flow
-| Step | Descrizione                                  |
-|------|----------------------------------------------|
-| 1    | L’ospite clicca sul pulsante "Accedi"        |
-| 2    | Il sistema mostra la finestra per il log in  |
-| 3    | L’ospite clicca sul pulsante "Resistrati"    |
-| 4    | Il sistema mostra la finestra per la sing up |
-| 5    | L'ospite inserisce i dati necessari          |
-| 6    | L'ospite clicca su "Registrati"               |
-| 7 | Il sistema carica la finestra del profilo    |
+| Step | Descrizione                                               |
+|------|-----------------------------------------------------------|
+| 1    | L’ospite clicca sul pulsante "Accedi"                     |
+| 2    | Il sistema mostra la finestra per il log in (Mock-up #2)  |
+| 3    | L’ospite clicca sul pulsante "Resistrati"                 |
+| 4    | Il sistema mostra la finestra per la sing up (Mock-up #3) |
+| 5    | L'ospite inserisce i dati necessari                       |
+| 6    | L'ospite clicca su "Registrati"                           |
+| 7    | Il sistema carica la finestra del profilo (Mock-up #4)    |
 
 ### Alternative Flow
 1. Il sistema rileva la presenza di un account già esistente:
