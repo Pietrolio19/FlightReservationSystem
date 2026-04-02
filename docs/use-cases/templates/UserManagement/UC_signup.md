@@ -1,35 +1,31 @@
 ## Use Case #2 – Registrazione nel Sistema (Sign-up)
 
 ### Brief Description
-L’utente si registra nel sistema creando un nuovo User.
+L’ospite si registra nel sistema fornendo Username, Email e Password.
 
 ### Level
-User Goal
+Guest Goal
 
 ### Actors
-User
-
-### Pre-Conditions
-L’utente deve essere nella pagina dedicata alla registrazione (Mockup #3), la quale è raggiungibile tramite la pagine di login (Mockup #2).
+Guest
 
 ### Basic Flow
-| Step | Descrizione                                                      |
-|------|------------------------------------------------------------------|
-| 1    | L’utente sceglie la pagina di Sign-up (Mockup #3)                |
-| 2    | L’utente inserisce i propri dati                                 |
-| 3    | L’utente invia le proprie credenziali                            |
-| 4    | Il sistema valida i dati                                         |
-| 5    | Il sistema crea una entry User nella tabella del DB              |
-| 6    | Il sistema conferma la creazione dell'account (Test da definire) |
-
-
+| Step | Descrizione                                  |
+|------|----------------------------------------------|
+| 1    | L’ospite clicca sul pulsante "Accedi"        |
+| 2    | Il sistema mostra la finestra per il log in  |
+| 3    | L’ospite clicca sul pulsante "Resistrati"    |
+| 4    | Il sistema mostra la finestra per la sing up |
+| 5    | L'ospite inserisce i dati necessari          |
+| 6    | L'ospite clicca su "Registrati"               |
+| 7 | Il sistema carica la finestra del profilo    |
 
 ### Alternative Flow
-| Step | Descrizione                                                                                                                                     |
-|------|-------------------------------------------------------------------------------------------------------------------------------------------------|
-| 4a   | In caso la creazione dell'oggetto fallisca viene restituito un messaggio di errore e si fornisce la possibilità di ritentare (Test da definire) |
-| 5a   | In caso fallisca la transazione sul DB il sistema restituisce un messaggio di errore e chiede di riprovare (Test da definire)                   |
-
+1. Il sistema rileva la presenza di un account già esistente:
+    1. Mostra un messaggio di errore: "Username già in uso"
+    2. Mostra un messaggio di errore: "Email già in uso"
+2. Il sistema rileva che la lunghezza della password è errata:
+    1. Mostra un messaggio di errore: "La password deve contenere almeno 8 caratteri"
 
 ### Post-Conditions
-L’utente ha creato un nuovo account.
+L'utente è registrato nel sistema e autenticato
