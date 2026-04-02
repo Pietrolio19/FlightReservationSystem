@@ -73,6 +73,7 @@ public class FlightSearchController implements NavigatorAware {
         createSearchForm();
         createFlightsTable();
         updateFlights();
+        flightsTable.setFocusTraversable(false);
         searchButton.setOnAction(e -> onSearchClicked());
     }
 
