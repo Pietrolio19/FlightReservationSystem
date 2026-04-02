@@ -22,7 +22,7 @@ public class BookingSession {
         return instance;
     }
 
-    public Flight getSelectedFlight() {
+    public Flight currentFlight() {
         return selectedFlight;
     }
 

@@ -27,7 +27,6 @@ public class PassengerController implements NavigatorAware {
     private Navigator navigator;
     private final Map<String, Map<String, Control>> cardFields = new HashMap<>(); //mappa per tenere traccia dei Fields nelle card
     private final BookingService bookingService = new BookingService();
-    private final BookingSession session = BookingSession.getInstance();
     private final ToggleGroup toggleGroup = new ToggleGroup(); // oggetto per tenere traccia dei RadioButton nelle card
     private final Map<String, ToggleButton> saveCompanionButtonMap = new HashMap<>(); //mappa per tenere traccia dei ToggleButton per i companion nelle card
     private final Map<String, Button> companionButtonMap = new HashMap<>();
@@ -68,7 +67,8 @@ public class PassengerController implements NavigatorAware {
     }
 
     private void createPassengerCardList() {
-        for(Seat s: session.getSelectedSeats()) {
+        List<Seat> selectedSeats = bookingService.getSessionSeats();
+        for(Seat s: selectedSeats) {
             passengerCardsArea.getChildren().add(createPassengerCard(s));
         }
     }
@@ -203,7 +203,6 @@ public class PassengerController implements NavigatorAware {
 
     private void continueToConfirmView(){
         savePassengersData();
-        session.clearSeatReservations();
         bookingService.createSeatReservations();
         navigator.loadView("confirm-view.fxml");
     }

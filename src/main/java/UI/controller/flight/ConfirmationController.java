@@ -2,6 +2,7 @@ package UI.controller.flight;
 
 import UI.navigator.Navigator;
 import UI.navigator.NavigatorAware;
+import domain.flight.Flight;
 import domain.flight.Seat;
 import domain.reservation.SeatReservation;
 import domain.user.Passenger;
@@ -18,10 +19,10 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class ConfirmationController implements NavigatorAware {
     //attributi
-    private final BookingSession session = BookingSession.getInstance();
     private final BookingService bookingService = new BookingService();
     private Navigator navigator;
 
@@ -76,20 +77,22 @@ public class ConfirmationController implements NavigatorAware {
     }
 
     private void setFlightData() {
-        airlineLabel.setText(session.getSelectedFlight().getAirline().getName());
-        flightCodeLabel.setText(session.getSelectedFlight().getFlightCode());
-        departureCityLabel.setText(session.getSelectedFlight().getDeparture().getCity());
-        departureIataLabel.setText(session.getSelectedFlight().getDeparture().getIata());
-        departureDateLabel.setText(session.getSelectedFlight().getDepartureDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-        departureTimeLabel.setText(session.getSelectedFlight().getDepartureTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-        durationLabel.setText(session.getSelectedFlight().formattedDuration());
-        arrivalCityLabel.setText(session.getSelectedFlight().getArrival().getCity());
-        arrivalIataLabel.setText(session.getSelectedFlight().getArrival().getIata());
-        arrivalTimeLabel.setText(session.getSelectedFlight().getArrivalTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+        Flight currentFlight = bookingService.getSessionFlight();
+        airlineLabel.setText(currentFlight.getAirline().getName());
+        flightCodeLabel.setText(currentFlight.getFlightCode());
+        departureCityLabel.setText(currentFlight.getDeparture().getCity());
+        departureIataLabel.setText(currentFlight.getDeparture().getIata());
+        departureDateLabel.setText(currentFlight.getDepartureDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        departureTimeLabel.setText(currentFlight.getDepartureTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+        durationLabel.setText(currentFlight.formattedDuration());
+        arrivalCityLabel.setText(currentFlight.getArrival().getCity());
+        arrivalIataLabel.setText(currentFlight.getArrival().getIata());
+        arrivalTimeLabel.setText(currentFlight.getArrivalTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
     }
 
     private void createPassengerCardList() {
-        for(SeatReservation sr: session.getSeatReservations()) {
+        List<SeatReservation> sessionSeatReservations = bookingService.getSessionSeatReservations();
+        for(SeatReservation sr: sessionSeatReservations) {
             passengerCardsArea.getChildren().add(createPassengerCard(sr.getSeat(), sr.getPassenger()));
         }
     }
@@ -190,7 +193,7 @@ public class ConfirmationController implements NavigatorAware {
     }
 
     private void backToPassenger() {
-        BookingSession.getInstance().clearPassengers();
+        bookingService.clearSessionPassengers();
         navigator.loadView("passenger-view.fxml");
     }
 

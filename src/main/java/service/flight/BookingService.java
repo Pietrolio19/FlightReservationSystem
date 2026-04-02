@@ -1,9 +1,12 @@
 package service.flight;
 
+import domain.flight.Flight;
 import domain.flight.Seat;
 import domain.reservation.Reservation;
 import domain.reservation.SeatReservation;
 import domain.user.Passenger;
+import dto.flight.SeatState;
+import persistence.dao.flight.SeatDAO;
 import persistence.dao.reservation.ReservationDAO;
 import persistence.dao.reservation.SeatReservationDAO;
 import persistence.dao.user.PassengerDAO;
@@ -12,6 +15,7 @@ import util.session.BookingSession;
 import util.session.SessionHandler;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class BookingService {
@@ -19,12 +23,16 @@ public class BookingService {
     private final SeatReservationDAO seatReservationDAO = new SeatReservationDAO();
     private final ReservationDAO reservationDAO = new ReservationDAO();
     private final UserDAO userDAO = new UserDAO();
+    private final SeatDAO seatDAO = new SeatDAO();
     private final BookingSession session = BookingSession.getInstance();
     private final Reservation bookingReservation = new Reservation();
 
-    //Service per Passeggeri
     public void saveSelfPassenger(Passenger passenger) {
         SessionHandler.getInstance().getCurrentUser().setSelfPassenger(passenger);
+    }
+
+    public List<Seat> getSessionSeats() {
+        return session.getSelectedSeats();
     }
 
     public void saveSessionPassengers() {
@@ -36,6 +44,7 @@ public class BookingService {
     }
 
     public void createSeatReservations() {
+        session.clearSeatReservations();
         for(Seat s: session.getSelectedSeats()) {
             Passenger currentPassenger = session.getPassengerBySeatCode().get(s.getSeatCode());
             SeatReservation currentReservation = new SeatReservation();
@@ -45,7 +54,37 @@ public class BookingService {
         }
     }
 
-    //Service per la conferma
+    public Flight getSessionFlight() {
+        return session.currentFlight();
+    }
+
+    public List<SeatReservation> getSessionSeatReservations() {
+        return session.getSeatReservations();
+    }
+
+    public List<SeatState> getSeatStates(Long id) {
+        return seatDAO.getSeatStateByFlightId(id);
+    }
+
+    public int getTotalPassengers() {
+        return session.getTotalPassengers();
+    }
+
+    public void addSessionSeat(Seat seat) {
+        session.addSeat(seat);
+    }
+
+    public void removeSessionSeat(Seat seat) {
+        session.removeSeat(seat);
+    }
+
+    public void clearSessionSeats() {
+        session.clearSeats();
+    }
+    public void clearSessionPassengers() {
+        session.clearPassengers();
+    }
+
     public void saveBookingData() {
         savePassengers();
         saveReservation();
@@ -54,7 +93,7 @@ public class BookingService {
     }
 
     private void saveReservation() {
-        bookingReservation.setFlight(session.getSelectedFlight());
+        bookingReservation.setFlight(session.currentFlight());
         bookingReservation.setUser(SessionHandler.getInstance().getCurrentUser());
         bookingReservation.confirm();
 
