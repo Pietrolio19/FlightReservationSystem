@@ -5,6 +5,7 @@ import domain.flight.Seat;
 import dto.flight.SeatState;
 import persistence.dao.flight.FlightDAO;
 import persistence.dao.flight.SeatDAO;
+import util.session.BookingSession;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,8 @@ public class SeatReservationService {
     //attributi
     private final SeatDAO seatDAO = new SeatDAO();
     private final FlightDAO flightDAO = new FlightDAO();
-    private Map<String, Seat> seatsMap = new HashMap<>();
+    private final BookingSession session = BookingSession.getInstance();
+    private final Map<String, Seat> seatsMap = new HashMap<>();
 
     public List<Seat> getSeatsList(Long flightId) {
         Optional<Flight> optionalFlight = flightDAO.findById(flightId);
@@ -32,7 +34,5 @@ public class SeatReservationService {
         return currentSeats;
     }
 
-    public List<SeatState> getSeatStates(Long id) {
-        return seatDAO.getSeatStateByFlightId(id);
-    }
+
 }
