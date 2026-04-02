@@ -31,12 +31,19 @@ public class UserProfileController implements NavigatorAware {
 
     @FXML private Button manageReservation;
 
+    @FXML private Button logoutButton;
+
     @FXML
     private void initialize() {
         loadUserInfo();
         loadReservation();
         loadCompanions();
         manageReservation.setOnAction(e -> navigator.loadView("manage-reservation.fxml"));
+        logoutButton.setOnAction(e -> {
+            SessionHandler.getInstance().logout();
+            navigator.refreshAuthUI();
+            navigator.loadView("flight-search.fxml");
+        });
     }
 
     //funzioni per creare la parte anagrafica

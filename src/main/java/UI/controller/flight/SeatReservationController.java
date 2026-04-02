@@ -127,9 +127,9 @@ public class SeatReservationController implements NavigatorAware {
             case "A" -> 0;
             case "B" -> 1;
             case "C" -> 2;
-            case "D" -> 3;
-            case "E" -> 4;
-            case "F" -> 5;
+            case "D" -> 4;
+            case "E" -> 5;
+            case "F" -> 6;
             default -> throw new IllegalArgumentException();
         };
     }

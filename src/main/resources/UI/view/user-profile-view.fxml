@@ -20,7 +20,10 @@
                         <Label text="Anagrafica" styleClass="user-profile-vbox-label"/>
                         <VBox fx:id="userInfo" styleClass="user-profile-info-vbox"/>
                     </VBox>
-                    <Button fx:id="manageReservation" text="Gestici Prenotazioni" styleClass="primary-button"/>
+                    <HBox spacing="10">
+                        <Button fx:id="manageReservation" text="Gestici Prenotazioni" styleClass="primary-button"/>
+                        <Button fx:id="logoutButton" text="Logout" styleClass="primary-button"/>
+                    </HBox>
                 </VBox>
                 <VBox GridPane.columnIndex="1" maxWidth="Infinity">
                     <Label text="Prenotazioni" styleClass="user-profile-vbox-label"/>
