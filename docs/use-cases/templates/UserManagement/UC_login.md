@@ -1,22 +1,29 @@
-## Use Case #1 – Accedi al Sistema (Sign-in)
+## Use Case #1 – Accedi al Sistema (Log-in)
 
 ### Brief Description
-L’utente accede al sistema tramite le proprie credenziali.
+L’ospite accede al sistema utilizzando Email e Password
 
 ### Level
-User Goal
+Guest Goal
 
 ### Actors
-User
+Guest
 
 ### Pre-Conditions
-L’utente deve essere nella pagina dedicata al proprio accesso (Mockup #2).
+L'utente deve essersi registrato in passato.
 
 ### Basic Flow
-| Step | Descrizione                                    |
-|------|------------------------------------------------|
-| 1 | L’utente clicca sul pulsante Accedi            |
-| 2 | L’utente inserisce le proprie credenziali      |
-| 3 | L’utente invia le proprie credenziali          |
-| 4 | Il sistema verifica le credenziali             |
-| 5 | Il sistema autentica l’utente (Test da definire) |
+| Step | Descrizione                                 |
+|------|---------------------------------------------|
+| 1    | L’ospite clicca sul pulsante "Accedi"       |
+| 2    | Il sistema mostra la finestra per il log in |
+| 3    | L'ospite inserisce i dati necessari         |
+| 4    | L'ospite clicca su Login                    |
+| 5    | Il sistema carica la finestra del profilo   |
+
+### Alternative Flow
+1. Il sistema non trova nessun utente con le credenziali inserite:
+   1. Mostra un messaggio di errore
+
+### Post-Conditions
+L'utente è autenticato nel sistema
