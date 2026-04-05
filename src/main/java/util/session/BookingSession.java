@@ -7,35 +7,21 @@ import domain.user.Passenger;
 
 import java.util.*;
 
+enum LegType {OUTWARD, RETURN}
+
 public class BookingSession {
     private static BookingSession instance;
-    private Flight selectedFlight;
     private int totalPassengers = 1;
-    private List<Seat> selectedSeats = new ArrayList<>();
+    private String journeyType;
+    private final BookingLeg outwardLeg = new BookingLeg();
+    private final BookingLeg returnLeg = new BookingLeg();
     private List<Passenger> passengers = new ArrayList<>();
-    private List<SeatReservation> seatReservations = new ArrayList<>();
-    private final Map<String, Passenger> passengerBySeatCode = new LinkedHashMap<>();
+    private LegType activeLeg = LegType.OUTWARD;
 
     public static BookingSession getInstance() {
         if(instance == null)
             instance = new BookingSession();
         return instance;
-    }
-
-    public Flight currentFlight() {
-        return selectedFlight;
-    }
-
-    public void setSelectedFlight(Flight selectedFlight) {
-        this.selectedFlight = selectedFlight;
-    }
-
-    public List<Seat> getSelectedSeats() {
-        return selectedSeats;
-    }
-
-    public void setSelectedSeats(List<Seat> selectedSeats) {
-        this.selectedSeats = selectedSeats;
     }
 
     public int getTotalPassengers() {
@@ -46,16 +32,12 @@ public class BookingSession {
         this.totalPassengers = totalPassengers;
     }
 
-    public void addSeat(Seat seat){
-        this.selectedSeats.add(seat);
+    public void setJourneyType(String type) {
+        journeyType = type;
     }
 
-    public void removeSeat(Seat seat) {
-        this.selectedSeats.remove(seat);
-    }
-
-    public void clearSeats() {
-        this.selectedSeats.clear();
+    public String getJourneyType() {
+        return journeyType;
     }
 
     public List<Passenger> getPassengers() {
@@ -63,7 +45,10 @@ public class BookingSession {
     }
 
     public void setPassengers(List<Passenger> passengers) {
-        this.passengers = passengers;
+        this.passengers.clear();
+        if (passengers != null) {
+            this.passengers.addAll(passengers);
+        }
     }
 
     public void addPassenger(Passenger passenger) {
@@ -78,37 +63,103 @@ public class BookingSession {
         this.passengers.clear();
     }
 
-    public List<SeatReservation> getSeatReservations() {
-        return seatReservations;
-    }
-
-    public void setSeatReservations(List<SeatReservation> seatReservations) {
-        this.seatReservations = seatReservations;
-    }
-
-    public void addSeatReservation(SeatReservation reservation){
-        this.seatReservations.add(reservation);
-    }
-
-    public void removeSeatReservation(SeatReservation reservation) {
-        this.seatReservations.remove(reservation);
-    }
-
-    public void clearSeatReservations() {
-        this.seatReservations.clear();
-    }
-
-    public void addMappedElement(String seatCode, Passenger passenger){
-        passengerBySeatCode.put(seatCode, passenger);
-    }
-
-    public Map<String, Passenger> getPassengerBySeatCode() {
-        return passengerBySeatCode;
+    public void clearTotal(){
+        totalPassengers = 1;
     }
 
     public void clear() {
-        selectedFlight = null;
-        selectedSeats.clear();
+        journeyType = null;
+        activeLeg = LegType.OUTWARD;
+
         passengers.clear();
+        outwardLeg.clear();
+        returnLeg.clear();
+    }
+
+    public void activateOutwardLeg() {
+        this.activeLeg = LegType.OUTWARD;
+    }
+
+    public void activateReturnLeg() {
+        this.activeLeg = LegType.RETURN;
+    }
+
+    private LegType getActiveLegType() {
+        return activeLeg;
+    }
+
+    public BookingLeg getActiveLeg() {
+        if (activeLeg == LegType.OUTWARD) {
+            return outwardLeg;
+        }
+        return returnLeg;
+    }
+
+    public Flight getSelectedFlight() {
+        return getActiveLeg().currentFlight();
+    }
+
+    public void setSelectedFlight(Flight flight) {
+        getActiveLeg().setSelectedFlight(flight);
+    }
+
+    public List<Seat> getSelectedSeats() {
+        return getActiveLeg().getSelectedSeats();
+    }
+
+    public void setSelectedSeats(List<Seat> selectedSeats) {
+        getActiveLeg().setSelectedSeats(selectedSeats);
+    }
+
+    public void addSeat(Seat seat) {
+        getActiveLeg().addSeat(seat);
+    }
+
+    public void removeSeat(Seat seat) {
+        getActiveLeg().removeSeat(seat);
+    }
+
+    public void clearSeats() {
+        getActiveLeg().clearSeats();
+    }
+
+    public List<SeatReservation> getSeatReservations() {
+        return getActiveLeg().getSeatReservations();
+    }
+
+    public void setSeatReservations(List<SeatReservation> seatReservations) {
+        getActiveLeg().setSeatReservations(seatReservations);
+    }
+
+    public void addSeatReservation(SeatReservation reservation) {
+        getActiveLeg().addSeatReservation(reservation);
+    }
+
+    public void removeSeatReservation(SeatReservation reservation) {
+        getActiveLeg().removeSeatReservation(reservation);
+    }
+
+    public void clearSeatReservations() {
+        getActiveLeg().clearSeatReservations();
+    }
+
+    public void addMappedElement(String seatCode, Passenger passenger) {
+        getActiveLeg().addMappedElement(seatCode, passenger);
+    }
+
+    public Map<String, Passenger> getPassengerBySeatCode() {
+        return getActiveLeg().getPassengerBySeatCode();
+    }
+
+    public boolean isRoundTrip() {
+        return "Andata e Ritorno".equals(journeyType);
+    }
+
+    public boolean isOutwardLegActive() {
+        return activeLeg == LegType.OUTWARD;
+    }
+
+    public boolean isReturnLegActive() {
+        return activeLeg == LegType.RETURN;
     }
 }

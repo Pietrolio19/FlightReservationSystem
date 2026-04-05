@@ -179,11 +179,29 @@ public class ConfirmationController implements NavigatorAware {
 
     private void completeBooking() {
         try {
-            bookingService.saveBookingData();
-            confirmLabel.setText("Prenotazione completata, verrai riindirizzato alla finestra principale");
+            // ROUND TRIP: prima conferma
+            if (bookingService.isRoundTrip() && bookingService.isOutwardActive()) {
+                bookingService.saveBookingData();
+                confirmLabel.setText("Tratta di andata confermata. Seleziona ora i posti del ritorno.");
 
-            PauseTransition pause = new PauseTransition(Duration.seconds(3)); //simulazione attesa nel salvataggio sul DB
-            pause.setOnFinished(e -> navigator.loadView("flight-search.fxml"));
+                PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+                pause.setOnFinished(e -> {
+                    bookingService.activateReturn();
+                    navigator.loadView("seat-reservation-view.fxml");
+                });
+                pause.play();
+                return;
+            }
+
+            // Solo Andata oppure Second Conferma
+            bookingService.saveBookingData();
+            confirmLabel.setText("Prenotazione completata, verrai reindirizzato alla finestra principale");
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(3));
+            pause.setOnFinished(e -> {
+                BookingSession.getInstance().clear();
+                navigator.loadView("flight-search.fxml");
+            });
             pause.play();
 
         } catch (Exception e) {

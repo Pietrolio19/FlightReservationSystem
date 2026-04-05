@@ -14,6 +14,7 @@ import persistence.dao.user.UserDAO;
 import util.session.BookingSession;
 import util.session.SessionHandler;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,7 +56,7 @@ public class BookingService {
     }
 
     public Flight getSessionFlight() {
-        return session.currentFlight();
+        return session.getSelectedFlight();
     }
 
     public List<SeatReservation> getSessionSeatReservations() {
@@ -81,23 +82,34 @@ public class BookingService {
     public void clearSessionSeats() {
         session.clearSeats();
     }
+
     public void clearSessionPassengers() {
         session.clearPassengers();
     }
 
     public void saveBookingData() {
         savePassengers();
-        saveReservation();
-        saveSeatReservations();
+        Reservation reservation = saveReservation();
+        saveSeatReservations(reservation);
         saveUser();
     }
 
-    private void saveReservation() {
-        bookingReservation.setFlight(session.currentFlight());
-        bookingReservation.setUser(SessionHandler.getInstance().getCurrentUser());
-        bookingReservation.confirm();
+    private Reservation saveReservation() {
+        Reservation reservation = new Reservation();
+        reservation.setFlight(session.getSelectedFlight());
+        reservation.setUser(SessionHandler.getInstance().getCurrentUser());
+        reservation.confirm();
 
-        reservationDAO.save(bookingReservation);
+        reservationDAO.save(reservation);
+        return reservation;
+    }
+
+    private void saveSeatReservations(Reservation reservation) {
+        for (SeatReservation sr : session.getSeatReservations()) {
+            sr.setReservation(reservation);
+            sr.confirm();
+            seatReservationDAO.save(sr);
+        }
     }
 
     private void savePassengers() {
@@ -116,14 +128,6 @@ public class BookingService {
         }
     }
 
-    private void saveSeatReservations() {
-        for(SeatReservation sr : session.getSeatReservations()) {
-            sr.setReservation(bookingReservation);
-            sr.confirm();
-            seatReservationDAO.save(sr);
-        }
-    }
-
     private void saveUser() {
         int totalPrice = 0;
         for(Seat s : session.getSelectedSeats()){
@@ -136,5 +140,43 @@ public class BookingService {
 
     public Reservation getBookingReservation() {
         return bookingReservation;
+    }
+
+    public void setJourneyType(String type) {
+        session.setJourneyType(type);
+    }
+
+    public String getJourneyType(){
+        return session.getJourneyType();
+    }
+
+    public void setOutwardFlight(Flight selected){
+        session.setSelectedFlight(selected);
+        session.activateOutwardLeg();
+    }
+
+    public void activateOutward() {
+        session.activateOutwardLeg();
+    }
+
+    public void activateReturn() {
+        session.activateReturnLeg();
+    }
+
+    public void setReturnFlight(Flight selected) {
+        session.activateReturnLeg();
+        session.setSelectedFlight(selected);
+    }
+
+    public boolean isRoundTrip(){
+        return session.isRoundTrip();
+    }
+
+    public boolean isOutwardActive() {
+        return session.isOutwardLegActive();
+    }
+
+    public boolean isReturnActive() {
+        return session.isReturnLegActive();
     }
 }

@@ -31,6 +31,7 @@ public class MainController implements Navigator {
         loadView("flight-search.fxml");
         backToMain.setOnAction(e -> {
             loadView("flight-search.fxml");
+            BookingSession.getInstance().clearTotal();
             BookingSession.getInstance().clear();
         });
         updateAuthButton();

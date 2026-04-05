@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import service.flight.BookingService;
 import service.flight.FlightService;
 
 import javafx.beans.property.IntegerProperty;
@@ -27,6 +28,7 @@ import javafx.scene.image.ImageView;
 import util.session.BookingSession;
 import util.session.SessionHandler;
 
+import java.awt.print.Book;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,9 @@ public class FlightSearchController implements NavigatorAware {
     private final IntegerProperty Children = new SimpleIntegerProperty(0);
     private final IntegerProperty Newborns = new SimpleIntegerProperty(0);
     private final FlightService flightService = new FlightService();
+    private final BookingService bookingService = new BookingService();
+    private FlightSearchResult searchResult = new FlightSearchResult();
+    private boolean choosingReturnFlight = false;
     public Navigator navigator;
 
     //attributi FXML
@@ -217,16 +222,42 @@ public class FlightSearchController implements NavigatorAware {
                 rightDashedLine.setMaxWidth(700);
 
                     flightReserve.setOnAction(e -> {
-                        if(SessionHandler.getInstance().isLoggedIn()){
-                            if (getIndex() >= 0 && getIndex() < getTableView().getItems().size()) {
-                                Flight currentFlight = getTableView().getItems().get(getIndex());
-                                BookingSession.getInstance().setSelectedFlight(currentFlight);
-                                navigator.loadView("seat-reservation-view.fxml");
-                            }
-                        }
-                        else
+                        if (!SessionHandler.getInstance().isLoggedIn()) {
                             navigator.loadView("login-view.fxml");
+                            return;
+                        }
 
+                        if (getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
+                            return;
+                        }
+
+                        Flight currentFlight = getTableView().getItems().get(getIndex());
+
+                        // Caso: Solo Andata
+                        if ("Solo Andata".equals(bookingService.getJourneyType())) {
+                            navigator.loadView("seat-reservation-view.fxml");
+                            return;
+                        }
+
+                        // Caso 2: Andata e Ritorno
+                        if (!choosingReturnFlight) {
+                            bookingService.setOutwardFlight(currentFlight);
+
+                            choosingReturnFlight = true;
+                            bookingService.activateReturn();
+
+                            updateFlightsTable(searchResult.getReturnFlights());
+                            return;
+                        }
+
+                        // Caso 3: Andata e Ritorno
+                        bookingService.setReturnFlight(currentFlight);
+
+
+                        bookingService.activateOutward();
+                        choosingReturnFlight = false;
+
+                        navigator.loadView("seat-reservation-view.fxml");
                     });
             }
 
@@ -387,11 +418,12 @@ public class FlightSearchController implements NavigatorAware {
         request.setReturnDate(datePickerReturn.getValue());
         request.setJourneyType(journeyType.getValue());
 
-        FlightSearchResult result = flightService.searchFlights(request);
-        if(!result.getReturnFlights().isEmpty())
-            updateFlightsTable(result.getReturnFlights()); //TODO chiamata per la query andata e ritorno, aggiungere logica
-        else
-            updateFlightsTable(result.getOutwardFlights()); //query per l'andata
+        bookingService.setJourneyType(journeyType.getValue());
+
+        choosingReturnFlight = false;
+
+        searchResult = flightService.searchFlights(request);
+        updateFlightsTable(searchResult.getOutwardFlights());
     }
 
     @Override
