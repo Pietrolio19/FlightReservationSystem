@@ -16,7 +16,6 @@ public class SeatReservationService {
     //attributi
     private final SeatDAO seatDAO = new SeatDAO();
     private final FlightDAO flightDAO = new FlightDAO();
-    private final BookingSession session = BookingSession.getInstance();
     private final Map<String, Seat> seatsMap = new HashMap<>();
 
     public List<Seat> getSeatsList(Long flightId) {

@@ -7,12 +7,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class FlightReservationApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader(
-                HelloApplication.class.getResource("view/main-view.fxml")
+                FlightReservationApplication.class.getResource("view/main-view.fxml")
         );
 
         Scene scene = new Scene(fxmlLoader.load());

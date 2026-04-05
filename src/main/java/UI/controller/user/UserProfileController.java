@@ -19,7 +19,7 @@ import java.util.List;
 
 public class UserProfileController implements NavigatorAware {
     //attributi
-    private final UserProfileService userProfileSerivce = new UserProfileService();
+    private final UserProfileService userProfileService = new UserProfileService();
     private Navigator navigator;
 
     //attributi FXML
@@ -48,7 +48,7 @@ public class UserProfileController implements NavigatorAware {
 
     //funzioni per creare la parte anagrafica
     private void loadUserInfo(){
-        userProfileSerivce.getSelfPassengerInfo();
+        userProfileService.getSelfPassengerInfo();
         userInfo.getChildren().clear();
         userInfo.getChildren().addAll(createUserInfo(SessionHandler.getInstance().getCurrentUser()));
     }
@@ -97,7 +97,7 @@ public class UserProfileController implements NavigatorAware {
     //funzioni per creare la parte delle prenotazioni
     private void loadReservation(){
         reservations.getChildren().clear();
-        List<Reservation> reservationsList = userProfileSerivce.getUserReservations();
+        List<Reservation> reservationsList = userProfileService.getUserReservations();
         for(Reservation r : reservationsList){
             if(r.getState().equals("CONFIRMED"))
                 reservations.getChildren().addAll(createReservation(r));
@@ -129,7 +129,7 @@ public class UserProfileController implements NavigatorAware {
 
     //funzioni per creare la parte Companions
     private void loadCompanions(){
-        List<Passenger> comp = userProfileSerivce.getUserCompanions();
+        List<Passenger> comp = userProfileService.getUserCompanions();
         companions.getChildren().clear();
         companions.getChildren().addAll(createCompanions(comp));
     }
