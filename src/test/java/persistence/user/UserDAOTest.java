@@ -79,7 +79,7 @@ public class UserDAOTest {
         user = new User(null, "TestUser", "testuser@gmail.com", "testuserpw");
         userDAO.insert(user);
 
-        Optional<User> testUser = userDAO.findByEmail("TestUserWrongUsername");
+        Optional<User> testUser = userDAO.findByUsername("TestUserWrongUsername");
         assertTrue(testUser.isEmpty());
     }
 

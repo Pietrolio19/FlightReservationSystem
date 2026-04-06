@@ -188,7 +188,7 @@ public class SeatDAOTest {
     }
 
     @Test
-    void getSeatAvailabilityByFlightId_return_correct_values_with_no_seatReservations() {
+    void getSeatAvailabilityByFlightId_success_with_no_seatReservations() {
         seat = new Seat(null, flight, 1, "A", 80);
         seat.setType("WINDOW");
         seat.setSeatClass("ECONOMY");
@@ -203,7 +203,7 @@ public class SeatDAOTest {
     }
 
     @Test
-    void getSeatAvailabilityByFlightId_return_correct_values_with_seatReservations() {
+    void getSeatAvailabilityByFlightId_success_with_seatReservations() {
         seat = new Seat(null, flight, 1, "A", 80);
         seat.setType("WINDOW");
         seat.setSeatClass("ECONOMY");
