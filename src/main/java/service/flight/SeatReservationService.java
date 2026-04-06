@@ -2,10 +2,8 @@ package service.flight;
 
 import domain.flight.Flight;
 import domain.flight.Seat;
-import dto.flight.SeatState;
 import persistence.dao.flight.FlightDAO;
 import persistence.dao.flight.SeatDAO;
-import util.session.BookingSession;
 
 import java.util.HashMap;
 import java.util.List;
