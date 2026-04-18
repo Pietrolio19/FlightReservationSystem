@@ -378,6 +378,44 @@
     -fx-font-size: 26;
 }
 
+.admin-button-wrapper {
+    -fx-padding: 10;
+}
+
+.admin-update-button {
+    -fx-padding: 10;
+    -fx-background-color: #17D143;
+    -fx-border-color: #17D143;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-width: 3;
+    -fx-font-size: 18;
+    -fx-text-fill: white;
+}
+
+.admin-update-button:hover {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-cursor: hand;
+}
+
+.admin-delete-button {
+    -fx-padding: 10;
+    -fx-background-color: #D12121;
+    -fx-border-color: #D12121;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-width: 3;
+    -fx-font-size: 18;
+    -fx-text-fill: white;
+}
+
+.admin-delete-button:hover {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-cursor: hand;
+}
+
 /* Manage Reservation */
 .reservations-container {
     -fx-padding: 15;

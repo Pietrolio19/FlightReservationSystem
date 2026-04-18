@@ -11,7 +11,7 @@
             prefHeight="400.0" prefWidth="600.0"
             stylesheets="style.css">
 
-    <VBox layoutX="600" layoutY="200" spacing="15" styleClass="login-wrapper">
+    <VBox layoutX="450" layoutY="150" spacing="15" styleClass="login-wrapper">
         <HBox>
             <Label text="Log In" styleClass="login-title"/>
             <Region HBox.hgrow="ALWAYS"/>

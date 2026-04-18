@@ -3,6 +3,7 @@ package service.admin;
 import domain.flight.Flight;
 import domain.reservation.Reservation;
 import domain.reservation.SeatReservation;
+import domain.user.Passenger;
 import domain.user.User;
 import persistence.dao.flight.FlightDAO;
 import persistence.dao.flight.SeatDAO;
@@ -40,6 +41,26 @@ public class AdminService {
 
     public List<Flight> findAllFlights() {
         return flightService.getFlightList();
+    }
+
+    public void deleteFlight(Long flightId) {
+        flightDAO.deleteById(flightId);
+    }
+
+    public void updateFlight(Flight selected) {
+        flightDAO.update(selected);
+    }
+
+    public List<Passenger> findAllPassengers() {
+        return passengerDAO.findAll();
+    }
+
+    public void deletePassenger(Long passengerId) {
+        passengerDAO.deleteById(passengerId);
+    }
+
+    public void updatePassenger(Passenger selected) {
+        passengerDAO.update(selected);
     }
 
     public List<SeatReservation> findAllSeatReservation() {
