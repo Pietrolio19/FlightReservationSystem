@@ -154,12 +154,21 @@ public class FlightService {
     } //funzione per normalizzare l'input
 
     private boolean matchesKey(String key, String input) {
+        if (input == null || input.isBlank()) {
+            return false;
+        }
+
+        if (key.startsWith(input) || key.contains(input)) {
+            return true;
+        }
+
         String[] parts = key.split("\\s+");
         for (String part : parts) {
             if (part.startsWith(input)) {
                 return true;
             }
         }
+
         return false;
     } //funzione che controlla il match per parole
 }

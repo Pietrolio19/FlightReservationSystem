@@ -30,6 +30,7 @@ public class PassengerController implements NavigatorAware {
     private final ToggleGroup toggleGroup = new ToggleGroup(); // oggetto per tenere traccia dei RadioButton nelle card
     private final Map<String, ToggleButton> saveCompanionButtonMap = new HashMap<>(); //mappa per tenere traccia dei ToggleButton per i companion nelle card
     private final Map<String, Button> companionButtonMap = new HashMap<>();
+    private final Map<String, Passenger> selectedCompanionBySeat = new HashMap<>();
 
     @FXML
     private VBox passengerCardsArea;
@@ -46,6 +47,7 @@ public class PassengerController implements NavigatorAware {
         toggleGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
             if(newToggle != null) {
                 String seatCode = (String) newToggle.getUserData();
+                selectedCompanionBySeat.remove(seatCode);
                 saveCompanionButtonMap.get(seatCode).setVisible(false);
                 saveCompanionButtonMap.get(seatCode).setManaged(false);
                 companionButtonMap.get(seatCode).setVisible(false);
@@ -245,7 +247,19 @@ public class PassengerController implements NavigatorAware {
         });
 
         Optional<Passenger> result = dialog.showAndWait();
-        result.ifPresent(passenger -> fillPassengerCard(seatCode, passenger));
+        result.ifPresent(passenger -> {
+            if (isCompanionAlreadySelected(seatCode, passenger)) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Companion già selezionato");
+                alert.setHeaderText(null);
+                alert.setContentText("Questo companion è già stato assegnato a un altro posto.");
+                alert.showAndWait();
+                return;
+            }
+
+            selectedCompanionBySeat.put(seatCode, passenger);
+            fillPassengerCard(seatCode, passenger);
+        });
     }
 
     private void fillPassengerCard(String seatCode, Passenger passenger) {
@@ -338,6 +352,39 @@ public class PassengerController implements NavigatorAware {
         ((TextField) fields.get("codId")).setText("");
         ((TextField) fields.get("phone")).setText("");
 
+    }
+
+    private boolean isCompanionAlreadySelected(String currentSeatCode, Passenger passenger) {
+        for (Map.Entry<String, Passenger> entry : selectedCompanionBySeat.entrySet()) {
+            String seatCode = entry.getKey();
+            Passenger selectedPassenger = entry.getValue();
+
+            if (!seatCode.equals(currentSeatCode) && isSamePassenger(selectedPassenger, passenger)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isSamePassenger(Passenger p1, Passenger p2) {
+        if (p1 == null || p2 == null) {
+            return false;
+        }
+
+        if (p1.getPassengerId() != null && p2.getPassengerId() != null) {
+            return Objects.equals(p1.getPassengerId(), p2.getPassengerId());
+        }
+
+        if (p1.getCodFisc() != null && p2.getCodFisc() != null) {
+            return Objects.equals(p1.getCodFisc(), p2.getCodFisc());
+        }
+
+        if (p1.getCodId() != null && p2.getCodId() != null) {
+            return Objects.equals(p1.getCodId(), p2.getCodId());
+        }
+
+        return false;
     }
 
     @Override

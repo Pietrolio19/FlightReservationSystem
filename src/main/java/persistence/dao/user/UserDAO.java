@@ -182,8 +182,12 @@ public class UserDAO implements CrudDAO<User, Long> {
             ps.setString(3, user.getHashPassword());
             ps.setLong(4, user.getFidelityPoints());
             ps.setString(5, user.getFidelityStatus());
-            if (user.getSelfPassenger() != null && user.getSelfPassenger().getPassengerId() != null) { //null-safe
+            if (user.getSelfPassenger() != null
+                    && user.getSelfPassenger().getPassengerId() != null
+                    && user.getSelfPassenger().getPassengerId() > 0) {
+
                 ps.setLong(6, user.getSelfPassenger().getPassengerId());
+
             } else {
                 ps.setNull(6, Types.BIGINT);
             }

@@ -39,27 +39,33 @@ public class FlightDAO implements CrudDAO<Flight, Long> {
     }
 
     public Optional<Integer> findMinPriceAvailable(Long id) {
-        String sql ="""
-                SELECT min(price) as start_price
-                FROM seat s LEFT JOIN seatreservation sr ON s.id = sr.seat_id
-                WHERE flight_id=? AND sr.seat_id IS NULL
-                """;
-        try(Connection conn = DBManager.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = """
+            SELECT MIN(price) AS start_price
+            FROM seat s LEFT JOIN seatreservation sr ON s.id = sr.seat_id
+            WHERE flight_id = ? AND sr.seat_id IS NULL
+            """;
+
+        try (Connection conn = DBManager.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, id);
-            try(ResultSet rs = ps.executeQuery()) {
-                if(rs.next()) {
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
                     int value = rs.getInt("start_price");
+
+                    if (rs.wasNull()) {
+                        return Optional.empty();
+                    }
+
                     return Optional.of(value);
                 }
-                if(rs.wasNull()) {
-                    return Optional.empty();
-                }
             }
-        } catch(SQLException e) {
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return Optional.empty();
     }
 

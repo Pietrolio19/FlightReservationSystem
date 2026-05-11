@@ -52,6 +52,7 @@ public class BookingServiceTest {
 
     @BeforeEach
     void setUp() {
+        bookingSession.clear();
         bookingService = new BookingService();
 
         passengerDAO = new PassengerDAO();
@@ -110,8 +111,13 @@ public class BookingServiceTest {
         user.setUsername("user_test_passenger");
         user.setEmail("user_test_passenger@example.com");
         user.setHashPassword("hashed_password_test");
+        user.setSelfPassenger(null);
 
         userDAO.insert(user);
+
+        passenger1.setCompanionOwner(user);
+        passenger2.setCompanionOwner(user);
+
         airportDAO.insert(departure);
         airportDAO.insert(arrival);
         airlineDAO.insert(airline);
@@ -119,14 +125,12 @@ public class BookingServiceTest {
         flightDAO.insert(flight);
         seatDAO.insert(seat1);
         seatDAO.insert(seat2);
-        passengerDAO.insert(passenger1);
-        passengerDAO.insert(passenger2);
 
         User loginUser = userDAO.findById(user.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("Utente non trovato"));
-        user.setUserId(loginUser.getUserId());
 
-        sessionHandler.login(user);
+        sessionHandler.login(loginUser);
+
         bookingSession.setSelectedFlight(flight);
         bookingSession.addSeat(seat1);
         bookingSession.addSeat(seat2);

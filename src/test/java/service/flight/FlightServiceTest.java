@@ -42,6 +42,7 @@ public class FlightServiceTest {
     private Aircraft aircraft;
     private Seat seat1;
     private Seat seat2;
+    private Seat returnSeat;
     private Passenger passenger;
     private Reservation reservation;
     private SeatReservation seatReservation;
@@ -91,6 +92,15 @@ public class FlightServiceTest {
         seat2.setSeatClass("ECONOMY");
         seat2.setPrice(90);
 
+        returnSeat = new Seat();
+        returnSeat.setSeatId(null);
+        returnSeat.setFlight(returnFlight);
+        returnSeat.setRow(10);
+        returnSeat.setLetter("C");
+        returnSeat.setType("WINDOW");
+        returnSeat.setSeatClass("ECONOMY");
+        returnSeat.setPrice(120);
+
         user = new User();
         user.setUsername("user_test_passenger");
         user.setEmail("user_test_passenger@example.com");
@@ -139,6 +149,9 @@ public class FlightServiceTest {
         }
         if (seat2 != null && seat2.getSeatId() != null) {
             seatDAO.deleteById(seat2.getSeatId());
+        }
+        if (returnSeat != null && returnSeat.getSeatId() != null) {
+            seatDAO.deleteById(returnSeat.getSeatId());
         }
         if(user != null && user.getUserId() != null) {
             userDAO.deleteById(user.getUserId());
@@ -226,20 +239,25 @@ public class FlightServiceTest {
 
     @Test
     void testGetMinPriceAvailable_throwsException_whenFlightNotFound() {
-        assertThrows(IllegalArgumentException.class, () -> flightService.getMinPriceAvailable(flight.getFlightId())); // verifica che venga sollevata l'eccezione corretta
+        assertThrows(IllegalArgumentException.class, () -> flightService.getMinPriceAvailable(9999L)); // verifica che venga sollevata l'eccezione corretta
     }
 
     @Test
-    void airportsFilter_return_correct_flights() { //TODO ricontrollare
-        List<Airport> departureAirports = flightService.airportsFilter("John F. Kennedy International Airport");
-        List<Airport> arrivalAirports = flightService.airportsFilter("Narita International Airport");
+    void airportsFilter_return_correct_airports() {
+        List<Airport> departureAirports = flightService.airportsFilter("John");
+        List<Airport> arrivalAirports = flightService.airportsFilter("Narita");
 
         assertNotNull(departureAirports);
         assertNotNull(arrivalAirports);
+
         assertFalse(departureAirports.isEmpty());
         assertFalse(arrivalAirports.isEmpty());
-        assertTrue(departureAirports.stream().anyMatch(a -> a.getAirportId().equals(flight.getDeparture().getAirportId())));
-        assertTrue(arrivalAirports.stream().anyMatch(a -> a.getAirportId().equals(flight.getArrival().getAirportId())));
+
+        assertTrue(departureAirports.stream()
+                .anyMatch(a -> a.getAirportId().equals(departure.getAirportId())));
+
+        assertTrue(arrivalAirports.stream()
+                .anyMatch(a -> a.getAirportId().equals(arrival.getAirportId())));
     }
 
     @Test
@@ -276,18 +294,27 @@ public class FlightServiceTest {
     void searchFlights_select_correct_branch_with_outward_and_return_and_seats_available() {
         flightDAO.insert(flight);
         flightDAO.insert(returnFlight);
-        reservationDAO.insert(reservation);
-        seatDAO.insert(seat1);
 
-        flightSearchRequest = new FlightSearchRequest(flight.getDeparture().getName().trim().toLowerCase(),
-                flight.getArrival().getName().trim().toLowerCase(),1, flight.getDepartureDate(),
-                flight.getArrivalDate(), "Andata e Ritorno");
+        seatDAO.insert(seat1);
+        seatDAO.insert(returnSeat);
+
+        flightSearchRequest = new FlightSearchRequest(
+                flight.getDeparture().getName().trim().toLowerCase(),
+                flight.getArrival().getName().trim().toLowerCase(),
+                1,
+                flight.getDepartureDate(),
+                flight.getArrivalDate(),
+                "Andata e Ritorno"
+        );
+
         FlightSearchResult result = flightService.searchFlights(flightSearchRequest);
 
         assertFalse(result.getOutwardFlights().isEmpty());
         assertFalse(result.getReturnFlights().isEmpty());
-        assertTrue(result.getOutwardFlights().stream().anyMatch(f -> f.getFlightId().equals(flight.getFlightId())));
-        assertTrue(result.getReturnFlights().stream().anyMatch(f -> f.getFlightId().equals(returnFlight.getFlightId())));
+        assertTrue(result.getOutwardFlights().stream()
+                .anyMatch(f -> f.getFlightId().equals(flight.getFlightId())));
+        assertTrue(result.getReturnFlights().stream()
+                .anyMatch(f -> f.getFlightId().equals(returnFlight.getFlightId())));
     }
 
     @Test

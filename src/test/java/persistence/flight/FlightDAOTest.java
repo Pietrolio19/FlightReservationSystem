@@ -177,20 +177,20 @@ public class FlightDAOTest {
     }
 
      @Test void oneWayFlightSearch_should_return_matching_flights() {
-        List<Flight> flights = flightDAO.oneWayFlightSearch(3L, 4L, LocalDate.of(2026, 4, 10));
+        List<Flight> flights = flightDAO.oneWayFlightSearch(3L, 4L, LocalDate.of(2026, 5, 2));
 
         assertFalse(flights.isEmpty());
 
         for(Flight flight : flights){
             assertEquals(3L, flight.getDeparture().getAirportId());
             assertEquals(4L, flight.getArrival().getAirportId());
-            assertEquals(LocalDate.of(2026, 4, 10), flight.getDepartureDate());
+            assertEquals(LocalDate.of(2026, 5, 2), flight.getDepartureDate());
         }
     }
 
      @Test void twoWayFlightSearch_should_return_matching_flights() {
         List<Flight> flights = flightDAO.twoWayFlightSearch(3L, 4L,
-                LocalDate.of(2026, 4, 10), LocalDate.of(2026, 4, 10));
+                LocalDate.of(2026, 5, 2), LocalDate.of(2026, 5, 2));
 
         assertFalse(flights.isEmpty());
 
@@ -198,12 +198,12 @@ public class FlightDAOTest {
             boolean matchesFirstDirection =
                     flight.getDeparture().getAirportId().equals(3L) &&
                             flight.getArrival().getAirportId().equals(4L) &&
-                            flight.getDepartureDate().equals(LocalDate.of(2026, 4, 10));
+                            flight.getDepartureDate().equals(LocalDate.of(2026, 5, 2));
 
             boolean matchesSecondDirection =
                     flight.getDeparture().getAirportId().equals(4L) &&
                             flight.getArrival().getAirportId().equals(3L) &&
-                            flight.getDepartureDate().equals(LocalDate.of(2026, 4, 10));
+                            flight.getDepartureDate().equals(LocalDate.of(2026, 5, 2));
 
             assertTrue(matchesFirstDirection || matchesSecondDirection);
         }

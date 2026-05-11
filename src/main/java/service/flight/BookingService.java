@@ -26,7 +26,7 @@ public class BookingService {
     private final UserDAO userDAO = new UserDAO();
     private final SeatDAO seatDAO = new SeatDAO();
     private final BookingSession session = BookingSession.getInstance();
-    private final Reservation bookingReservation = new Reservation();
+    private Reservation bookingReservation;
 
     public void saveSelfPassenger(Passenger passenger) {
         SessionHandler.getInstance().getCurrentUser().setSelfPassenger(passenger);
@@ -101,6 +101,9 @@ public class BookingService {
         reservation.confirm();
 
         reservationDAO.save(reservation);
+
+        this.bookingReservation = reservation;
+
         return reservation;
     }
 
